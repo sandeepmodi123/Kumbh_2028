@@ -199,6 +199,42 @@
     }
     .type-btn.selected { border-color: var(--saffron-dark); color: var(--saffron-dark); background: #fff8ef; }
 
+    .subsection-title {
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--saffron-dark);
+      margin: 8px 0;
+    }
+    .dep-list {
+      margin-top: 8px;
+      border: 1px dashed var(--line);
+      border-radius: 8px;
+      background: #fffcf7;
+      padding: 8px;
+    }
+    .dep-item {
+      font-size: 13px;
+      color: var(--muted);
+      border-bottom: 1px solid #f6e3cd;
+      padding: 6px 0;
+    }
+    .dep-item:last-child { border-bottom: none; }
+
+    .quick-card {
+      border: 1.5px solid #f4b183;
+      background: linear-gradient(180deg, #fffaf3, #fff);
+    }
+    .quick-note {
+      font-size: 12px;
+      color: #9a3412;
+      background: #fff7ed;
+      border: 1px solid #fed7aa;
+      border-radius: 8px;
+      padding: 8px 10px;
+      margin-bottom: 10px;
+      font-weight: 700;
+    }
+
     .mobile-sticky-cta {
       position: fixed;
       left: 0;
@@ -383,8 +419,30 @@
   <!-- STEP 3: OTP -->
   <div class="card hidden" id="step3">
     <h2>OTP Verify</h2>
-    <p class="sub" id="step3Sub">Enter OTP sent to your mobile</p>
+    <p class="sub" id="step3Sub">Add family/friend (optional), then verify OTP</p>
     <input id="hiddenRegId" type="hidden" />
+
+    <div class="subsection-title">Add Family / Friend (Optional)</div>
+    <label>Name</label>
+    <input id="depName" placeholder="Member name" />
+
+    <label>Relation</label>
+    <select id="depRelation">
+      <option value="Father">Father</option>
+      <option value="Mother">Mother</option>
+      <option value="Spouse">Spouse</option>
+      <option value="Son">Son</option>
+      <option value="Daughter">Daughter</option>
+      <option value="Brother">Brother</option>
+      <option value="Sister">Sister</option>
+      <option value="Friend">Friend</option>
+      <option value="Other">Other</option>
+    </select>
+    <button class="btn btn-secondary" id="addDependentBtn">+ Add Family / Friend</button>
+    <div class="msg" id="dependentMsg"></div>
+    <div id="dependentList" class="dep-list"><div class="dep-item">No members added yet.</div></div>
+
+    <div class="subsection-title" style="margin-top:12px;">OTP Verify</div>
     <label>OTP</label>
     <input id="otpInput" type="number" inputmode="numeric" placeholder="6-digit OTP" maxlength="6" />
     <button class="btn btn-primary" id="verifyOtpBtn">Verify + QR Generate</button>
@@ -431,6 +489,9 @@
     <label>Description / विवरण</label>
     <textarea id="ticketDesc" rows="3" placeholder="Describe your issue..."></textarea>
 
+    <label>Contact Phone (Optional)</label>
+    <input id="ticketContactPhone" type="tel" inputmode="numeric" placeholder="Optional number for callback" />
+
     <button class="btn btn-primary" id="submitTicketBtn">Submit / जमा करें</button>
     <div class="msg" id="ticketMsg"></div>
   </div>
@@ -443,6 +504,38 @@
     <input id="lookupPhone" type="tel" inputmode="numeric" autocomplete="tel" placeholder="Registered phone number" />
     <button class="btn btn-secondary" id="lookupBtn">🔍 Find QR / QR ढूंढें</button>
     <div class="msg" id="lookupMsg"></div>
+  </div>
+
+  <div class="card quick-card" id="quickActionCard" style="margin-top:8px;">
+    <h2>Quick Help / Complaint</h2>
+    <p class="quick-note">Registration not required. Direct complaint/help submit kar sakte hain.</p>
+
+    <label>Type</label>
+    <div class="ticket-type-row">
+      <div class="type-btn selected quick-type" data-val="HELP">🆘 Help</div>
+      <div class="type-btn quick-type" data-val="COMPLAINT">📢 Complaint</div>
+    </div>
+    <input id="quickActionType" type="hidden" value="HELP" />
+
+    <label>Category</label>
+    <select id="quickCategory"></select>
+
+    <label>Description</label>
+    <textarea id="quickDesc" rows="3" placeholder="Describe issue"></textarea>
+
+    <label>Language</label>
+    <select id="quickLanguage">
+      <option value="Hindi">Hindi</option>
+      <option value="English">English</option>
+      <option value="Marathi">Marathi</option>
+      <option value="Gujarati">Gujarati</option>
+    </select>
+
+    <label>Contact Phone (Optional)</label>
+    <input id="quickPhone" type="tel" inputmode="numeric" placeholder="Optional" />
+
+    <button class="btn btn-primary" id="submitQuickBtn">Submit Quick Ticket</button>
+    <div class="msg" id="quickMsg"></div>
   </div>
 </div>
 
@@ -465,8 +558,8 @@
   }
 
   const CATEGORIES = {
-    HELP: ['Medical Emergency','Navigation','Transport','Senior Citizen','Child Assistance','Missing Person','Other'],
-    COMPLAINT: ['Crowd Management','Sanitation','Food Quality','Toilet Issue','Security','Staff Behavior','Other'],
+    HELP: ['Medical Emergency','Police Assistance','Women Safety','Senior Citizen','Child Assistance','Missing Person','Navigation','Transport','Other'],
+    COMPLAINT: ['Crowd Management','Security Misconduct','Harassment','Theft','Sanitation','Toilet Issue','Food Quality','Overpricing','Staff Behavior','Other'],
     LOST: ['Document','Phone','Money','Jewelry','Clothes','Other'],
     FOUND: ['Document','Phone','Money','Jewelry','Clothes','Aadhar','Other']
   };
@@ -598,7 +691,10 @@
       document.getElementById('hiddenRegId').value = currentRegId;
       if (d.otpForTesting) document.getElementById('otpInput').value = d.otpForTesting;
       showMsg('regMsg', `OTP sent to ${phone}. Check SMS.`, true);
-      setTimeout(() => setStep(3), 800);
+      setTimeout(() => {
+        setStep(3);
+        loadDependents();
+      }, 800);
     } catch (err) {
       showMsg('regMsg', err.message, false);
     } finally {
@@ -608,6 +704,48 @@
   });
 
   // ---- STEP 3: OTP ----
+  async function loadDependents() {
+    if (!currentRegId) return;
+    const list = document.getElementById('dependentList');
+    try {
+      const res = await fetch(`${API}/register/${encodeURIComponent(currentRegId)}`);
+      const d = await res.json();
+      if (!d.ok || !Array.isArray(d.dependents)) {
+        list.innerHTML = '<div class="dep-item">No members added yet.</div>';
+        return;
+      }
+      if (!d.dependents.length) {
+        list.innerHTML = '<div class="dep-item">No members added yet.</div>';
+        return;
+      }
+      list.innerHTML = d.dependents.map((m, idx) => `<div class="dep-item">${idx + 1}. ${m.name} (${m.relation})</div>`).join('');
+    } catch {
+      list.innerHTML = '<div class="dep-item">Could not load family list.</div>';
+    }
+  }
+
+  document.getElementById('addDependentBtn').addEventListener('click', async () => {
+    const name = document.getElementById('depName').value.trim();
+    const relation = document.getElementById('depRelation').value;
+    if (!currentRegId) { showMsg('dependentMsg', 'Start registration first.', false); return; }
+    if (!name) { showMsg('dependentMsg', 'Member name is required.', false); return; }
+
+    try {
+      const res = await fetch(`${API}/register/dependent`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ registrationId: currentRegId, name, relation })
+      });
+      const d = await res.json();
+      if (!d.ok) { showMsg('dependentMsg', d.message || 'Failed to add member.', false); return; }
+      showMsg('dependentMsg', `${name} added successfully.`, true);
+      document.getElementById('depName').value = '';
+      await loadDependents();
+    } catch (err) {
+      showMsg('dependentMsg', err.message, false);
+    }
+  });
+
   document.getElementById('verifyOtpBtn').addEventListener('click', async () => {
     const registrationId = document.getElementById('hiddenRegId').value;
     const otp = document.getElementById('otpInput').value.trim();
@@ -676,15 +814,14 @@
     const actionType = document.getElementById('ticketActionType').value;
     const actionCategory = document.getElementById('ticketCategory').value;
     const description = document.getElementById('ticketDesc').value.trim();
-    const phone = document.getElementById('phone').value.trim() || document.getElementById('lookupPhone').value.trim();
-    if (!phone) { showMsg('ticketMsg', 'Phone number needed. Fill registration first.', false); return; }
+    const phone = document.getElementById('ticketContactPhone').value.trim() || document.getElementById('phone').value.trim() || document.getElementById('lookupPhone').value.trim();
 
     document.getElementById('submitTicketBtn').disabled = true;
     clearMsg('ticketMsg');
     try {
       const res = await fetch(`${API}/action/report`, {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ actionType, actionCategory, phone, description, language: selectedLang || 'Hindi' })
+        body: JSON.stringify({ actionType, actionCategory, phone: phone || null, description, language: selectedLang || 'Hindi' })
       });
       const d = await res.json();
       if (!d.ok) { showMsg('ticketMsg', d.message || 'Ticket creation failed.', false); return; }
@@ -696,6 +833,50 @@
       document.getElementById('submitTicketBtn').disabled = false;
     }
   });
+
+  function fillQuickCategories(type) {
+    const select = document.getElementById('quickCategory');
+    select.innerHTML = (CATEGORIES[type] || []).map(c => `<option value="${c}">${c}</option>`).join('');
+  }
+
+  document.querySelectorAll('.quick-type').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.quick-type').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      const type = btn.dataset.val;
+      document.getElementById('quickActionType').value = type;
+      fillQuickCategories(type);
+    });
+  });
+
+  document.getElementById('submitQuickBtn').addEventListener('click', async () => {
+    const actionType = document.getElementById('quickActionType').value;
+    const actionCategory = document.getElementById('quickCategory').value;
+    const description = document.getElementById('quickDesc').value.trim();
+    const language = document.getElementById('quickLanguage').value;
+    const phone = document.getElementById('quickPhone').value.trim();
+
+    clearMsg('quickMsg');
+    document.getElementById('submitQuickBtn').disabled = true;
+    try {
+      const res = await fetch(`${API}/action/report`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ actionType, actionCategory, description, language, phone: phone || null })
+      });
+      const d = await res.json();
+      if (!d.ok) { showMsg('quickMsg', d.message || 'Ticket creation failed.', false); return; }
+      showMsg('quickMsg', `✅ Ticket created: ${d.ticket.id}`, true);
+      document.getElementById('quickDesc').value = '';
+      document.getElementById('quickPhone').value = '';
+    } catch (err) {
+      showMsg('quickMsg', err.message, false);
+    } finally {
+      document.getElementById('submitQuickBtn').disabled = false;
+    }
+  });
+
+  fillQuickCategories('HELP');
 
   // ---- QR LOOKUP ----
   document.getElementById('lookupBtn').addEventListener('click', async () => {

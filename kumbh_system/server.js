@@ -564,8 +564,8 @@ app.get('/api/pro/registration/:id/qr', async (req, res) => {
 app.post('/api/action/report', (req, res) => {
   const { actionType, actionCategory, phone, description, mediaData, mediaType, mediaDurationSec, language } = req.body;
 
-  if (!actionType || !phone || !language) {
-    return res.status(400).json({ ok: false, message: 'actionType, phone, language required' });
+  if (!actionType || !language) {
+    return res.status(400).json({ ok: false, message: 'actionType and language required' });
   }
 
   const actionTypes = ['HELP', 'COMPLAINT', 'LOST', 'FOUND'];
@@ -574,8 +574,8 @@ app.post('/api/action/report', (req, res) => {
   }
 
   const categories = {
-    HELP: ['Medical Emergency', 'Senior Citizen', 'Child Assistance', 'Missing Person', 'Navigation', 'Transport', 'Lost Item', 'Other'],
-    COMPLAINT: ['Crowd Management', 'Sanitation', 'Food Quality', 'Toilet Issue', 'Security', 'Pricing', 'Staff Behavior', 'Other'],
+    HELP: ['Medical Emergency', 'Police Assistance', 'Women Safety', 'Senior Citizen', 'Child Assistance', 'Missing Person', 'Navigation', 'Transport', 'Other'],
+    COMPLAINT: ['Crowd Management', 'Security Misconduct', 'Harassment', 'Theft', 'Sanitation', 'Toilet Issue', 'Food Quality', 'Overpricing', 'Staff Behavior', 'Other'],
     LOST: ['Document', 'Phone', 'Money', 'Jewelry', 'Clothes', 'Other'],
     FOUND: ['Document', 'Phone', 'Money', 'Jewelry', 'Clothes', 'Aadhar', 'Other']
   };
@@ -595,8 +595,10 @@ app.post('/api/action/report', (req, res) => {
   const id = `TK-${Date.now().toString().slice(-7)}`;
   const now = new Date().toISOString();
 
+  const reporterPhone = String(phone || '').trim() || `ANON-${Date.now().toString().slice(-8)}`;
+
   stmts.createTicket.run(
-    id, actionType, actionCategory, phone.trim(),
+    id, actionType, actionCategory, reporterPhone,
     `${actionCategory}${description ? ` | ${description}` : ''}`,
     mediaData || null, mediaType || null, mediaDurationSec || null,
     language, priority, 'OPEN', null, null, 0, 0, computeSlaDueIso(priority), now, now
@@ -1009,8 +1011,8 @@ app.post('/api/admin/demo-seed-bulk', requireAuth, requireRole(['ADMIN']), (req,
   const languages = ['Hindi', 'English', 'Marathi', 'Gujarati'];
   const relations = ['Father', 'Mother', 'Spouse', 'Son', 'Daughter', 'Brother', 'Sister'];
   const actionMap = {
-    HELP: ['Medical Emergency', 'Senior Citizen', 'Child Assistance', 'Missing Person', 'Navigation', 'Transport', 'Lost Item', 'Other'],
-    COMPLAINT: ['Crowd Management', 'Sanitation', 'Food Quality', 'Toilet Issue', 'Security', 'Pricing', 'Staff Behavior', 'Other'],
+    HELP: ['Medical Emergency', 'Police Assistance', 'Women Safety', 'Senior Citizen', 'Child Assistance', 'Missing Person', 'Navigation', 'Transport', 'Other'],
+    COMPLAINT: ['Crowd Management', 'Security Misconduct', 'Harassment', 'Theft', 'Sanitation', 'Toilet Issue', 'Food Quality', 'Overpricing', 'Staff Behavior', 'Other'],
     LOST: ['Document', 'Phone', 'Money', 'Jewelry', 'Clothes', 'Other'],
     FOUND: ['Document', 'Phone', 'Money', 'Jewelry', 'Clothes', 'Aadhar', 'Other']
   };
