@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ujjain Kumbh 2028 Swimlane Flowchart</title>
+  <style>
+    :root {
+      --paper: #ffffff;
+      --bg: #fff8f1;
+      --line: #d97706;
+      --ink: #3d1f0f;
+      --muted: #6b4d3c;
+      --citizen: #fff3e0;
+      --system: #f8fafc;
+      --control: #eff6ff;
+      --field: #f0fdf4;
+      --admin: #fff7ed;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+      background: linear-gradient(160deg, var(--bg), #fffdf9);
+      color: var(--ink);
+      padding: 20px;
+    }
+    .sheet {
+      max-width: 1700px;
+      margin: 0 auto;
+      background: var(--paper);
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 24px 58px rgba(154, 52, 18, 0.14);
+      border: 1px solid #f1d2b0;
+    }
+    .head {
+      padding: 18px 22px;
+      background: linear-gradient(110deg, #fff5e7, #ffd9a3);
+      border-bottom: 1px solid #efc28a;
+    }
+    .head h1 { margin: 0; color: #9a3412; }
+    .head p { margin: 6px 0 0; color: var(--muted); }
+    .wrap { padding: 14px; overflow: auto; }
+    svg {
+      width: 100%;
+      min-width: 1600px;
+      height: auto;
+      display: block;
+      background: #fffdfa;
+      border: 1px solid #f2dac0;
+      border-radius: 12px;
+    }
+  </style>
+</head>
+<body>
+  <div class="sheet">
+    <div class="head">
+      <h1>Ujjain Kumbh 2028 Swimlane Flowchart</h1>
+      <p>Actor-wise view: Citizen, System, Control Room, Field Team, and Admin.</p>
+    </div>
+    <div class="wrap">
+      <svg viewBox="0 0 1600 1600" role="img" aria-label="Swimlane flowchart for Ujjain Kumbh 2028 system">
+        <defs>
+          <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+            <path d="M0,0 L12,6 L0,12 z" fill="#8a4b1a" />
+          </marker>
+          <style>
+            .laneTitle { font: 700 16px Segoe UI, Trebuchet MS; fill: #7c2d12; }
+            .label { font: 700 14px Segoe UI, Trebuchet MS; fill: #3d1f0f; }
+            .desc { font: 500 12px Segoe UI, Trebuchet MS; fill: #6b4d3c; }
+            .box { fill: #fff; stroke: #b45309; stroke-width: 2; rx: 10; }
+            .arrow { fill: none; stroke: #8a4b1a; stroke-width: 2.2; marker-end: url(#arrow); }
+          </style>
+        </defs>
+
+        <rect x="0" y="0" width="1600" height="220" fill="#fff3e0"/>
+        <rect x="0" y="220" width="1600" height="260" fill="#f8fafc"/>
+        <rect x="0" y="480" width="1600" height="300" fill="#eff6ff"/>
+        <rect x="0" y="780" width="1600" height="280" fill="#f0fdf4"/>
+        <rect x="0" y="1060" width="1600" height="540" fill="#fff7ed"/>
+
+        <line x1="0" y1="220" x2="1600" y2="220" stroke="#d6a46b" />
+        <line x1="0" y1="480" x2="1600" y2="480" stroke="#d6a46b" />
+        <line x1="0" y1="780" x2="1600" y2="780" stroke="#d6a46b" />
+        <line x1="0" y1="1060" x2="1600" y2="1060" stroke="#d6a46b" />
+
+        <text x="24" y="36" class="laneTitle">Citizen / Pilgrim</text>
+        <text x="24" y="256" class="laneTitle">Digital System / APIs</text>
+        <text x="24" y="516" class="laneTitle">Control Room</text>
+        <text x="24" y="816" class="laneTitle">Field Team</text>
+        <text x="24" y="1096" class="laneTitle">Admin / Governance</text>
+
+        <rect x="140" y="70" width="230" height="70" class="box"/>
+        <text x="255" y="98" class="label" text-anchor="middle">Scan QR / Open Portal</text>
+        <text x="255" y="120" class="desc" text-anchor="middle">Entry point for all services</text>
+
+        <rect x="430" y="70" width="230" height="70" class="box"/>
+        <text x="545" y="98" class="label" text-anchor="middle">Register or Lookup</text>
+        <text x="545" y="120" class="desc" text-anchor="middle">Face, OTP, QR, family details</text>
+
+        <rect x="720" y="70" width="230" height="70" class="box"/>
+        <text x="835" y="98" class="label" text-anchor="middle">Raise Issue / Request</text>
+        <text x="835" y="120" class="desc" text-anchor="middle">Help, complaint, lost, found</text>
+
+        <rect x="1010" y="70" width="230" height="70" class="box"/>
+        <text x="1125" y="98" class="label" text-anchor="middle">Receive Support / QR</text>
+        <text x="1125" y="120" class="desc" text-anchor="middle">Track outcome and identity pass</text>
+
+        <rect x="430" y="290" width="230" height="70" class="box"/>
+        <text x="545" y="318" class="label" text-anchor="middle">Store Registration</text>
+        <text x="545" y="340" class="desc" text-anchor="middle">Pending OTP and dependent data</text>
+
+        <rect x="720" y="290" width="230" height="70" class="box"/>
+        <text x="835" y="318" class="label" text-anchor="middle">Generate QR / Ticket</text>
+        <text x="835" y="340" class="desc" text-anchor="middle">Identity pass, SLA, priority, audit</text>
+
+        <rect x="1010" y="290" width="230" height="70" class="box"/>
+        <text x="1125" y="318" class="label" text-anchor="middle">Push to Control Queue</text>
+        <text x="1125" y="340" class="desc" text-anchor="middle">Open queue for command center</text>
+
+        <rect x="300" y="580" width="230" height="70" class="box"/>
+        <text x="415" y="608" class="label" text-anchor="middle">Dashboard Intake</text>
+        <text x="415" y="630" class="desc" text-anchor="middle">KPIs and live ticket view</text>
+
+        <rect x="590" y="580" width="230" height="70" class="box"/>
+        <text x="705" y="608" class="label" text-anchor="middle">Priority Feed</text>
+        <text x="705" y="630" class="desc" text-anchor="middle">Urgency score ranking</text>
+
+        <rect x="880" y="580" width="230" height="70" class="box"/>
+        <text x="995" y="608" class="label" text-anchor="middle">Auto Assign / Escalate</text>
+        <text x="995" y="630" class="desc" text-anchor="middle">Reduce operator delay</text>
+
+        <rect x="1170" y="580" width="230" height="70" class="box"/>
+        <text x="1285" y="608" class="label" text-anchor="middle">Dispatch / Quick Resolve</text>
+        <text x="1285" y="630" class="desc" text-anchor="middle">Manual or rapid action path</text>
+
+        <rect x="680" y="860" width="260" height="76" class="box"/>
+        <text x="810" y="890" class="label" text-anchor="middle">Field Unit Responds</text>
+        <text x="810" y="914" class="desc" text-anchor="middle">Medical, patrol, security, lost & found</text>
+
+        <rect x="1040" y="860" width="260" height="76" class="box"/>
+        <text x="1170" y="890" class="label" text-anchor="middle">Resolution or Escalation</text>
+        <text x="1170" y="914" class="desc" text-anchor="middle">Close or re-route to higher action</text>
+
+        <rect x="420" y="1180" width="250" height="74" class="box"/>
+        <text x="545" y="1210" class="label" text-anchor="middle">Admin Overview</text>
+        <text x="545" y="1232" class="desc" text-anchor="middle">Stats, governance, system health</text>
+
+        <rect x="730" y="1180" width="250" height="74" class="box"/>
+        <text x="855" y="1210" class="label" text-anchor="middle">Bulk Seed / Users</text>
+        <text x="855" y="1232" class="desc" text-anchor="middle">Demo prep and team control</text>
+
+        <rect x="1040" y="1180" width="250" height="74" class="box"/>
+        <text x="1165" y="1210" class="label" text-anchor="middle">Audit + Accountability</text>
+        <text x="1165" y="1232" class="desc" text-anchor="middle">Traceable actions for command review</text>
+
+        <path d="M370 105 L430 105" class="arrow"/>
+        <path d="M660 105 L720 105" class="arrow"/>
+        <path d="M950 105 L1010 105" class="arrow"/>
+
+        <path d="M545 140 L545 290" class="arrow"/>
+        <path d="M835 140 L835 290" class="arrow"/>
+        <path d="M1125 140 L1125 290" class="arrow"/>
+
+        <path d="M1125 360 L1125 580 L530 580" class="arrow"/>
+        <path d="M530 580 L590 580" class="arrow"/>
+        <path d="M820 615 L880 615" class="arrow"/>
+        <path d="M1110 615 L1170 615" class="arrow"/>
+
+        <path d="M1285 650 L1285 860 L940 860" class="arrow"/>
+        <path d="M940 898 L1040 898" class="arrow"/>
+
+        <path d="M1170 936 L1170 1180" class="arrow"/>
+        <path d="M670 1217 L730 1217" class="arrow"/>
+        <path d="M980 1217 L1040 1217" class="arrow"/>
+      </svg>
+    </div>
+  </div>
+</body>
+</html>

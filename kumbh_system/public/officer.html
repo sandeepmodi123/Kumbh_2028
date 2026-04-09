@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Officer Portal | Kumbh 2028</title>
+  <style>
+    :root {
+      --saffron: #d97706;
+      --saffron-dark: #9a3412;
+      --ink: #1a1a2e;
+      --muted: #5a5a7a;
+      --line: #e8e8f0;
+      --bg: #f7f7fb;
+      --ok: #15803d;
+      --err: #b91c1c;
+      --police: #1e3a5f;
+      --police-light: #e8f0fe;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--ink); min-height: 100vh; }
+
+    /* HEADER */
+    .header {
+      background: linear-gradient(110deg, var(--police), #2a4f7c);
+      color: #fff;
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 3px solid var(--saffron);
+    }
+    .header h1 { font-size: 17px; font-weight: 900; }
+    .header p { font-size: 11px; opacity: 0.75; }
+    .officer-badge {
+      background: rgba(255,255,255,0.18);
+      border-radius: 8px;
+      padding: 6px 12px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+    #logoutBtn {
+      background: #fff3;
+      border: 1px solid #fff5;
+      color: #fff;
+      padding: 5px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 12px;
+    }
+
+    /* LAYOUT */
+    .main { max-width: 900px; margin: 0 auto; padding: 20px 14px; }
+    .card { background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 20px; margin-bottom: 16px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+    .card h2 { font-size: 16px; margin-bottom: 12px; color: var(--police); }
+
+    /* LOGIN */
+    #loginSection label { display: block; font-size: 12px; font-weight: 700; color: var(--muted); margin-bottom: 4px; }
+    #loginSection input {
+      width: 100%; padding: 10px 12px; border: 1.5px solid var(--line);
+      border-radius: 7px; font-size: 14px; outline: none; margin-bottom: 12px;
+    }
+    #loginSection input:focus { border-color: var(--police); }
+
+    /* STATS ROW */
+    .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 18px; }
+    .stat-card {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 14px 10px;
+      text-align: center;
+    }
+    .stat-card .num { font-size: 28px; font-weight: 900; color: var(--police); }
+    .stat-card .lbl { font-size: 10px; color: var(--muted); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+
+    /* FILTERS */
+    .filter-bar { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 16px; }
+    .filter-bar select, .filter-bar input {
+      padding: 8px 12px; border: 1.5px solid var(--line); border-radius: 7px;
+      font-size: 13px; outline: none;
+    }
+    .filter-bar select:focus, .filter-bar input:focus { border-color: var(--police); }
+
+    .quick-status {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 14px;
+    }
+    .chip-btn {
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--police);
+      font-size: 12px;
+      font-weight: 800;
+      border-radius: 999px;
+      padding: 7px 12px;
+      cursor: pointer;
+      min-height: 36px;
+    }
+    .chip-btn.active {
+      background: var(--police);
+      color: #fff;
+      border-color: var(--police);
+    }
+
+    /* TICKETS TABLE */
+    .tickets-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    thead { background: var(--police); color: #fff; }
+    th { padding: 10px 12px; text-align: left; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; }
+    td { padding: 10px 12px; border-bottom: 1px solid var(--line); vertical-align: middle; }
+    tr:hover { background: #fafafa; }
+
+    /* PRIORITY TAGS */
+    .pri { padding: 2px 8px; border-radius: 12px; font-size: 10px; font-weight: 800; display: inline-block; }
+    .pri-CRITICAL { background: #fee2e2; color: #9b1c1c; }
+    .pri-HIGH { background: #ffedd5; color: #9a3412; }
+    .pri-MEDIUM { background: #fef9c3; color: #854d0e; }
+    .pri-LOW { background: #dcfce7; color: #166534; }
+
+    .status { padding: 2px 8px; border-radius: 12px; font-size: 10px; font-weight: 800; display: inline-block; }
+    .status-OPEN { background: #eff6ff; color: #1d4ed8; }
+    .status-IN_PROGRESS { background: #fef9c3; color: #854d0e; }
+    .status-RESOLVED { background: #dcfce7; color: #166534; }
+    .status-CLOSED { background: #f1f5f9; color: #64748b; }
+
+    /* ACTION BUTTONS */
+    .btn-action {
+      padding: 5px 10px; border-radius: 5px; font-size: 11px; font-weight: 700;
+      cursor: pointer; border: none; margin-right: 4px;
+    }
+    .btn-resolve { background: var(--police-light); color: var(--police); }
+    .btn-view { background: #fff8ef; color: var(--saffron-dark); }
+
+    /* MAIN BUTTONS */
+    .btn {
+      padding: 11px 16px; border: none; border-radius: 8px; font-size: 14px;
+      font-weight: 800; cursor: pointer;
+    }
+    .btn-primary { background: linear-gradient(90deg, var(--police), #2a4f7c); color: #fff; }
+    .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    /* MESSAGES */
+    .msg { padding: 10px 14px; border-radius: 8px; font-size: 13px; font-weight: 600; margin-top: 8px; display: none; }
+    .msg.ok { background: #f0fdf4; color: var(--ok); border: 1px solid #bbf7d0; display: block; }
+    .msg.err { background: #fff1f2; color: var(--err); border: 1px solid #fecaca; display: block; }
+
+    /* RESOLVE MODAL */
+    .modal-bg { position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 999; }
+    .modal { background: #fff; border-radius: 14px; padding: 24px; width: 90%; max-width: 440px; box-shadow: 0 20px 60px rgba(0,0,0,0.25); }
+    .modal h3 { color: var(--police); font-size: 16px; margin-bottom: 12px; }
+    .modal textarea { width: 100%; padding: 10px; border: 1.5px solid var(--line); border-radius: 8px; font-size: 13px; outline: none; min-height: 80px; resize: vertical; }
+    .modal textarea:focus { border-color: var(--police); }
+    .modal-btns { display: flex; gap: 10px; margin-top: 14px; }
+    .modal-btns button { flex: 1; }
+    .btn-cancel { background: var(--line); color: var(--ink); border: none; border-radius: 8px; padding: 10px; font-size: 13px; font-weight: 700; cursor: pointer; }
+
+    /* DETAIL PANEL */
+    .detail-panel {
+      position: fixed; top: 0; right: 0; width: 380px; height: 100vh; background: #fff;
+      z-index: 998; box-shadow: -8px 0 40px rgba(0,0,0,0.15); overflow-y: auto;
+      transform: translateX(100%); transition: transform 0.25s ease;
+      padding: 20px;
+    }
+    .detail-panel.open { transform: translateX(0); }
+    .detail-panel h3 { color: var(--police); margin-bottom: 14px; }
+    .detail-row { display: flex; gap: 8px; padding: 8px 0; border-bottom: 1px solid var(--line); font-size: 13px; }
+    .detail-row .lbl { font-weight: 700; color: var(--muted); width: 110px; flex-shrink: 0; }
+    .close-panel { float: right; background: none; border: none; font-size: 20px; cursor: pointer; color: var(--muted); }
+
+    .empty-state { text-align: center; padding: 40px 20px; color: var(--muted); }
+    .empty-state .icon { font-size: 48px; margin-bottom: 12px; }
+
+    .mobile-tickets { display: none; }
+    .ticket-card {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 12px;
+      margin-bottom: 10px;
+      box-shadow: 0 1px 6px rgba(0,0,0,0.05);
+    }
+    .ticket-card .top {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+    .ticket-card .id {
+      font-family: monospace;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--police);
+    }
+    .ticket-card .meta {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.45;
+      margin-bottom: 8px;
+    }
+    .ticket-card .actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .hidden { display: none !important; }
+
+    @media (max-width: 900px) {
+      .stats-row { grid-template-columns: repeat(2, 1fr); }
+      .detail-panel { width: 100%; }
+      .header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+      }
+      .officer-badge { font-size: 11px; }
+      .filter-bar select,
+      .filter-bar input,
+      .filter-bar button {
+        width: 100%;
+        min-height: 44px;
+        font-size: 16px;
+      }
+      .quick-status {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        padding-bottom: 2px;
+      }
+      .chip-btn {
+        flex: 0 0 auto;
+      }
+      .tickets-wrap { display: none; }
+      .mobile-tickets { display: block; }
+      .btn-action {
+        min-height: 40px;
+        font-size: 12px;
+      }
+      .main { padding: 14px 10px; }
+      .card { padding: 14px; border-radius: 12px; }
+      #loginSection input { font-size: 16px; min-height: 46px; }
+      #loginBtn { min-height: 48px; font-size: 16px; }
+      #logoutBtn { min-height: 40px; }
+      .ticket-card .actions .btn-action { flex: 1; min-width: 110px; }
+    }
+
+    @media (max-width: 480px) {
+      .header h1 { font-size: 15px; }
+      .officer-badge { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div>
+    <h1>🚔 Officer Portal | Kumbh 2028 Ujjain</h1>
+    <p>Police Officer — Assigned Tickets Dashboard</p>
+  </div>
+  <div style="display:flex; gap:8px; align-items:center;">
+    <span class="officer-badge" id="officerBadge" style="display:none;"></span>
+    <button id="logoutBtn" class="hidden">Logout</button>
+  </div>
+</div>
+
+<div class="main">
+
+  <!-- LOGIN CARD -->
+  <div class="card" id="loginSection" style="max-width:420px; margin: 0 auto;">
+    <h2>🔐 Officer Login</h2>
+    <p style="font-size:12px; color:var(--muted); margin-bottom:16px;">Use your official Police Officer credentials</p>
+    <label>Username / Badge</label>
+    <input id="loginUser" type="text" placeholder="Officer username" autocomplete="username" />
+    <label>Password</label>
+    <input id="loginPass" type="password" placeholder="Password" autocomplete="current-password" />
+    <button class="btn btn-primary" id="loginBtn" style="width:100%;">Login →</button>
+    <div class="msg" id="loginMsg"></div>
+  </div>
+
+  <!-- DASHBOARD (hidden until login) -->
+  <div class="hidden" id="dashSection">
+
+    <!-- STATS -->
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="num" id="stTotal">0</div>
+        <div class="lbl">Total Assigned</div>
+      </div>
+      <div class="stat-card">
+        <div class="num" id="stOpen" style="color:#1d4ed8;">0</div>
+        <div class="lbl">Open</div>
+      </div>
+      <div class="stat-card">
+        <div class="num" id="stInProg" style="color:#854d0e;">0</div>
+        <div class="lbl">In Progress</div>
+      </div>
+      <div class="stat-card">
+        <div class="num" id="stResolved" style="color:var(--ok);">0</div>
+        <div class="lbl">Resolved</div>
+      </div>
+    </div>
+
+    <!-- FILTER BAR -->
+    <div class="filter-bar">
+      <select id="filterStatus">
+        <option value="">All Statuses</option>
+        <option value="OPEN">Open</option>
+        <option value="IN_PROGRESS">In Progress</option>
+        <option value="RESOLVED">Resolved</option>
+        <option value="CLOSED">Closed</option>
+      </select>
+      <select id="filterPriority">
+        <option value="">All Priorities</option>
+        <option value="CRITICAL">Critical</option>
+        <option value="HIGH">High</option>
+        <option value="MEDIUM">Medium</option>
+        <option value="LOW">Low</option>
+      </select>
+      <input id="filterSearch" placeholder="Search by ID or description..." style="flex:1; min-width:160px;" />
+      <button class="btn" style="background:var(--police-light); color:var(--police); font-size:12px;" id="refreshBtn">🔄 Refresh</button>
+    </div>
+
+    <div class="quick-status" id="quickStatus">
+      <button class="chip-btn active" data-status="">All (<span id="chipAllCount">0</span>)</button>
+      <button class="chip-btn" data-status="OPEN">Open (<span id="chipOpenCount">0</span>)</button>
+      <button class="chip-btn" data-status="IN_PROGRESS">In Progress (<span id="chipProgCount">0</span>)</button>
+      <button class="chip-btn" data-status="RESOLVED">Resolved (<span id="chipResCount">0</span>)</button>
+    </div>
+
+    <!-- TICKETS TABLE -->
+    <div class="card" style="padding:16px;">
+      <div class="tickets-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Ticket ID</th>
+              <th>Type</th>
+              <th>Category</th>
+              <th>Priority</th>
+              <th>Status</th>
+              <th>Description</th>
+              <th>Assigned At</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="ticketsBody">
+            <tr><td colspan="8"><div class="empty-state"><div class="icon">📋</div><p>Loading tickets...</p></div></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div id="mobileTickets" class="mobile-tickets"></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- RESOLVE MODAL -->
+<div class="modal-bg hidden" id="resolveModal">
+  <div class="modal">
+    <h3>✅ Resolve Ticket</h3>
+    <p style="font-size:12px; color:var(--muted); margin-bottom:12px;">Ticket: <strong id="resTicketId"></strong></p>
+    <label style="display:block; font-size:12px; font-weight:700; color:var(--muted); margin-bottom:6px;">Resolution Note / Remarks</label>
+    <textarea id="resNote" placeholder="Describe what action was taken..."></textarea>
+    <div class="msg" id="resMsg"></div>
+    <div class="modal-btns">
+      <button class="btn-cancel" id="resCancelBtn">Cancel</button>
+      <button class="btn btn-primary" id="resSubmitBtn">Mark Resolved</button>
+    </div>
+  </div>
+</div>
+
+<!-- DETAIL PANEL -->
+<div class="detail-panel" id="detailPanel">
+  <button class="close-panel" id="closePanelBtn">✕</button>
+  <h3>Ticket Details</h3>
+  <div id="detailContent"></div>
+</div>
+
+<script>
+  const API = window.location.origin + '/api';
+  let jwtToken = sessionStorage.getItem('officerToken') || '';
+  let officerUser = {};
+  let allTickets = [];
+  let resolveTicketId = '';
+
+  function showMsg(id, text, ok) {
+    const el = document.getElementById(id);
+    el.className = 'msg ' + (ok ? 'ok' : 'err');
+    el.textContent = text;
+  }
+  function clearMsg(id) {
+    const el = document.getElementById(id);
+    el.className = 'msg';
+    el.textContent = '';
+  }
+  function fmt(dt) {
+    if (!dt) return '—';
+    const d = new Date(dt);
+    return d.toLocaleDateString('en-IN') + ' ' + d.toLocaleTimeString('en-IN', {hour:'2-digit',minute:'2-digit'});
+  }
+  function truncate(str, n=50) { return str && str.length > n ? str.substring(0,n)+'…' : str||'—'; }
+
+  // ---- LOGIN ----
+  document.getElementById('loginBtn').addEventListener('click', async () => {
+    const username = document.getElementById('loginUser').value.trim();
+    const password = document.getElementById('loginPass').value;
+    if (!username || !password) { showMsg('loginMsg', 'Enter username and password.', false); return; }
+    document.getElementById('loginBtn').disabled = true;
+    clearMsg('loginMsg');
+    try {
+      const res = await fetch(`${API}/auth/login`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password })
+      });
+      const d = await res.json();
+      if (!d.ok || !d.token) { showMsg('loginMsg', d.message || 'Login failed.', false); return; }
+      if (d.user.role !== 'POLICE_OFFICER' && d.user.role !== 'ADMIN') {
+        showMsg('loginMsg', 'This portal is for Police Officers only.', false);
+        return;
+      }
+      jwtToken = d.token;
+      officerUser = d.user;
+      sessionStorage.setItem('officerToken', jwtToken);
+      sessionStorage.setItem('officerUser', JSON.stringify(officerUser));
+      initDash();
+    } catch (err) {
+      showMsg('loginMsg', err.message, false);
+    } finally {
+      document.getElementById('loginBtn').disabled = false;
+    }
+  });
+
+  // ---- AUTO LOGIN IF TOKEN EXISTS ----
+  async function tryAutoLogin() {
+    if (!jwtToken) return;
+    try {
+      const stored = sessionStorage.getItem('officerUser');
+      if (stored) {
+        officerUser = JSON.parse(stored);
+        initDash();
+      }
+    } catch { /* no-op */ }
+  }
+
+  function initDash() {
+    document.getElementById('loginSection').classList.add('hidden');
+    document.getElementById('dashSection').classList.remove('hidden');
+    document.getElementById('officerBadge').textContent =
+      `🪪 ${officerUser.display_name || officerUser.username} | ${officerUser.role}`;
+    document.getElementById('officerBadge').style.display = 'block';
+    document.getElementById('logoutBtn').classList.remove('hidden');
+    loadTickets();
+  }
+
+  // ---- LOGOUT ----
+  document.getElementById('logoutBtn').addEventListener('click', () => {
+    sessionStorage.clear();
+    jwtToken = '';
+    officerUser = {};
+    document.getElementById('loginSection').classList.remove('hidden');
+    document.getElementById('dashSection').classList.add('hidden');
+    document.getElementById('officerBadge').style.display = 'none';
+    document.getElementById('logoutBtn').classList.add('hidden');
+    document.getElementById('loginPass').value = '';
+    clearMsg('loginMsg');
+  });
+
+  // ---- LOAD TICKETS ----
+  async function loadTickets() {
+    try {
+      const res = await fetch(`${API}/officer/my-tickets`, {
+        headers: { 'Authorization': 'Bearer ' + jwtToken }
+      });
+      if (res.status === 401) { handleUnauth(); return; }
+      const d = await res.json();
+      allTickets = d.tickets || [];
+      updateStats();
+      renderTickets(allTickets);
+    } catch (err) {
+      console.error('Failed to load tickets:', err);
+    }
+  }
+
+  function handleUnauth() {
+    document.getElementById('dashSection').classList.add('hidden');
+    document.getElementById('loginSection').classList.remove('hidden');
+    showMsg('loginMsg', 'Session expired. Please login again.', false);
+    sessionStorage.clear();
+  }
+
+  function updateStats() {
+    const total = allTickets.length;
+    const open = allTickets.filter(t => t.status === 'OPEN').length;
+    const inProgress = allTickets.filter(t => t.status === 'IN_PROGRESS').length;
+    const resolved = allTickets.filter(t => t.status === 'RESOLVED' || t.status === 'CLOSED').length;
+
+    document.getElementById('stTotal').textContent = total;
+    document.getElementById('stOpen').textContent = open;
+    document.getElementById('stInProg').textContent = inProgress;
+    document.getElementById('stResolved').textContent = resolved;
+
+    document.getElementById('chipAllCount').textContent = total;
+    document.getElementById('chipOpenCount').textContent = open;
+    document.getElementById('chipProgCount').textContent = inProgress;
+    document.getElementById('chipResCount').textContent = resolved;
+  }
+
+  function renderTickets(tickets) {
+    const tbody = document.getElementById('ticketsBody');
+    const mobileWrap = document.getElementById('mobileTickets');
+    if (!tickets.length) {
+      tbody.innerHTML = `<tr><td colspan="8"><div class="empty-state"><div class="icon">✅</div><p>No tickets assigned to you.</p></div></td></tr>`;
+      mobileWrap.innerHTML = `<div class="empty-state"><div class="icon">✅</div><p>No tickets assigned to you.</p></div>`;
+      return;
+    }
+    tbody.innerHTML = tickets.map(t => `
+      <tr>
+        <td><strong style="font-family:monospace; font-size:11px;">${t.id.substring(0,8)}…</strong></td>
+        <td>${t.action_type || t.ticket_type || '—'}</td>
+        <td>${t.action_category || t.category || '—'}</td>
+        <td><span class="pri pri-${t.priority || 'LOW'}">${t.priority || 'LOW'}</span></td>
+        <td><span class="status status-${t.status}">${t.status}</span></td>
+        <td style="max-width:180px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${truncate(t.description)}</td>
+        <td style="white-space:nowrap; font-size:11px;">${fmt(t.assigned_at || t.created_at)}</td>
+        <td>
+          ${t.status !== 'RESOLVED' && t.status !== 'CLOSED' ?
+            `<button class="btn-action btn-resolve" onclick="openResolve('${t.id}')">✅ Resolve</button>` : ''}
+          <button class="btn-action btn-view" onclick="openDetail(${JSON.stringify(t).replace(/"/g,'&quot;')})">👁 View</button>
+        </td>
+      </tr>`).join('');
+
+    mobileWrap.innerHTML = tickets.map(t => `
+      <div class="ticket-card">
+        <div class="top">
+          <div class="id">${t.id.substring(0,8)}…</div>
+          <span class="pri pri-${t.priority || 'LOW'}">${t.priority || 'LOW'}</span>
+        </div>
+        <div class="meta">
+          <div><strong>${t.action_type || t.ticket_type || '—'}</strong> • ${t.action_category || t.category || '—'}</div>
+          <div><span class="status status-${t.status}">${t.status}</span></div>
+          <div>${truncate(t.description, 120)}</div>
+          <div>Assigned: ${fmt(t.assigned_at || t.created_at)}</div>
+        </div>
+        <div class="actions">
+          ${t.status !== 'RESOLVED' && t.status !== 'CLOSED' ?
+            `<button class="btn-action btn-resolve" onclick="openResolve('${t.id}')">✅ Resolve</button>` : ''}
+          <button class="btn-action btn-view" onclick="openDetail(${JSON.stringify(t).replace(/"/g,'&quot;')})">👁 View</button>
+        </div>
+      </div>`).join('');
+  }
+
+  // ---- FILTERS ----
+  ['filterStatus', 'filterPriority', 'filterSearch'].forEach(id => {
+    document.getElementById(id).addEventListener('input', applyFilters);
+  });
+  document.getElementById('refreshBtn').addEventListener('click', loadTickets);
+
+  function applyFilters() {
+    const status = document.getElementById('filterStatus').value;
+    const priority = document.getElementById('filterPriority').value;
+    const search = document.getElementById('filterSearch').value.toLowerCase();
+    const filtered = allTickets.filter(t => {
+      if (status && t.status !== status) return false;
+      if (priority && t.priority !== priority) return false;
+      if (search && !t.id.toLowerCase().includes(search) &&
+          !(t.description || '').toLowerCase().includes(search) &&
+          !(t.action_category || t.category || '').toLowerCase().includes(search)) return false;
+      return true;
+    });
+    renderTickets(filtered);
+    syncStatusChips();
+  }
+
+  function syncStatusChips() {
+    const status = document.getElementById('filterStatus').value;
+    document.querySelectorAll('.chip-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.status === status);
+    });
+  }
+
+  document.querySelectorAll('.chip-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.getElementById('filterStatus').value = btn.dataset.status;
+      applyFilters();
+    });
+  });
+
+  // ---- RESOLVE MODAL ----
+  function openResolve(ticketId) {
+    resolveTicketId = ticketId;
+    document.getElementById('resTicketId').textContent = ticketId.substring(0,8) + '…';
+    document.getElementById('resNote').value = '';
+    clearMsg('resMsg');
+    document.getElementById('resolveModal').classList.remove('hidden');
+  }
+  document.getElementById('resCancelBtn').addEventListener('click', () => {
+    document.getElementById('resolveModal').classList.add('hidden');
+  });
+  document.getElementById('resolveModal').addEventListener('click', (e) => {
+    if (e.target === document.getElementById('resolveModal'))
+      document.getElementById('resolveModal').classList.add('hidden');
+  });
+
+  document.getElementById('resSubmitBtn').addEventListener('click', async () => {
+    const note = document.getElementById('resNote').value.trim();
+    if (!note) { showMsg('resMsg', 'Please add a resolution note.', false); return; }
+    document.getElementById('resSubmitBtn').disabled = true;
+    clearMsg('resMsg');
+    try {
+      const res = await fetch(`${API}/control-room/resolve/${encodeURIComponent(resolveTicketId)}`, {
+        method: 'POST', headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + jwtToken
+        },
+        body: JSON.stringify({ resolution: note })
+      });
+      const d = await res.json();
+      if (!d.ok) { showMsg('resMsg', d.message || 'Resolve failed.', false); return; }
+      showMsg('resMsg', '✅ Ticket resolved!', true);
+      setTimeout(() => {
+        document.getElementById('resolveModal').classList.add('hidden');
+        loadTickets();
+      }, 800);
+    } catch (err) {
+      showMsg('resMsg', err.message, false);
+    } finally {
+      document.getElementById('resSubmitBtn').disabled = false;
+    }
+  });
+
+  // ---- DETAIL PANEL ----
+  function openDetail(ticket) {
+    const p = document.getElementById('detailPanel');
+    const rows = [
+      ['Ticket ID', ticket.id],
+      ['Type', ticket.action_type || ticket.ticket_type || '—'],
+      ['Category', ticket.action_category || ticket.category || '—'],
+      ['Priority', ticket.priority || '—'],
+      ['Status', ticket.status],
+      ['Description', ticket.description || '—'],
+      ['Assigned To', ticket.assigned_to || '—'],
+      ['Assigned At', fmt(ticket.assigned_at || ticket.created_at)],
+      ['Phone', ticket.phone || '—'],
+      ['Resolution', ticket.resolution || '—'],
+      ['Resolved At', fmt(ticket.resolved_at)],
+    ];
+    document.getElementById('detailContent').innerHTML =
+      rows.map(([l,v]) => `<div class="detail-row"><span class="lbl">${l}</span><span>${v}</span></div>`).join('');
+    p.classList.add('open');
+  }
+  document.getElementById('closePanelBtn').addEventListener('click', () => {
+    document.getElementById('detailPanel').classList.remove('open');
+  });
+
+  // ---- INIT ----
+  tryAutoLogin();
+</script>
+</body>
+</html>

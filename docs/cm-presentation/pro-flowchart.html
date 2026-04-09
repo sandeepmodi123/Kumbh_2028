@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ujjain Kumbh 2028 Pro System Flowchart</title>
+  <style>
+    :root {
+      --bg: #fff7ed;
+      --paper: #ffffff;
+      --ink: #3d1f0f;
+      --muted: #6b4d3c;
+      --line: #b45309;
+      --saffron: #d97706;
+      --saffron-dark: #9a3412;
+      --cream: #fffbf5;
+      --high: #b91c1c;
+      --help: #ef6c00;
+      --info: #2563eb;
+      --ok: #15803d;
+      --warn: #a16207;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at 10% 10%, #fff 0%, #fff3df 25%, transparent 40%),
+        radial-gradient(circle at 90% 14%, #ffe0b2 0%, transparent 22%),
+        linear-gradient(155deg, var(--bg), #fffdf9);
+      color: var(--ink);
+      padding: 22px;
+    }
+
+    .sheet {
+      max-width: 1600px;
+      margin: 0 auto;
+      background: var(--paper);
+      border: 1px solid #f1d2b0;
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 24px 60px rgba(154, 52, 18, 0.16);
+    }
+
+    .hero {
+      padding: 20px 24px;
+      background: linear-gradient(110deg, #fff5e7 0%, #ffe3bd 55%, #ffd08a 100%);
+      border-bottom: 1px solid #f4c997;
+    }
+
+    .hero h1 {
+      margin: 0;
+      color: var(--saffron-dark);
+      font-size: 30px;
+      letter-spacing: 0.2px;
+    }
+
+    .hero p {
+      margin: 8px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .wrap {
+      padding: 16px;
+      overflow: auto;
+    }
+
+    svg {
+      width: 100%;
+      min-width: 1500px;
+      height: auto;
+      display: block;
+      background: linear-gradient(180deg, #fffefc, var(--cream));
+      border: 1px solid #f2dac0;
+      border-radius: 14px;
+    }
+
+    .legend {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(140px, 1fr));
+      gap: 10px;
+      padding: 14px 16px 18px;
+      background: #fffaf3;
+      border-top: 1px solid #f2dac0;
+    }
+
+    .legend-item {
+      border: 1px solid #efd4b6;
+      border-radius: 10px;
+      padding: 10px;
+      background: #fff;
+      text-align: center;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--muted);
+    }
+
+    .bar {
+      height: 10px;
+      border-radius: 999px;
+      margin-bottom: 6px;
+    }
+
+    .b-saffron { background: var(--saffron); }
+    .b-info { background: var(--info); }
+    .b-help { background: var(--help); }
+    .b-high { background: var(--high); }
+    .b-ok { background: var(--ok); }
+    .b-warn { background: var(--warn); }
+
+    @media print {
+      body { padding: 0; background: #fff; }
+      .sheet { border: none; border-radius: 0; box-shadow: none; }
+      .wrap { padding: 8px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="sheet">
+    <div class="hero">
+      <h1>Ujjain Kumbh 2028 Pro Enterprise System Flowchart</h1>
+      <p>Citizen registration, face + QR identity, standard ticketing, control-room automation, field response, admin governance, and analytics.</p>
+    </div>
+
+    <div class="wrap">
+      <svg viewBox="0 0 1500 2440" role="img" aria-label="Ujjain Kumbh 2028 Pro system flowchart">
+        <defs>
+          <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+            <path d="M0,0 L12,6 L0,12 z" fill="#8a4b1a" />
+          </marker>
+          <style>
+            .title { font: 800 28px Segoe UI, Trebuchet MS; fill: #7c2d12; }
+            .subtitle { font: 500 13px Segoe UI, Trebuchet MS; fill: #7b5b49; }
+            .phase { fill: #b45309; }
+            .phaseText { font: 700 14px Segoe UI; fill: #fff; }
+            .box { fill: #fff; stroke: #b45309; stroke-width: 2.1; rx: 12; }
+            .soft { fill: #fff9f2; stroke: #d97706; stroke-width: 2.1; rx: 12; }
+            .decision { fill: #fff4e5; stroke: #9a3412; stroke-width: 2.3; }
+            .control { fill: #f7fbff; stroke: #2563eb; stroke-width: 2.1; rx: 12; }
+            .critical { fill: #fff1f2; stroke: #b91c1c; stroke-width: 2.4; rx: 12; }
+            .success { fill: #f0fdf4; stroke: #15803d; stroke-width: 2.1; rx: 12; }
+            .label { font: 700 15px Segoe UI; fill: #3d1f0f; }
+            .desc { font: 500 12px Segoe UI; fill: #6b4d3c; }
+            .small { font: 600 11px Segoe UI; fill: #6b4d3c; }
+            .arrow { fill: none; stroke: #8a4b1a; stroke-width: 2.4; marker-end: url(#arrow); }
+            .arrowBlue { fill: none; stroke: #2563eb; stroke-width: 2.4; marker-end: url(#arrow); }
+            .arrowGreen { fill: none; stroke: #15803d; stroke-width: 2.4; marker-end: url(#arrow); }
+            .arrowRed { fill: none; stroke: #b91c1c; stroke-width: 2.4; marker-end: url(#arrow); }
+          </style>
+        </defs>
+
+        <text x="750" y="44" class="title" text-anchor="middle">Mahakal Themed Citizen-to-Command Flow</text>
+        <text x="750" y="66" class="subtitle" text-anchor="middle">Built for MP Police command efficiency and public ease of use</text>
+
+        <rect x="40" y="96" width="1420" height="34" rx="7" class="phase" />
+        <text x="58" y="118" class="phaseText">PHASE 1: PUBLIC ENTRY, DIGITAL ACCESS, AND SERVICE SELECTION</text>
+
+        <rect x="470" y="158" width="560" height="58" class="soft" />
+        <text x="750" y="181" class="label" text-anchor="middle">Start: Pilgrim / Visitor arrives at Ujjain Kumbh</text>
+        <text x="750" y="202" class="desc" text-anchor="middle">Entry gate, ghat, kiosk, help desk, volunteer point, or command-linked QR poster</text>
+
+        <path d="M750 216 L750 254" class="arrow" />
+
+        <rect x="430" y="254" width="640" height="62" class="box" />
+        <text x="750" y="279" class="label" text-anchor="middle">Scan common QR or open Ultimate Pro page</text>
+        <text x="750" y="301" class="desc" text-anchor="middle">Single digital entry for registration, QR pass, help ticket, complaint reporting, and lookup</text>
+
+        <path d="M750 316 L750 354" class="arrow" />
+
+        <polygon points="750,354 840,414 750,474 660,414" class="decision" />
+        <text x="750" y="409" class="label" text-anchor="middle">User Intention?</text>
+        <text x="750" y="426" class="small" text-anchor="middle">Register / Lookup / Report Issue</text>
+
+        <path d="M660 414 L300 414 L300 500" class="arrow" />
+        <text x="342" y="400" class="small">Registration</text>
+
+        <path d="M840 414 L1200 414 L1200 500" class="arrowBlue" />
+        <text x="1100" y="400" class="small">Issue Reporting</text>
+
+        <path d="M750 474 L750 520" class="arrowGreen" />
+        <text x="765" y="502" class="small">Phone QR Lookup</text>
+
+        <rect x="90" y="500" width="420" height="72" class="soft" />
+        <text x="300" y="526" class="label" text-anchor="middle">Registration with Face + OTP</text>
+        <text x="300" y="548" class="desc" text-anchor="middle">Head name, phone, relative phone, language, face image, dependent addition</text>
+
+        <rect x="545" y="520" width="410" height="58" class="success" />
+        <text x="750" y="545" class="label" text-anchor="middle">Existing Registration Lookup</text>
+        <text x="750" y="566" class="desc" text-anchor="middle">Search by phone and regenerate pilgrim QR instantly</text>
+
+        <rect x="990" y="500" width="420" height="72" class="critical" />
+        <text x="1200" y="524" class="label" text-anchor="middle">Create Standard Issue Request</text>
+        <text x="1200" y="548" class="desc" text-anchor="middle">HELP, COMPLAINT, LOST, FOUND with category and language metadata</text>
+
+        <rect x="40" y="628" width="1420" height="34" rx="7" class="phase" />
+        <text x="58" y="650" class="phaseText">PHASE 2: REGISTRATION, VERIFICATION, AND IDENTITY PASS</text>
+
+        <path d="M300 572 L300 610" class="arrow" />
+        <rect x="90" y="680" width="420" height="62" class="box" />
+        <text x="300" y="705" class="label" text-anchor="middle">Store registration in system</text>
+        <text x="300" y="727" class="desc" text-anchor="middle">Status becomes PENDING_OTP with mock/vendor OTP dispatch</text>
+
+        <path d="M300 742 L300 780" class="arrow" />
+        <polygon points="300,780 385,836 300,892 215,836" class="decision" />
+        <text x="300" y="832" class="label" text-anchor="middle">OTP Valid?</text>
+
+        <path d="M385 836 L520 836" class="arrowGreen" />
+        <text x="440" y="822" class="small">Yes</text>
+        <rect x="520" y="804" width="410" height="64" class="success" />
+        <text x="725" y="830" class="label" text-anchor="middle">Registration COMPLETE</text>
+        <text x="725" y="852" class="desc" text-anchor="middle">Generate QR pass with family size, language, pilgrim ID, and zone metadata</text>
+
+        <path d="M215 836 L110 836" class="arrowRed" />
+        <text x="148" y="822" class="small">No</text>
+        <rect x="40" y="804" width="150" height="64" class="critical" />
+        <text x="115" y="832" class="label" text-anchor="middle">Retry OTP</text>
+        <text x="115" y="850" class="desc" text-anchor="middle">Keep citizen assisted</text>
+
+        <path d="M750 578 L750 650" class="arrowGreen" />
+        <rect x="545" y="680" width="410" height="62" class="success" />
+        <text x="750" y="705" class="label" text-anchor="middle">Instant QR Lookup / Re-issue</text>
+        <text x="750" y="727" class="desc" text-anchor="middle">Useful for return visitors, lost pass recovery, and help desk assistance</text>
+
+        <rect x="40" y="936" width="1420" height="34" rx="7" class="phase" />
+        <text x="58" y="958" class="phaseText">PHASE 3: ISSUE REPORTING AND TICKET CREATION</text>
+
+        <path d="M1200 572 L1200 620" class="arrowBlue" />
+        <rect x="990" y="686" width="420" height="70" class="box" />
+        <text x="1200" y="712" class="label" text-anchor="middle">Standard Ticket Flow</text>
+        <text x="1200" y="734" class="desc" text-anchor="middle">HELP / COMPLAINT / LOST / FOUND with category, language, description, media rules</text>
+
+        <path d="M1200 756 L1200 1004" class="arrowBlue" />
+        <rect x="960" y="1004" width="480" height="70" class="soft" />
+        <text x="1200" y="1030" class="label" text-anchor="middle">Ticket Created with SLA + Priority</text>
+        <text x="1200" y="1052" class="desc" text-anchor="middle">Normal or High priority, open status, audit entry, routed into control-room queue</text>
+
+        <rect x="40" y="1126" width="1420" height="34" rx="7" class="phase" />
+        <text x="58" y="1148" class="phaseText">PHASE 4: CONTROL ROOM COMMAND CENTER AND AUTOMATION</text>
+
+        <path d="M725 868 L725 1200" class="arrowGreen" />
+        <path d="M1200 1074 L1200 1200 L725 1200" class="arrowBlue" />
+
+        <rect x="470" y="1216" width="560" height="72" class="control" />
+        <text x="750" y="1242" class="label" text-anchor="middle">Unified Control Room Intake</text>
+        <text x="750" y="1264" class="desc" text-anchor="middle">Dashboard KPIs, queue view, analytics, team management, audit logs, and Mahakal themed command UI</text>
+
+        <path d="M750 1288 L750 1338" class="arrowBlue" />
+        <rect x="100" y="1340" width="300" height="92" class="control" />
+        <text x="250" y="1368" class="label" text-anchor="middle">Priority Feed</text>
+        <text x="250" y="1389" class="desc" text-anchor="middle">Urgency score ranks unresolved cases</text>
+        <text x="250" y="1405" class="desc" text-anchor="middle">using status, wait time, escalation, SLA pressure</text>
+
+        <rect x="430" y="1340" width="300" height="92" class="control" />
+        <text x="580" y="1368" class="label" text-anchor="middle">Auto Assign Open</text>
+        <text x="580" y="1389" class="desc" text-anchor="middle">Unassigned tickets get mapped to unit</text>
+        <text x="580" y="1405" class="desc" text-anchor="middle">and officer to reduce operator lag</text>
+
+        <rect x="760" y="1340" width="300" height="92" class="control" />
+        <text x="910" y="1368" class="label" text-anchor="middle">Auto Escalation</text>
+        <text x="910" y="1389" class="desc" text-anchor="middle">Due SLA items rise to higher</text>
+        <text x="910" y="1405" class="desc" text-anchor="middle">urgency levels automatically</text>
+
+        <rect x="1090" y="1340" width="300" height="92" class="control" />
+        <text x="1240" y="1368" class="label" text-anchor="middle">Sector Heat Intelligence</text>
+        <text x="1240" y="1389" class="desc" text-anchor="middle">Ranks sectors like Riverfront,</text>
+        <text x="1240" y="1405" class="desc" text-anchor="middle">Medical Camp, Ghat Security by heat score</text>
+
+        <path d="M250 1432 L250 1510 L750 1510" class="arrowBlue" />
+        <path d="M580 1432 L580 1510 L750 1510" class="arrowBlue" />
+        <path d="M910 1432 L910 1510 L750 1510" class="arrowBlue" />
+        <path d="M1240 1432 L1240 1510 L750 1510" class="arrowBlue" />
+
+        <rect x="500" y="1510" width="500" height="84" class="control" />
+        <text x="750" y="1540" class="label" text-anchor="middle">Dispatch / Assign / View / Quick Resolve</text>
+        <text x="750" y="1562" class="desc" text-anchor="middle">Operator can assign manually, resolve with note,</text>
+        <text x="750" y="1578" class="desc" text-anchor="middle">or close via rapid response quick-resolve path</text>
+
+        <rect x="40" y="1610" width="1420" height="34" rx="7" class="phase" />
+        <text x="58" y="1632" class="phaseText">PHASE 5: FIELD ACTION, RESPONSE CLOSURE, AND PUBLIC OUTCOME</text>
+
+        <path d="M750 1594 L750 1610" class="arrow" />
+        <rect x="430" y="1664" width="640" height="72" class="soft" />
+        <text x="750" y="1690" class="label" text-anchor="middle">Field Unit Executes Response</text>
+        <text x="750" y="1712" class="desc" text-anchor="middle">River Patrol, Medical Unit, Sector Officer, Lost & Found desk, and volunteer coordination</text>
+
+        <path d="M750 1736 L750 1778" class="arrow" />
+        <polygon points="750,1778 840,1838 750,1898 660,1838" class="decision" />
+        <text x="750" y="1834" class="label" text-anchor="middle">Resolved?</text>
+
+        <path d="M840 1838 L1000 1838" class="arrowGreen" />
+        <text x="916" y="1824" class="small">Yes</text>
+        <rect x="1000" y="1802" width="370" height="72" class="success" />
+        <text x="1185" y="1830" class="label" text-anchor="middle">Ticket Closed + Audit Stored</text>
+        <text x="1185" y="1852" class="desc" text-anchor="middle">Resolution note, action, officer, timing, and KPI improvements become visible</text>
+
+        <path d="M660 1838 L500 1838" class="arrowRed" />
+        <text x="570" y="1824" class="small">No</text>
+        <rect x="130" y="1802" width="370" height="72" class="critical" />
+        <text x="315" y="1830" class="label" text-anchor="middle">Escalate / Re-route / Re-dispatch</text>
+        <text x="315" y="1852" class="desc" text-anchor="middle">Move to higher authority, stronger unit, or updated operational sector</text>
+
+        <path d="M315 1802 L315 1710 L430 1710" class="arrowRed" />
+
+        <rect x="40" y="1940" width="1420" height="34" rx="7" class="phase" />
+        <text x="58" y="1962" class="phaseText">PHASE 6: ADMIN GOVERNANCE, ANALYTICS, AND DEMO READINESS</text>
+
+        <path d="M1185 1874 L1185 2008 L750 2008" class="arrowGreen" />
+        <path d="M750 2008 L750 2048" class="arrowGreen" />
+
+        <rect x="460" y="2048" width="580" height="74" class="box" />
+        <text x="750" y="2076" class="label" text-anchor="middle">Admin Panel + Governance Layer</text>
+        <text x="750" y="2098" class="desc" text-anchor="middle">Bulk demo seeding, user creation, audit review, stats visibility, and CM-ready operational monitoring</text>
+
+        <path d="M750 2122 L750 2166" class="arrow" />
+        <rect x="150" y="2166" width="280" height="80" class="soft" />
+        <text x="290" y="2194" class="label" text-anchor="middle">Citizen Utility Outcome</text>
+        <text x="290" y="2217" class="desc" text-anchor="middle">Simple QR, faster safety, easier support, multilingual public service</text>
+
+        <rect x="460" y="2166" width="280" height="80" class="soft" />
+        <text x="600" y="2194" class="label" text-anchor="middle">Police Efficiency Outcome</text>
+        <text x="600" y="2217" class="desc" text-anchor="middle">Lower lag, stronger dispatch, accountability, and fewer missed escalations</text>
+
+        <rect x="770" y="2166" width="280" height="80" class="soft" />
+        <text x="910" y="2194" class="label" text-anchor="middle">Strategic Command Outcome</text>
+        <text x="910" y="2217" class="desc" text-anchor="middle">Live data for CM, command center, and on-ground policy decisions</text>
+
+        <rect x="1080" y="2166" width="280" height="80" class="soft" />
+        <text x="1220" y="2194" class="label" text-anchor="middle">2028 Readiness Outcome</text>
+        <text x="1220" y="2217" class="desc" text-anchor="middle">Scalable blueprint for larger pilgrim load, more sectors, and deeper automation</text>
+
+        <text x="750" y="2335" class="subtitle" text-anchor="middle">Key public differentiators: Face + QR identity, simple issue intake, and rapid control-room automation</text>
+        <text x="750" y="2360" class="subtitle" text-anchor="middle">Key command differentiators: Urgency scoring, auto-assign, auto-escalation, sector heat intelligence, quick-resolve workflow</text>
+      </svg>
+    </div>
+
+    <div class="legend">
+      <div class="legend-item"><div class="bar b-saffron"></div>Citizen Core Flow</div>
+      <div class="legend-item"><div class="bar b-info"></div>Control Room Automation</div>
+      <div class="legend-item"><div class="bar b-help"></div>Issue Intake / Priority</div>
+      <div class="legend-item"><div class="bar b-high"></div>Escalation / Critical Path</div>
+      <div class="legend-item"><div class="bar b-ok"></div>Verified / Successful Outcome</div>
+      <div class="legend-item"><div class="bar b-warn"></div>Admin / Governance Layer</div>
+    </div>
+  </div>
+</body>
+</html>

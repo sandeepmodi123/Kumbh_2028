@@ -1,0 +1,20 @@
+{
+  "name": "ujjain-kumbh-2028-enterprise",
+  "version": "2.0.0",
+  "description": "Ujjain Kumbh 2028 - Enterprise Police Command Center with Face Recognition",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "demo": "node server.js && echo 'System ready'"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "better-sqlite3": "^11.8.1",
+    "cors": "^2.8.5",
+    "express": "^4.21.2",
+    "jsonwebtoken": "^9.0.2",
+    "qrcode": "^1.5.4",
+    "uuid": "^11.0.5"
+  }
+}

@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kumbh QR Face Approach MVP</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="app">
+    <header class="hero">
+      <p class="eyebrow">Government Demo Build</p>
+      <h1>Ujjain Kumbh Digital Sahayata Platform</h1>
+      <p>Common QR | Face-based registration | Help and Complaint Control Room</p>
+      <div class="kpi-strip">
+        <div class="kpi"><span>Availability Target</span><strong>99.95%</strong></div>
+        <div class="kpi"><span>Response Model</span><strong>Near Real-time</strong></div>
+        <div class="kpi"><span>Database</span><strong>SQLite (Free)</strong></div>
+      </div>
+      <div class="feature-strip">
+        <div class="feature-chip">Face Mandatory</div>
+        <div class="feature-chip">2 Phone Mandatory</div>
+        <div class="feature-chip">Media Capture Direct</div>
+        <div class="feature-chip">Video Cap 20 Sec</div>
+      </div>
+      <div class="qr-box">
+        <div>Common Public QR URL</div>
+        <code id="qrUrl"></code>
+        <img id="qrImage" alt="Common QR" class="qr-image" />
+      </div>
+      <div class="row">
+        <button id="scanBtn" class="btn primary">Simulate QR Scan</button>
+        <button id="openAdmin" class="btn">Admin Dashboard</button>
+      </div>
+    </header>
+
+    <section id="step1" class="card hidden">
+      <h2>Select Action</h2>
+      <div class="row">
+        <button class="btn" id="goRegister">Register Family</button>
+        <button class="btn" id="goActions">Choose Actions</button>
+      </div>
+    </section>
+
+    <section id="registerCard" class="card hidden">
+      <h2>Registration Flow</h2>
+      <form id="registerForm" class="grid">
+        <label>Head Name<input required name="headName" /></label>
+        <label>Individual Phone<input required name="phone" /></label>
+        <label>Relative Phone<input required name="relativePhone" /></label>
+        <label>Language
+          <select required name="language">
+            <option value="">Select</option>
+            <option>Hindi</option>
+            <option>English</option>
+            <option>Marathi</option>
+            <option>Bengali</option>
+          </select>
+        </label>
+
+        <div class="camera-box">
+          <strong>Face Capture (Mandatory)</strong>
+          <video id="cameraPreview" autoplay playsinline muted></video>
+          <canvas id="cameraCanvas" class="hidden"></canvas>
+          <img id="facePreview" alt="Captured face preview" class="hidden" />
+
+          <div class="row" style="margin-top:8px;">
+            <button class="btn" type="button" id="startCamera">Start Camera</button>
+            <button class="btn" type="button" id="captureFace">Capture Face</button>
+          </div>
+
+          <label style="margin-top:8px;">Mobile Camera Fallback
+            <input id="faceFileInput" type="file" accept="image/*" capture="user" />
+          </label>
+
+          <input id="facePhotoData" type="hidden" name="facePhoto" />
+        </div>
+
+        <button class="btn primary" type="submit">Start Registration</button>
+      </form>
+
+      <div id="registrationStatus" class="status"></div>
+
+      <form id="dependentForm" class="grid hidden">
+        <h3>Add Dependents</h3>
+        <label>Name<input name="name" /></label>
+        <label>Relation<input name="relation" /></label>
+        <label>Age<input type="number" name="age" /></label>
+        <div class="row">
+          <button class="btn" type="submit">Add Dependent</button>
+          <button class="btn" type="button" id="doneDependents">Done Adding Dependents</button>
+        </div>
+      </form>
+      <div id="dependentStatus" class="status hidden"></div>
+
+      <form id="otpForm" class="grid hidden">
+        <h3>Verify OTP</h3>
+        <label>OTP<input name="otp" required /></label>
+        <button class="btn success" type="submit">Complete Registration</button>
+      </form>
+      <div id="otpStatus" class="status"></div>
+    </section>
+
+    <section id="actionsCard" class="card hidden">
+      <h2>Choose Actions (Help/Complaint)</h2>
+      <form id="actionForm" class="grid">
+        <label>Action
+          <select name="actionType" required>
+            <option value="">Select</option>
+            <option value="HELP">Help</option>
+            <option value="COMPLAINT">Complaint</option>
+          </select>
+        </label>
+        <label>Category
+          <select name="actionCategory" id="actionCategory" required>
+            <option value="">Select action first</option>
+          </select>
+        </label>
+        <label>Phone<input name="phone" required /></label>
+        <label>Language
+          <select name="language" required>
+            <option>Hindi</option>
+            <option>English</option>
+            <option>Marathi</option>
+            <option>Bengali</option>
+          </select>
+        </label>
+        <label>Description<textarea name="description" rows="3"></textarea></label>
+
+        <div class="camera-box">
+          <strong>Photo/Video Capture (Direct)</strong>
+          <video id="actionLivePreview" class="hidden" autoplay playsinline muted></video>
+          <div class="row" style="margin-top:8px;">
+            <button class="btn" type="button" id="startActionCamera">Start Camera</button>
+            <button class="btn" type="button" id="captureActionPhoto">Capture Photo</button>
+            <button class="btn" type="button" id="startActionRecord">Start Record</button>
+            <button class="btn" type="button" id="stopActionRecord">Stop Record</button>
+          </div>
+          <div id="recordTimer" class="record-timer hidden">Recording: 00:00 / 00:20</div>
+          <input id="actionMediaInput" type="file" accept="image/*,video/*" capture="environment" />
+          <small>Video max duration: 20 seconds</small>
+          <video id="actionVideoPreview" class="hidden" controls></video>
+          <img id="actionImagePreview" class="hidden" alt="Action media preview" />
+          <input id="actionMediaData" type="hidden" name="mediaData" />
+          <input id="actionMediaType" type="hidden" name="mediaType" />
+          <input id="actionMediaDuration" type="hidden" name="mediaDurationSec" />
+        </div>
+
+        <button class="btn primary" type="submit">Submit Action</button>
+      </form>
+      <div id="actionStatus" class="status"></div>
+    </section>
+
+    <section id="adminCard" class="card hidden">
+      <h2>Admin Dashboard (Live)</h2>
+      <div id="authPanel" class="camera-box">
+        <strong>Secure Access (RBAC)</strong>
+        <div class="grid" style="margin-top:8px;">
+          <label>Username<input id="loginUsername" value="admin" /></label>
+          <label>Password<input id="loginPassword" type="password" value="Admin@123" /></label>
+        </div>
+        <div class="row" style="margin-top:8px;">
+          <button id="loginBtn" class="btn primary">Login</button>
+          <button id="logoutBtn" class="btn">Logout</button>
+        </div>
+        <div id="authStatus" class="status">Not logged in.</div>
+      </div>
+
+      <div class="row">
+        <button id="refreshAdmin" class="btn">Refresh</button>
+        <button id="seedDemoData" class="btn primary">Seed Demo Data</button>
+        <button id="runEscalation" class="btn">Run Escalation Engine</button>
+      </div>
+      <div id="adminTotals" class="status"></div>
+
+      <h3>Recent Registrations</h3>
+      <div class="table-wrap">
+        <table id="regTable">
+          <thead>
+            <tr><th>ID</th><th>Head</th><th>Individual</th><th>Relative</th><th>Status</th><th>Time</th></tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+
+      <h3>Recent Tickets</h3>
+      <div class="table-wrap">
+        <table id="ticketTable">
+          <thead>
+            <tr><th>ID</th><th>Type</th><th>Priority</th><th>Status</th><th>Action</th></tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+
+      <h3>Audit Trail (Latest)</h3>
+      <div class="table-wrap">
+        <table id="auditTable">
+          <thead>
+            <tr><th>Time</th><th>Actor</th><th>Action</th><th>Entity</th><th>Detail</th></tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+
+      <h3>Control Room Queue</h3>
+      <div class="row">
+        <label>Status Filter
+          <select id="controlStatusFilter">
+            <option value="ALL">ALL</option>
+            <option value="OPEN">OPEN</option>
+            <option value="IN_PROGRESS">IN_PROGRESS</option>
+            <option value="CLOSED">CLOSED</option>
+          </select>
+        </label>
+        <button id="refreshControlQueue" class="btn">Refresh Queue</button>
+      </div>
+      <div id="controlStatus" class="status">Control room ready.</div>
+
+      <div class="table-wrap">
+        <table id="controlTable">
+          <thead>
+            <tr><th>Ticket</th><th>Type</th><th>Category</th><th>Phone</th><th>Status</th><th>Assigned</th><th>Escalated</th><th>SLA Due</th><th>Media</th><th>Control</th></tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+
+      <div id="faceMatchPanel" class="status hidden"></div>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

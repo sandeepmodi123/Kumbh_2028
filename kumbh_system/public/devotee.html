@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ujjain Kumbh 2028 | Devotee Portal</title>
+  <style>
+    :root {
+      --saffron: #d97706;
+      --saffron-dark: #9a3412;
+      --saffron-light: #fef3c7;
+      --cream: #fffbf5;
+      --ink: #3d1f0f;
+      --muted: #7c5c3e;
+      --line: #f0c89c;
+      --ok: #15803d;
+      --err: #b91c1c;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', 'Trebuchet MS', sans-serif;
+      background: linear-gradient(145deg, #fff8ef, #fff);
+      min-height: 100vh;
+      color: var(--ink);
+    }
+    .header {
+      background: linear-gradient(110deg, #fff5e3, #ffe3bf);
+      border-bottom: 3px solid var(--saffron);
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .header img { width: 52px; height: 52px; border-radius: 8px; }
+    .header-text h1 { font-size: 20px; color: var(--saffron-dark); font-weight: 900; }
+    .header-text p { font-size: 12px; color: var(--muted); }
+    .main { max-width: 560px; width: 100%; margin: 0 auto; padding: 20px 16px; }
+
+    /* STEP INDICATOR */
+    .steps {
+      display: flex;
+      gap: 0;
+      margin-bottom: 24px;
+      border-radius: 8px;
+      overflow-x: auto;
+      border: 1px solid var(--line);
+      -webkit-overflow-scrolling: touch;
+    }
+    .step {
+      flex: 1;
+      min-width: 112px;
+      text-align: center;
+      padding: 10px 4px;
+      font-size: 11px;
+      font-weight: 700;
+      background: #fff;
+      color: var(--muted);
+      border-right: 1px solid var(--line);
+    }
+    .step:last-child { border-right: none; }
+    .step.active { background: var(--saffron-dark); color: #fff; }
+    .step.done { background: #f0fdf4; color: var(--ok); }
+
+    /* CARDS */
+    .card {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 22px;
+      margin-bottom: 16px;
+      box-shadow: 0 4px 16px rgba(154,52,18,0.07);
+    }
+    .card h2 {
+      color: var(--saffron-dark);
+      font-size: 17px;
+      margin-bottom: 4px;
+    }
+    .card .sub { font-size: 12px; color: var(--muted); margin-bottom: 16px; }
+
+    /* FORM ELEMENTS */
+    label { display: block; font-size: 13px; font-weight: 700; color: var(--muted); margin-bottom: 4px; }
+    input, select, textarea {
+      width: 100%;
+      padding: 11px 13px;
+      border: 1.5px solid var(--line);
+      border-radius: 8px;
+      font-size: 14px;
+      color: var(--ink);
+      background: #fffdf9;
+      margin-bottom: 14px;
+      outline: none;
+    }
+    input:focus, select:focus, textarea:focus { border-color: var(--saffron); }
+    select { cursor: pointer; }
+
+    /* LANGUAGE CARD SPECIAL */
+    .lang-hero {
+      text-align: center;
+      padding: 10px 0 8px;
+    }
+    .lang-hero .icon { font-size: 40px; margin-bottom: 8px; }
+    .lang-hero h2 { font-size: 22px; color: var(--saffron-dark); }
+    .lang-hero p { font-size: 14px; color: var(--muted); margin-top: 4px; margin-bottom: 18px; }
+
+    .lang-select-wrap select {
+      font-size: 16px;
+      padding: 13px;
+      border: 2px solid var(--saffron);
+      border-radius: 10px;
+    }
+
+    /* BUTTONS */
+    .btn {
+      width: 100%;
+      padding: 13px;
+      border: none;
+      border-radius: 9px;
+      font-size: 15px;
+      font-weight: 800;
+      cursor: pointer;
+      margin-top: 4px;
+    }
+    .btn-primary {
+      background: linear-gradient(90deg, var(--saffron-dark), var(--saffron));
+      color: #fff;
+    }
+    .btn-secondary {
+      background: #fff;
+      border: 1.5px solid var(--line);
+      color: var(--ink);
+      margin-top: 10px;
+    }
+    .btn:disabled { opacity: 0.55; cursor: not-allowed; }
+
+    /* CAMERA */
+    .camera-area {
+      background: #f9f5f0;
+      border: 1.5px dashed var(--line);
+      border-radius: 10px;
+      padding: 14px;
+      margin-bottom: 14px;
+      text-align: center;
+    }
+    .camera-area video, .camera-area img.preview {
+      width: 100%;
+      max-width: 300px;
+      border-radius: 8px;
+      margin-bottom: 10px;
+    }
+    .camera-row { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+    .btn-cam {
+      padding: 9px 16px;
+      border-radius: 7px;
+      border: 1.5px solid var(--line);
+      background: #fff;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      color: var(--ink);
+    }
+    .btn-cam:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    /* MESSAGES */
+    .msg {
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      margin-top: 8px;
+      display: none;
+    }
+    .msg.ok { background: #f0fdf4; color: var(--ok); border: 1px solid #bbf7d0; display: block; }
+    .msg.err { background: #fff1f2; color: var(--err); border: 1px solid #fecaca; display: block; }
+
+    /* QR PASS */
+    .qr-pass {
+      text-align: center;
+      background: linear-gradient(160deg, #fff9ef, #fff);
+      border: 2px solid var(--saffron);
+      border-radius: 14px;
+      padding: 24px;
+    }
+    .qr-pass img { width: 200px; height: 200px; border-radius: 8px; margin: 12px auto; display: block; }
+    .qr-pass h3 { color: var(--saffron-dark); font-size: 18px; }
+    .qr-pass .pass-detail { font-size: 13px; color: var(--muted); margin-top: 4px; }
+
+    /* TICKET */
+    .ticket-type-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+    .type-btn {
+      padding: 12px;
+      border: 2px solid var(--line);
+      border-radius: 9px;
+      background: #fff;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 13px;
+      color: var(--muted);
+      text-align: center;
+    }
+    .type-btn.selected { border-color: var(--saffron-dark); color: var(--saffron-dark); background: #fff8ef; }
+
+    .mobile-sticky-cta {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 45;
+      background: rgba(255,255,255,0.96);
+      border-top: 1px solid var(--line);
+      backdrop-filter: blur(4px);
+      padding: 10px 12px calc(10px + env(safe-area-inset-bottom));
+      display: none;
+    }
+    .mobile-sticky-cta .btn {
+      margin-top: 0;
+      box-shadow: 0 6px 18px rgba(154,52,18,0.2);
+    }
+
+    .hidden { display: none !important; }
+
+    @media (max-width: 768px) {
+      .header {
+        position: sticky;
+        top: 0;
+        z-index: 24;
+      }
+      .steps {
+        position: sticky;
+        top: 72px;
+        background: #fff;
+        z-index: 20;
+      }
+      .main {
+        padding-bottom: 96px;
+      }
+      input, select, textarea {
+        font-size: 16px;
+        min-height: 46px;
+      }
+      .btn {
+        min-height: 48px;
+      }
+      .type-btn {
+        min-height: 46px;
+      }
+      .mobile-sticky-cta {
+        display: block;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .header {
+        padding: 12px;
+        gap: 10px;
+      }
+      .header img {
+        width: 44px;
+        height: 44px;
+      }
+      .header-text h1 { font-size: 16px; }
+      .main { padding: 14px 10px; }
+      .card { padding: 14px; border-radius: 12px; }
+      input, select, textarea {
+        font-size: 16px;
+      }
+      .btn {
+        min-height: 46px;
+      }
+      .camera-row {
+        flex-direction: column;
+      }
+      .btn-cam {
+        width: 100%;
+        min-height: 44px;
+      }
+      .ticket-type-row {
+        grid-template-columns: 1fr;
+      }
+      .type-btn {
+        min-height: 44px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <img src="/mahakal-visual.svg" alt="Mahakal" />
+  <div class="header-text">
+    <h1>हर हर महादेव | Ujjain Kumbh 2028</h1>
+    <p>Devotee Registration & Help Portal</p>
+  </div>
+</div>
+
+<div class="main">
+  <!-- STEP INDICATOR -->
+  <div class="steps" id="stepBar">
+    <div class="step active" id="s1">1 भाषा / Language</div>
+    <div class="step" id="s2">2 Registration</div>
+    <div class="step" id="s3">3 OTP Verify</div>
+    <div class="step" id="s4">4 QR Pass</div>
+    <div class="step" id="s5">5 Help / शिकायत</div>
+  </div>
+
+  <!-- STEP 1: LANGUAGE -->
+  <div class="card" id="step1">
+    <div class="lang-hero">
+      <div class="icon">🙏</div>
+      <h2>अपनी भाषा चुनें</h2>
+      <p>Select your language to continue / अपनी भाषा का चयन करें</p>
+      <p id="qrEntryHint" style="display:none; font-size:12px; color:#9a3412; font-weight:700; background:#fff7ed; border:1px solid #f0c89c; border-radius:8px; padding:8px 10px;">✅ QR scan detected: language select karke registration continue karein.</p>
+    </div>
+    <div class="lang-select-wrap">
+      <label>Language / भाषा</label>
+      <select id="langSelect">
+        <option value="">-- Select Language / भाषा चुनें --</option>
+        <option value="Hindi">हिंदी (Hindi)</option>
+        <option value="English">English</option>
+        <option value="Bengali">বাংলা (Bengali)</option>
+        <option value="Telugu">తెలుగు (Telugu)</option>
+        <option value="Marathi">मराठी (Marathi)</option>
+        <option value="Tamil">தமிழ் (Tamil)</option>
+        <option value="Urdu">اردو (Urdu)</option>
+        <option value="Gujarati">ગુજરાતી (Gujarati)</option>
+        <option value="Kannada">ಕನ್ನಡ (Kannada)</option>
+        <option value="Odia">ଓଡ଼ିଆ (Odia)</option>
+        <option value="Malayalam">മലയാളം (Malayalam)</option>
+        <option value="Punjabi">ਪੰਜਾਬੀ (Punjabi)</option>
+        <option value="Assamese">অসমীয়া (Assamese)</option>
+        <option value="Maithili">मैथिली (Maithili)</option>
+        <option value="Santali">ᱥᱟᱱᱛᱟᱲᱤ (Santali)</option>
+        <option value="Kashmiri">کٲشُر (Kashmiri)</option>
+        <option value="Nepali">नेपाली (Nepali)</option>
+        <option value="Sindhi">سنڌي (Sindhi)</option>
+        <option value="Konkani">कोंकणी (Konkani)</option>
+        <option value="Dogri">डोगरी (Dogri)</option>
+        <option value="Manipuri">মৈতৈলোন্ (Manipuri)</option>
+        <option value="Bodo">बड़ो (Bodo)</option>
+        <option value="Sanskrit">संस्कृतम् (Sanskrit)</option>
+        <option value="Chhattisgarhi">छत्तीसगढ़ी</option>
+        <option value="Bhojpuri">भोजपुरी</option>
+        <option value="Rajasthani">राजस्थानी</option>
+        <option value="Haryanvi">हरियाणवी</option>
+      </select>
+    </div>
+    <button class="btn btn-primary" id="langContinueBtn">जारी रखें / Continue →</button>
+  </div>
+
+  <!-- STEP 2: REGISTRATION -->
+  <div class="card hidden" id="step2">
+    <h2>Registration / पंजीकरण</h2>
+    <p class="sub" id="step2Sub">Fill details to register your family</p>
+
+    <label id="lblHeadName">Family Head Name / परिवार के मुखिया का नाम</label>
+    <input id="headName" placeholder="Full name" />
+
+    <label id="lblPhone">Your Phone / आपका फ़ोन नंबर</label>
+    <input id="phone" type="tel" inputmode="numeric" autocomplete="tel" placeholder="10-digit mobile number" />
+
+    <label id="lblRelPhone">Relative Phone / संबंधी का फ़ोन</label>
+    <input id="relativePhone" type="tel" inputmode="numeric" autocomplete="tel" placeholder="10-digit mobile number" />
+
+    <label id="lblFace">Face Photo / चेहरे की फ़ोटो (अनिवार्य)</label>
+    <div class="camera-area">
+      <video id="cameraFeed" autoplay playsinline muted style="display:none;"></video>
+      <canvas id="cameraCanvas" style="display:none;"></canvas>
+      <img id="facePreview" class="preview" style="display:none;" alt="Face preview" />
+      <p style="font-size:12px; color:var(--muted); margin-bottom:10px;" id="cameraHint">Camera se photo lo ya file upload karo</p>
+      <div class="camera-row">
+        <button class="btn-cam" id="startCamBtn">📷 Camera Start</button>
+        <button class="btn-cam" id="captureBtn" disabled>📸 Capture</button>
+        <label class="btn-cam" style="cursor:pointer;">📁 Upload
+          <input type="file" accept="image/*" id="faceFileInput" style="display:none;" />
+        </label>
+      </div>
+    </div>
+    <input id="facePhotoData" type="hidden" />
+
+    <button class="btn btn-primary" id="startRegBtn">OTP भेजें / Send OTP</button>
+    <div class="msg" id="regMsg"></div>
+  </div>
+
+  <!-- STEP 3: OTP -->
+  <div class="card hidden" id="step3">
+    <h2>OTP Verify</h2>
+    <p class="sub" id="step3Sub">Enter OTP sent to your mobile</p>
+    <input id="hiddenRegId" type="hidden" />
+    <label>OTP</label>
+    <input id="otpInput" type="number" inputmode="numeric" placeholder="6-digit OTP" maxlength="6" />
+    <button class="btn btn-primary" id="verifyOtpBtn">Verify + QR Generate</button>
+    <div class="msg" id="otpMsg"></div>
+  </div>
+
+  <!-- STEP 4: QR PASS -->
+  <div class="card hidden" id="step4">
+    <div class="qr-pass">
+      <h3>✅ Registration Complete!</h3>
+      <p style="color:var(--muted); font-size:13px; margin-top:4px;">आपका QR पास तैयार है</p>
+      <img id="qrPassImg" alt="QR Pass" />
+      <p class="pass-detail" id="passDetail"></p>
+      <button class="btn btn-secondary" id="goComplaintBtn">Help / शिकायत दर्ज करें →</button>
+    </div>
+  </div>
+
+  <!-- STEP 5: TICKET/COMPLAINT -->
+  <div class="card hidden" id="step5">
+    <h2 id="step5Title">Help / शिकायत</h2>
+    <p class="sub" id="step5Sub">Report an issue or request assistance</p>
+
+    <label>Type / प्रकार</label>
+    <div class="ticket-type-row">
+      <div class="type-btn selected" data-val="HELP" id="typeHELP">🆘 Help / सहायता</div>
+      <div class="type-btn" data-val="COMPLAINT" id="typeCOMPLAINT">📢 Complaint</div>
+      <div class="type-btn" data-val="LOST" id="typeLOST">🔍 Lost / खोया</div>
+      <div class="type-btn" data-val="FOUND" id="typeFOUND">✅ Found / मिला</div>
+    </div>
+    <input id="ticketActionType" type="hidden" value="HELP" />
+
+    <label>Category / श्रेणी</label>
+    <select id="ticketCategory">
+      <option value="Medical Emergency">Medical Emergency / चिकित्सा आपातकाल</option>
+      <option value="Navigation">Navigation / रास्ता</option>
+      <option value="Transport">Transport / वाहन</option>
+      <option value="Lost Item">Lost Item / खोया सामान</option>
+      <option value="Senior Citizen">Senior Citizen / वरिष्ठ नागरिक</option>
+      <option value="Child Assistance">Child Assistance / बच्चे की सहायता</option>
+      <option value="Missing Person">Missing Person / लापता व्यक्ति</option>
+      <option value="Other">Other / अन्य</option>
+    </select>
+
+    <label>Description / विवरण</label>
+    <textarea id="ticketDesc" rows="3" placeholder="Describe your issue..."></textarea>
+
+    <button class="btn btn-primary" id="submitTicketBtn">Submit / जमा करें</button>
+    <div class="msg" id="ticketMsg"></div>
+  </div>
+
+  <!-- LOOKUP (always visible at bottom) -->
+  <div class="card" id="lookupCard" style="margin-top:8px;">
+    <h2>QR Lookup</h2>
+    <p class="sub">Already registered? Find your QR pass by phone</p>
+    <label>Phone / फ़ोन नंबर</label>
+    <input id="lookupPhone" type="tel" inputmode="numeric" autocomplete="tel" placeholder="Registered phone number" />
+    <button class="btn btn-secondary" id="lookupBtn">🔍 Find QR / QR ढूंढें</button>
+    <div class="msg" id="lookupMsg"></div>
+  </div>
+</div>
+
+<div class="mobile-sticky-cta hidden" id="mobileStickyCta">
+  <button class="btn btn-primary" id="mobileStickyBtn">Continue</button>
+</div>
+
+<script>
+  const API = window.location.origin + '/api';
+  const params = new URLSearchParams(window.location.search);
+  let selectedLang = '';
+  let currentRegId = '';
+  let currentPhone = '';
+  let currentStep = 1;
+
+  if (params.get('entry') === 'qr') {
+    document.getElementById('qrEntryHint').style.display = 'block';
+    const langSelect = document.getElementById('langSelect');
+    setTimeout(() => langSelect.focus(), 250);
+  }
+
+  const CATEGORIES = {
+    HELP: ['Medical Emergency','Navigation','Transport','Senior Citizen','Child Assistance','Missing Person','Other'],
+    COMPLAINT: ['Crowd Management','Sanitation','Food Quality','Toilet Issue','Security','Staff Behavior','Other'],
+    LOST: ['Document','Phone','Money','Jewelry','Clothes','Other'],
+    FOUND: ['Document','Phone','Money','Jewelry','Clothes','Aadhar','Other']
+  };
+
+  function showMsg(id, text, ok) {
+    const el = document.getElementById(id);
+    el.className = 'msg ' + (ok ? 'ok' : 'err');
+    el.textContent = text;
+  }
+  function clearMsg(id) {
+    const el = document.getElementById(id);
+    el.className = 'msg';
+    el.textContent = '';
+  }
+  function setStep(n) {
+    currentStep = n;
+    [1,2,3,4,5].forEach(i => {
+      document.getElementById('step'+i).classList.add('hidden');
+      const s = document.getElementById('s'+i);
+      s.classList.remove('active','done');
+      if (i < n) s.classList.add('done');
+      else if (i === n) s.classList.add('active');
+    });
+    document.getElementById('step'+n).classList.remove('hidden');
+    updateStickyCta();
+  }
+
+  function updateStickyCta() {
+    const bar = document.getElementById('mobileStickyCta');
+    const btn = document.getElementById('mobileStickyBtn');
+    if (window.innerWidth > 768) {
+      bar.classList.add('hidden');
+      return;
+    }
+    const labels = {
+      1: 'Continue to Registration',
+      2: 'Send OTP',
+      3: 'Verify OTP',
+      4: 'Register Help / Complaint'
+    };
+    if (labels[currentStep]) {
+      btn.textContent = labels[currentStep];
+      bar.classList.remove('hidden');
+    } else {
+      bar.classList.add('hidden');
+    }
+  }
+
+  // ---- STEP 1: LANGUAGE ----
+  document.getElementById('langContinueBtn').addEventListener('click', () => {
+    selectedLang = document.getElementById('langSelect').value;
+    if (!selectedLang) {
+      alert('Please select a language first / पहले भाषा चुनें');
+      return;
+    }
+    setStep(2);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  // ---- CAMERA ----
+  let stream = null;
+  document.getElementById('startCamBtn').addEventListener('click', async () => {
+    try {
+      stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' } });
+      const video = document.getElementById('cameraFeed');
+      video.srcObject = stream;
+      video.style.display = 'block';
+      document.getElementById('cameraHint').style.display = 'none';
+      document.getElementById('captureBtn').disabled = false;
+    } catch {
+      document.getElementById('cameraHint').textContent = 'Camera unavailable. Please use file upload.';
+    }
+  });
+
+  document.getElementById('captureBtn').addEventListener('click', () => {
+    const video = document.getElementById('cameraFeed');
+    const canvas = document.getElementById('cameraCanvas');
+    canvas.width = video.videoWidth || 320;
+    canvas.height = video.videoHeight || 240;
+    canvas.getContext('2d').drawImage(video, 0, 0);
+    const data = canvas.toDataURL('image/jpeg', 0.8);
+    document.getElementById('facePhotoData').value = data;
+    const preview = document.getElementById('facePreview');
+    preview.src = data;
+    preview.style.display = 'block';
+    video.style.display = 'none';
+    if (stream) stream.getTracks().forEach(t => t.stop());
+    document.getElementById('captureBtn').disabled = true;
+  });
+
+  document.getElementById('faceFileInput').addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = ev => {
+      document.getElementById('facePhotoData').value = ev.target.result;
+      const preview = document.getElementById('facePreview');
+      preview.src = ev.target.result;
+      preview.style.display = 'block';
+    };
+    reader.readAsDataURL(file);
+  });
+
+  // ---- STEP 2: REGISTRATION ----
+  document.getElementById('startRegBtn').addEventListener('click', async () => {
+    const headName = document.getElementById('headName').value.trim();
+    const phone = document.getElementById('phone').value.trim();
+    const relativePhone = document.getElementById('relativePhone').value.trim();
+    const facePhoto = document.getElementById('facePhotoData').value;
+
+    if (!headName || !phone || !relativePhone) { showMsg('regMsg', 'Please fill all fields.', false); return; }
+    if (!/^\d{10}$/.test(phone)) { showMsg('regMsg', 'Phone must be 10 digits.', false); return; }
+    if (!facePhoto) { showMsg('regMsg', 'Face photo is required. Please capture or upload.', false); return; }
+
+    clearMsg('regMsg');
+    document.getElementById('startRegBtn').disabled = true;
+    document.getElementById('startRegBtn').textContent = 'Sending OTP...';
+
+    try {
+      const res = await fetch(`${API}/register/start`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ headName, phone, relativePhone, language: selectedLang, facePhoto })
+      });
+      const d = await res.json();
+      if (!d.ok) { showMsg('regMsg', d.message || 'Registration failed.', false); return; }
+      currentRegId = d.registrationId;
+      currentPhone = phone;
+      document.getElementById('hiddenRegId').value = currentRegId;
+      if (d.otpForTesting) document.getElementById('otpInput').value = d.otpForTesting;
+      showMsg('regMsg', `OTP sent to ${phone}. Check SMS.`, true);
+      setTimeout(() => setStep(3), 800);
+    } catch (err) {
+      showMsg('regMsg', err.message, false);
+    } finally {
+      document.getElementById('startRegBtn').disabled = false;
+      document.getElementById('startRegBtn').textContent = 'OTP भेजें / Send OTP';
+    }
+  });
+
+  // ---- STEP 3: OTP ----
+  document.getElementById('verifyOtpBtn').addEventListener('click', async () => {
+    const registrationId = document.getElementById('hiddenRegId').value;
+    const otp = document.getElementById('otpInput').value.trim();
+    if (!otp) { showMsg('otpMsg', 'Enter OTP.', false); return; }
+
+    document.getElementById('verifyOtpBtn').disabled = true;
+    document.getElementById('verifyOtpBtn').textContent = 'Verifying...';
+    clearMsg('otpMsg');
+
+    try {
+      const vres = await fetch(`${API}/register/verify-otp`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ registrationId, otp })
+      });
+      const v = await vres.json();
+      if (!v.ok) { showMsg('otpMsg', v.message || 'OTP incorrect.', false); return; }
+
+      const qres = await fetch(`${API}/pro/registration/${encodeURIComponent(registrationId)}/qr`);
+      const q = await qres.json();
+      if (!q.ok) { showMsg('otpMsg', 'QR generation failed.', false); return; }
+
+      document.getElementById('qrPassImg').src = q.qrDataUrl;
+      document.getElementById('passDetail').textContent =
+        `Name: ${v.registration ? v.registration.head_name : ''} | Phone: ${currentPhone} | Language: ${selectedLang}`;
+      setStep(4);
+    } catch (err) {
+      showMsg('otpMsg', err.message, false);
+    } finally {
+      document.getElementById('verifyOtpBtn').disabled = false;
+      document.getElementById('verifyOtpBtn').textContent = 'Verify + QR Generate';
+    }
+  });
+
+  // ---- STEP 4 → 5 ----
+  document.getElementById('goComplaintBtn').addEventListener('click', () => setStep(5));
+
+  document.getElementById('mobileStickyBtn').addEventListener('click', () => {
+    const map = {
+      1: 'langContinueBtn',
+      2: 'startRegBtn',
+      3: 'verifyOtpBtn',
+      4: 'goComplaintBtn'
+    };
+    const targetId = map[currentStep];
+    if (!targetId) return;
+    const el = document.getElementById(targetId);
+    if (el && !el.disabled) el.click();
+  });
+
+  window.addEventListener('resize', updateStickyCta);
+  updateStickyCta();
+
+  // ---- STEP 5: TICKET TYPE BUTTONS ----
+  document.querySelectorAll('.type-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      const val = btn.dataset.val;
+      document.getElementById('ticketActionType').value = val;
+      const cat = document.getElementById('ticketCategory');
+      cat.innerHTML = (CATEGORIES[val] || []).map(c => `<option value="${c}">${c}</option>`).join('');
+    });
+  });
+
+  document.getElementById('submitTicketBtn').addEventListener('click', async () => {
+    const actionType = document.getElementById('ticketActionType').value;
+    const actionCategory = document.getElementById('ticketCategory').value;
+    const description = document.getElementById('ticketDesc').value.trim();
+    const phone = document.getElementById('phone').value.trim() || document.getElementById('lookupPhone').value.trim();
+    if (!phone) { showMsg('ticketMsg', 'Phone number needed. Fill registration first.', false); return; }
+
+    document.getElementById('submitTicketBtn').disabled = true;
+    clearMsg('ticketMsg');
+    try {
+      const res = await fetch(`${API}/action/report`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ actionType, actionCategory, phone, description, language: selectedLang || 'Hindi' })
+      });
+      const d = await res.json();
+      if (!d.ok) { showMsg('ticketMsg', d.message || 'Ticket creation failed.', false); return; }
+      showMsg('ticketMsg', `✅ Ticket created: ${d.ticket.id} | Priority: ${d.ticket.priority} | Our team will respond shortly.`, true);
+      document.getElementById('ticketDesc').value = '';
+    } catch (err) {
+      showMsg('ticketMsg', err.message, false);
+    } finally {
+      document.getElementById('submitTicketBtn').disabled = false;
+    }
+  });
+
+  // ---- QR LOOKUP ----
+  document.getElementById('lookupBtn').addEventListener('click', async () => {
+    const phone = document.getElementById('lookupPhone').value.trim();
+    if (!phone) { showMsg('lookupMsg', 'Enter phone number.', false); return; }
+    clearMsg('lookupMsg');
+    try {
+      const rres = await fetch(`${API}/pro/registration/by-phone/${encodeURIComponent(phone)}`);
+      const r = await rres.json();
+      if (!r.ok) { showMsg('lookupMsg', r.message || 'Not found.', false); return; }
+      const qres = await fetch(`${API}/pro/registration/${encodeURIComponent(r.registration.id)}/qr`);
+      const q = await qres.json();
+      if (!q.ok) { showMsg('lookupMsg', 'QR generation failed.', false); return; }
+      document.getElementById('qrPassImg').src = q.qrDataUrl;
+      document.getElementById('passDetail').textContent =
+        `Name: ${r.registration.head_name} | Language: ${r.registration.language} | Status: ${r.registration.status}`;
+      selectedLang = r.registration.language;
+      currentPhone = phone;
+      setStep(4);
+    } catch (err) {
+      showMsg('lookupMsg', err.message, false);
+    }
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,937 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Ujjain Kumbh — Architecture v3 (200M / 45 Days)</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Poppins', Arial, sans-serif; background: #0d1117; color: #e6edf3; padding: 30px 12px 80px; }
+  .max-w { max-width: 1160px; margin: 0 auto; }
+
+  /* ── Header ── */
+  .page-header { text-align: center; margin-bottom: 36px; }
+  .page-header h1 { font-size: 1.9rem; font-weight: 700; color: #f0f6ff; }
+  .page-header p  { font-size: .88rem; color: #8b949e; margin-top: 6px; }
+
+  .update-banner {
+    background: linear-gradient(135deg,#0a1e0a,#0d2a1a);
+    border: 1px solid #3fb950; border-radius: 12px;
+    padding: 14px 22px; margin: 16px auto 0; max-width: 900px;
+    font-size: .8rem; color: #8b949e;
+  }
+  .update-banner strong { color: #3fb950; font-size: .88rem; display: block; margin-bottom: 6px; }
+
+  .stat-row { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-top: 20px; }
+  .stat-pill {
+    background: #161b22; border: 1px solid #30363d;
+    border-radius: 30px; padding: 8px 18px;
+    font-size: .77rem; font-weight: 600; color: #58a6ff;
+  }
+  .stat-pill span { color: #f0883e; }
+  .stat-pill.g span { color: #3fb950; }
+  .stat-pill.g { border-color: #2ea043; }
+
+  /* ── Sections ── */
+  .sec-header { display: flex; align-items: center; gap: 12px; margin: 42px 0 14px; }
+  .sec-header .icon { font-size: 1.3rem; }
+  .sec-header h2 { font-size: 1.05rem; font-weight: 700; color: #f0f6ff; }
+  .sec-header .badge { margin-left: auto; font-size: .7rem; font-weight: 700; padding: 4px 14px; border-radius: 20px; }
+  .b-green  { background: #0d3320; color: #3fb950; border: 1px solid #2ea043; }
+  .b-blue   { background: #1f3a5f; color: #58a6ff; border: 1px solid #388bfd; }
+  .b-orange { background: #3d2000; color: #f0883e; border: 1px solid #d29922; }
+  .b-red    { background: #3d0000; color: #ff7b72; border: 1px solid #f85149; }
+  .b-purple { background: #2d1a4a; color: #d2a8ff; border: 1px solid #8b5cf6; }
+  .divider  { height: 1px; background: #21262d; margin: 6px 0 22px; }
+
+  /* ── Version comparison cards ── */
+  .ver-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  @media(max-width:700px){ .ver-grid { grid-template-columns: 1fr; } }
+  .ver-card { background: #161b22; border: 1px solid #30363d; border-radius: 12px; padding: 16px 18px; }
+  .ver-card h4 { font-size: .8rem; font-weight: 700; margin-bottom: 10px; padding-bottom: 8px; border-bottom: 1px solid #21262d; display: flex; align-items: center; gap: 7px; }
+  .ver-row { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid #21262d; font-size: .74rem; }
+  .ver-row:last-child { border-bottom: none; }
+  .vl { color: #8b949e; }
+  .vv-old  { color: #ff7b72; font-weight: 700; }
+  .vv-mid  { color: #f0883e; font-weight: 700; }
+  .vv-new  { color: #3fb950; font-weight: 700; }
+  .vc-old  { border-top: 3px solid #f85149; }
+  .vc-mid  { border-top: 3px solid #f0883e; }
+  .vc-new  { border-top: 3px solid #3fb950; }
+
+  /* ── Math grid ── */
+  .math-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; }
+  .math-card { background: #161b22; border: 1px solid #30363d; border-radius: 12px; padding: 16px 18px; }
+  .math-card h4 { font-size: .75rem; font-weight: 700; color: #8b949e; text-transform: uppercase; letter-spacing: .6px; margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
+  .math-formula { font-size: .72rem; color: #484f58; background: #21262d; border-radius: 6px; padding: 6px 10px; margin-bottom: 8px; font-family: monospace; line-height: 1.6; }
+  .math-result { font-size: 1.05rem; font-weight: 700; color: #f0883e; }
+  .math-sub { font-size: .78rem; color: #3fb950; font-weight: 600; margin-top: 3px; }
+  .math-note { font-size: .68rem; color: #484f58; margin-top: 6px; line-height: 1.45; }
+
+  /* ── Architecture diagram ── */
+  .arch-diagram { background: #161b22; border: 1px solid #30363d; border-radius: 16px; padding: 24px 16px; overflow-x: auto; }
+  .layer { display: flex; flex-direction: column; align-items: center; margin-bottom: 0; }
+  .layer-label { font-size: .64rem; font-weight: 700; letter-spacing: .7px; text-transform: uppercase; color: #8b949e; margin-bottom: 7px; text-align: center; }
+  .layer-row { display: flex; flex-wrap: wrap; gap: 9px; justify-content: center; width: 100%; }
+  .comp {
+    border-radius: 10px; padding: 9px 13px; font-size: .72rem; font-weight: 600;
+    text-align: center; min-width: 110px; max-width: 150px;
+    border: 1px solid rgba(255,255,255,.07);
+    display: flex; flex-direction: column; align-items: center; gap: 4px;
+  }
+  .comp .ci { font-size: 1rem; }
+  .comp .ct { line-height: 1.3; }
+  .comp .cs { font-size: .61rem; font-weight: 400; opacity: .7; margin-top: 2px; }
+  .comp .ctag { font-size: .58rem; font-weight: 700; padding: 1px 6px; border-radius: 20px; margin-top: 3px; }
+  .ctag-green  { background: #0d3320; color: #3fb950; }
+  .ctag-orange { background: #3d2000; color: #f0883e; }
+  .ctag-blue   { background: #1f3a5f; color: #58a6ff; }
+
+  .cp-users   { background: #1c2b3a; color: #79c0ff; border-color: #388bfd; }
+  .cp-edge    { background: #2b1a00; color: #f0883e; border-color: #d29922; }
+  .cp-gate    { background: #1a0a2e; color: #d2a8ff; border-color: #8b5cf6; }
+  .cp-svc     { background: #0d2a1a; color: #3fb950; border-color: #2ea043; }
+  .cp-msg     { background: #1e1200; color: #e3b341; border-color: #bb8009; }
+  .cp-data    { background: #0a1628; color: #58a6ff; border-color: #1f6feb; }
+  .cp-obs     { background: #1a1200; color: #d29922; border-color: #bb8009; }
+  .cp-sec     { background: #1e0a0a; color: #ff7b72; border-color: #f85149; }
+  .cp-devops  { background: #0d1a2a; color: #79c0ff; border-color: #1f6feb; }
+
+  .layer-arr { display: flex; flex-direction: column; align-items: center; margin: 7px 0; opacity: .45; }
+  .layer-arr .la-line { width: 2px; height: 16px; background: #484f58; }
+  .layer-arr .la-head { width: 0; height: 0; border-left: 6px solid transparent; border-right: 6px solid transparent; border-top: 8px solid #484f58; }
+
+  /* ── Load table ── */
+  .est-table { width: 100%; border-collapse: collapse; font-size: .76rem; background: #161b22; border-radius: 12px; overflow: hidden; border: 1px solid #30363d; }
+  .est-table th { background: #21262d; padding: 10px 14px; text-align: left; font-size: .68rem; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; color: #8b949e; border-bottom: 1px solid #30363d; }
+  .est-table td { padding: 10px 14px; border-bottom: 1px solid #21262d; color: #e6edf3; vertical-align: top; line-height: 1.5; font-size: .74rem; }
+  .est-table tr:last-child td { border-bottom: none; }
+  .est-table tr:hover td { background: #1c2128; }
+  .num-g  { color: #3fb950; font-weight: 700; }
+  .num-o  { color: #f0883e; font-weight: 700; }
+  .num-r  { color: #ff7b72; font-weight: 700; text-decoration: line-through; opacity:.6; font-size:.7rem; }
+  .note   { font-size: .68rem; color: #484f58; display: block; margin-top: 2px; }
+
+  /* ── Tier cards ── */
+  .tier-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; }
+  @media(max-width:700px){ .tier-grid { grid-template-columns: 1fr; } }
+  .tier-card { background: #161b22; border: 1px solid #30363d; border-radius: 12px; overflow: hidden; }
+  .tier-head { padding: 12px 16px; font-size: .82rem; font-weight: 700; display: flex; align-items: center; gap: 8px; }
+  .tier-body { padding: 12px 16px; font-size: .73rem; color: #8b949e; line-height: 1.8; }
+  .tier-body ul { padding-left: 16px; }
+  .tier-body li b { color: #e6edf3; }
+  .mc { display: inline-block; background: #21262d; color: #f0883e; border-radius: 5px; padding: 1px 7px; font-size: .66rem; font-weight: 700; margin-left: 4px; }
+  .th-g { background: #0d2a1a; color: #3fb950; }
+  .th-o { background: #2b1a00; color: #f0883e; }
+  .th-r { background: #1e0a0a; color: #ff7b72; }
+
+  /* ── Stack grid ── */
+  .stack-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 14px; }
+  .stack-card { background: #161b22; border: 1px solid #30363d; border-radius: 12px; overflow: hidden; }
+  .stack-head { padding: 11px 17px; font-size: .83rem; font-weight: 700; display: flex; align-items: center; gap: 9px; }
+  .stack-body { padding: 13px 17px; }
+  .ti { display: flex; gap: 10px; padding: 7px 0; border-bottom: 1px solid #21262d; font-size: .75rem; }
+  .ti:last-child { border-bottom: none; }
+  .ti-n { font-weight: 700; color: #f0f6ff; min-width: 138px; flex-shrink: 0; font-size: .74rem; }
+  .ti-d { color: #8b949e; line-height: 1.4; font-size: .72rem; }
+  .tb { display: inline-block; font-size: .58rem; font-weight: 700; padding: 1px 6px; border-radius: 20px; margin-left: 4px; vertical-align: middle; }
+  .tb-core { background: #0d3320; color: #3fb950; }
+  .tb-down { background: #3d2000; color: #f0883e; }
+  .tb-new  { background: #1f3a5f; color: #58a6ff; }
+
+  .sh-green  { background: #0d2a1a; color: #3fb950; }
+  .sh-blue   { background: #0a1628; color: #58a6ff; }
+  .sh-orange { background: #2b1a00; color: #f0883e; }
+  .sh-red    { background: #1e0a0a; color: #ff7b72; }
+  .sh-purple { background: #1a0a1e; color: #d2a8ff; }
+  .sh-teal   { background: #0a1e1e; color: #39d0d0; }
+
+  /* ── Cost cards ── */
+  .cost-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
+  .cost-card { background: #161b22; border: 1px solid #30363d; border-radius: 12px; padding: 14px 16px; }
+  .cost-card h4 { font-size: .75rem; font-weight: 700; color: #8b949e; margin-bottom: 6px; display: flex; align-items: center; gap: 6px; }
+  .cost-card .cv { font-size: 1rem; font-weight: 700; color: #f0883e; margin: 4px 0; }
+  .cost-card .cn { font-size: .68rem; color: #484f58; line-height: 1.4; }
+
+  /* ── Checklist ── */
+  .check-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 13px; }
+  .check-card { background: #161b22; border: 1px solid #30363d; border-radius: 12px; padding: 15px 17px; }
+  .check-card h4 { font-size: .78rem; font-weight: 700; color: #f0f6ff; margin-bottom: 9px; display: flex; align-items: center; gap: 6px; padding-bottom: 7px; border-bottom: 1px solid #21262d; }
+  .ci-item { display: flex; gap: 7px; font-size: .72rem; color: #8b949e; padding: 4px 0; line-height: 1.4; }
+  .ck { color: #3fb950; flex-shrink: 0; }
+
+  /* ── Registration table ── */
+  .reg-table { width: 100%; border-collapse: collapse; font-size: .75rem; background: #161b22; border-radius: 12px; overflow: hidden; border: 1px solid #30363d; }
+  .reg-table th { background: #21262d; padding: 10px 14px; text-align: left; font-size: .67rem; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; color: #8b949e; border-bottom: 1px solid #30363d; }
+  .reg-table td { padding: 9px 14px; border-bottom: 1px solid #21262d; color: #e6edf3; vertical-align: middle; font-size: .73rem; line-height: 1.5; }
+  .reg-table tr:last-child td { border-bottom: none; }
+  .reg-table tr:hover td { background: #1c2128; }
+
+  /* footer */
+  .footer { background: #161b22; border: 1px solid #30363d; border-radius: 14px; padding: 18px 24px; font-size: .75rem; color: #8b949e; margin-top: 36px; }
+  .footer strong { color: #f0f6ff; }
+
+  @media(max-width:600px){ .ver-grid, .tier-grid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+
+<div class="page-header max-w">
+  <h1>🏗️ Ujjain Kumbh QR System — Architecture v3</h1>
+  <p>Corrected Scale: <strong style="color:#f0883e;">200M visitors over 45 days</strong> · .NET 9 · Angular 18 · Azure</p>
+
+  <div class="update-banner">
+    <strong>✅ Scale Correction: 600M → 200M (45 days)</strong>
+    Previous estimate of 600M was 3× too high. Correcting to 200M total visitors over 45 days
+    changes almost every infrastructure decision — <b>further right-sizing saves an additional ₹30–50L in Azure cost</b>
+    and simplifies the architecture significantly. This is now a very comfortable, standard enterprise-scale system.
+  </div>
+
+  <div class="stat-row">
+    <div class="stat-pill g">📅 Duration: <span>45 Days</span></div>
+    <div class="stat-pill g">👥 Total: <span>200M visitors</span></div>
+    <div class="stat-pill g">📊 Avg/Day: <span>~4.4M</span></div>
+    <div class="stat-pill">🔺 Peak Day (Shahi Snan): <span>~15–18M</span></div>
+    <div class="stat-pill">⚡ Avg Registrations/sec: <span>~123/sec</span></div>
+    <div class="stat-pill">🔺 Peak Registrations/sec: <span>~500/sec</span></div>
+    <div class="stat-pill g">💰 Infra Cost: <span>~₹35–50L total</span></div>
+    <div class="stat-pill g">🕐 SLA Target: <span>99.9%</span></div>
+  </div>
+</div>
+
+<div class="max-w">
+
+<!-- ═══════════ 1. THREE VERSION COMPARISON ═══════════ -->
+<div class="sec-header">
+  <span class="icon">⚖️</span>
+  <h2>1. All Three Versions — Side by Side</h2>
+  <span class="badge b-orange">What Changed Each Time</span>
+</div>
+<div class="divider"></div>
+
+<div class="ver-grid">
+
+  <div class="ver-card vc-old">
+    <h4 style="color:#ff7b72;">❌ v1 — Massively Over-engineered<br/><small style="color:#8b949e;font-weight:400;">Wrong assumption: 600M simultaneous</small></h4>
+    <div class="ver-row"><span class="vl">Total visitors</span><span class="vv-old">600M concurrent</span></div>
+    <div class="ver-row"><span class="vl">QR Scans/sec</span><span class="vv-old">5,00,000/sec</span></div>
+    <div class="ver-row"><span class="vl">AKS Nodes (peak)</span><span class="vv-old">~30 nodes</span></div>
+    <div class="ver-row"><span class="vl">Redis</span><span class="vv-old">6-node cluster</span></div>
+    <div class="ver-row"><span class="vl">Cosmos DB RU/s</span><span class="vv-old">5,00,000 fixed</span></div>
+    <div class="ver-row"><span class="vl">Multi-region</span><span class="vv-old">Always Active-Active</span></div>
+    <div class="ver-row"><span class="vl">Uptime SLA</span><span class="vv-old">99.99%</span></div>
+    <div class="ver-row"><span class="vl">Est. Azure Cost</span><span class="vv-old">₹10–15 Cr</span></div>
+  </div>
+
+  <div class="ver-card vc-mid">
+    <h4 style="color:#f0883e;">🟡 v2 — Better, still high<br/><small style="color:#8b949e;font-weight:400;">600M over 45 days (corrected)</small></h4>
+    <div class="ver-row"><span class="vl">Total visitors</span><span class="vv-mid">600M / 45 days</span></div>
+    <div class="ver-row"><span class="vl">QR Scans/sec</span><span class="vv-mid">~1,400/sec peak</span></div>
+    <div class="ver-row"><span class="vl">AKS Nodes (peak)</span><span class="vv-mid">~12 nodes</span></div>
+    <div class="ver-row"><span class="vl">Redis</span><span class="vv-mid">P2 → P4 pre-scale</span></div>
+    <div class="ver-row"><span class="vl">Cosmos DB RU/s</span><span class="vv-mid">4K–40K autoscale</span></div>
+    <div class="ver-row"><span class="vl">Multi-region</span><span class="vv-mid">Active-Passive</span></div>
+    <div class="ver-row"><span class="vl">Uptime SLA</span><span class="vv-mid">99.95%</span></div>
+    <div class="ver-row"><span class="vl">Est. Azure Cost</span><span class="vv-mid">₹88L–1.3 Cr</span></div>
+  </div>
+
+  <div class="ver-card vc-new">
+    <h4 style="color:#3fb950;">✅ v3 — Right-sized (THIS)<br/><small style="color:#8b949e;font-weight:400;">200M over 45 days (current)</small></h4>
+    <div class="ver-row"><span class="vl">Total visitors</span><span class="vv-new">200M / 45 days</span></div>
+    <div class="ver-row"><span class="vl">Reg/sec</span><span class="vv-new">~500/sec peak</span></div>
+    <div class="ver-row"><span class="vl">AKS Nodes (peak)</span><span class="vv-new">~6 nodes</span></div>
+    <div class="ver-row"><span class="vl">Redis</span><span class="vv-new">C2 standard (4GB)</span></div>
+    <div class="ver-row"><span class="vl">Cosmos DB RU/s</span><span class="vv-new">1K–15K autoscale</span></div>
+    <div class="ver-row"><span class="vl">Multi-region</span><span class="vv-new">Single + warm standby</span></div>
+    <div class="ver-row"><span class="vl">Uptime SLA</span><span class="vv-new">99.9%</span></div>
+    <div class="ver-row"><span class="vl">Est. Azure Cost</span><span class="vv-new">₹35–50L total</span></div>
+  </div>
+
+</div>
+
+
+<!-- ═══════════ 2. CORRECTED MATH ═══════════ -->
+<div class="sec-header">
+  <span class="icon">🔢</span>
+  <h2>2. Corrected Load Calculations — 200M / 45 Days</h2>
+  <span class="badge b-green">Actual Numbers</span>
+</div>
+<div class="divider"></div>
+
+<div class="math-grid">
+  <div class="math-card">
+    <h4>📅 Daily Average</h4>
+    <div class="math-formula">200,000,000 ÷ 45 days</div>
+    <div class="math-result">~4.44M / day</div>
+    <div class="math-sub">Comfortable baseline</div>
+    <div class="math-note">Equivalent to ~Pune city population registering per day. Very manageable.</div>
+  </div>
+
+  <div class="math-card">
+    <h4>🔺 Peak Day (Shahi Snan)</h4>
+    <div class="math-formula">~4× average on 6 peak dates</div>
+    <div class="math-result">~15–18M / day</div>
+    <div class="math-sub">3–4× above avg</div>
+    <div class="math-note">Scale up 48 hrs before each Shahi Snan. Auto-handled by KEDA.</div>
+  </div>
+
+  <div class="math-card">
+    <h4>⚡ Avg Registrations/sec</h4>
+    <div class="math-formula">4.44M ÷ 10 hrs ÷ 3,600 sec</div>
+    <div class="math-result">~123 / sec</div>
+    <div class="math-sub">Trivially easy</div>
+    <div class="math-note">A single .NET Minimal API pod handles 5,000+ req/sec. 2 pods = 100× headroom.</div>
+  </div>
+
+  <div class="math-card">
+    <h4>🔺 Peak Registrations/sec</h4>
+    <div class="math-formula">18M ÷ 10 hrs ÷ 3,600 sec</div>
+    <div class="math-result">~500 / sec</div>
+    <div class="math-sub">Still very easy</div>
+    <div class="math-note">Redis handles 100K ops/sec. At 500/sec it runs at 0.5% utilization.</div>
+  </div>
+
+  <div class="math-card">
+    <h4>👥 Concurrent App Users</h4>
+    <div class="math-formula">~10% of 4.44M daily<br/>active simultaneously</div>
+    <div class="math-result">~440K avg</div>
+    <div class="math-sub">~1.5M on peak day</div>
+    <div class="math-note">Azure App Service Standard handles this. AKS is optional — App Service is simpler.</div>
+  </div>
+
+  <div class="math-card">
+    <h4>🎟 Lost/Found Tickets</h4>
+    <div class="math-formula">200M × 0.1% ÷ 45 days</div>
+    <div class="math-result">~4,444 / day avg</div>
+    <div class="math-sub">~18K on peak day</div>
+    <div class="math-note">Extremely low volume. Even a single microservice pod handles this easily all day.</div>
+  </div>
+
+  <div class="math-card">
+    <h4>🆘 HELP Requests</h4>
+    <div class="math-formula">200M × 0.01% ÷ 45 days</div>
+    <div class="math-result">~444 / day avg</div>
+    <div class="math-sub">~1,800 on peak day</div>
+    <div class="math-note">Extremely low. Focus 100% on reliability and speed — not scalability at all.</div>
+  </div>
+
+  <div class="math-card">
+    <h4>💾 Photo Storage</h4>
+    <div class="math-formula">200M registrations<br/>× 500KB avg photo</div>
+    <div class="math-result">~100 TB total</div>
+    <div class="math-sub">~₹1.5–2L/month storage</div>
+    <div class="math-note">Azure Blob LRS. Move to cool tier after 7 days. Archive after event end.</div>
+  </div>
+</div>
+
+
+<!-- ═══════════ 3. ARCHITECTURE DIAGRAM ═══════════ -->
+<div class="sec-header">
+  <span class="icon">🏛️</span>
+  <h2>3. Updated System Architecture — Simplified & Right-Sized</h2>
+  <span class="badge b-blue">Single Region · App Service Option · Autoscale</span>
+</div>
+<div class="divider"></div>
+
+<div class="arch-diagram">
+
+  <!-- CLIENT -->
+  <div class="layer">
+    <div class="layer-label">👥 Client — Peak ~1.5M concurrent · Avg ~440K concurrent</div>
+    <div class="layer-row">
+      <div class="comp cp-users"><div class="ci">📱</div><div class="ct">Mobile App<br/>Android/iOS</div><div class="cs">Angular + Capacitor</div></div>
+      <div class="comp cp-users"><div class="ci">🌐</div><div class="ct">Web PWA</div><div class="cs">Angular 18 + Offline</div></div>
+      <div class="comp cp-users"><div class="ci">🖥️</div><div class="ct">Kiosk at Gate</div><div class="cs">Angular kiosk mode</div></div>
+      <div class="comp cp-users"><div class="ci">🖥</div><div class="ct">Control Room</div><div class="cs">Angular + SignalR</div></div>
+      <div class="comp cp-users"><div class="ci">📟</div><div class="ct">SMS / USSD</div><div class="cs">Feature phone fallback</div></div>
+    </div>
+  </div>
+
+  <div class="layer-arr"><div class="la-line"></div><div class="la-head"></div></div>
+
+  <!-- EDGE -->
+  <div class="layer">
+    <div class="layer-label">🌍 Edge — Azure Front Door Standard + CDN (single region, standby secondary for Shahi Snan)</div>
+    <div class="layer-row">
+      <div class="comp cp-edge">
+        <div class="ci">🚪</div><div class="ct">Azure Front Door<br/>Standard</div><div class="cs">WAF + routing</div>
+        <div class="ctag ctag-green">✓ Standard tier</div>
+      </div>
+      <div class="comp cp-edge"><div class="ci">📦</div><div class="ct">Azure CDN</div><div class="cs">App shell + assets</div></div>
+      <div class="comp cp-edge"><div class="ci">🔥</div><div class="ct">WAF — Basic</div><div class="cs">OWASP rules</div></div>
+    </div>
+  </div>
+
+  <div class="layer-arr"><div class="la-line"></div><div class="la-head"></div></div>
+
+  <!-- GATEWAY -->
+  <div class="layer">
+    <div class="layer-label">🔀 API Gateway + Auth — Consumption / Developer tier is sufficient</div>
+    <div class="layer-row">
+      <div class="comp cp-gate">
+        <div class="ci">🔀</div><div class="ct">Azure API Mgmt<br/>Consumption</div><div class="cs">Rate limit · routing</div>
+        <div class="ctag ctag-green">✓ Consumption tier</div>
+      </div>
+      <div class="comp cp-gate"><div class="ci">🔐</div><div class="ct">Azure AD B2C<br/>Free tier</div><div class="cs">OTP auth · JWT</div></div>
+      <div class="comp cp-gate"><div class="ci">🚦</div><div class="ct">Redis Rate<br/>Limiter</div><div class="cs">Per-mobile throttle</div></div>
+    </div>
+  </div>
+
+  <div class="layer-arr"><div class="la-line"></div><div class="la-head"></div></div>
+
+  <!-- COMPUTE — KEY DECISION -->
+  <div class="layer">
+    <div class="layer-label">⚙️ Compute — TWO OPTIONS: Azure App Service (simpler) OR AKS (if team prefers containers)</div>
+    <div class="layer-row">
+      <div class="comp cp-svc" style="border-color:#3fb950;border-width:2px;">
+        <div class="ci">🚀</div><div class="ct">Azure App Service<br/>P2v3 (Recommended)</div><div class="cs">Auto-scale 2→10 instances</div>
+        <div class="ctag ctag-green">⭐ Simpler Choice</div>
+      </div>
+      <div class="comp cp-svc">
+        <div class="ci">🐳</div><div class="ct">AKS Standard<br/>(Alternative)</div><div class="cs">3–6 nodes, KEDA</div>
+        <div class="ctag ctag-orange">If team knows K8s</div>
+      </div>
+      <div class="comp cp-svc"><div class="ci">⚡</div><div class="ct">Azure Functions<br/>Consumption</div><div class="cs">OTP cleanup · batch notify</div></div>
+      <div class="comp cp-svc"><div class="ci">🔄</div><div class="ct">Azure Container<br/>Apps (Option 3)</div><div class="cs">Serverless containers</div></div>
+    </div>
+  </div>
+
+  <div class="layer-arr"><div class="la-line"></div><div class="la-head"></div></div>
+
+  <!-- MESSAGING -->
+  <div class="layer">
+    <div class="layer-label">📨 Messaging — Standard tiers throughout · No Premium needed at this scale</div>
+    <div class="layer-row">
+      <div class="comp cp-msg">
+        <div class="ci">🚌</div><div class="ct">Service Bus<br/>Standard</div><div class="cs">Ticket events · alerts</div>
+        <div class="ctag ctag-green">✓ Standard enough</div>
+      </div>
+      <div class="comp cp-msg">
+        <div class="ci">⚡</div><div class="ct">Event Hubs<br/>4 TUs</div><div class="cs">Reg stream · analytics</div>
+        <div class="ctag ctag-green">✓ 4 TUs plenty</div>
+      </div>
+      <div class="comp cp-msg"><div class="ci">📡</div><div class="ct">Azure SignalR<br/>Standard</div><div class="cs">Control Room live</div></div>
+    </div>
+  </div>
+
+  <div class="layer-arr"><div class="la-line"></div><div class="la-head"></div></div>
+
+  <!-- DATA -->
+  <div class="layer">
+    <div class="layer-label">🗄️ Data — Autoscale on Cosmos · Redis C2 · Standard SQL · Blob LRS</div>
+    <div class="layer-row">
+      <div class="comp cp-data">
+        <div class="ci">🌍</div><div class="ct">Cosmos DB<br/>Autoscale</div><div class="cs">1K–15K RU/s auto</div>
+        <div class="ctag ctag-green">✓ 1K–15K RU/s</div>
+      </div>
+      <div class="comp cp-data">
+        <div class="ci">⚡</div><div class="ct">Redis C2<br/>(4 GB)</div><div class="cs">Mobile dedup · sessions</div>
+        <div class="ctag ctag-green">✓ C2 sufficient</div>
+      </div>
+      <div class="comp cp-data"><div class="ci">🗃</div><div class="ct">Azure SQL<br/>S2 tier</div><div class="cs">Reports · audit</div></div>
+      <div class="comp cp-data"><div class="ci">📁</div><div class="ct">Blob Storage<br/>LRS</div><div class="cs">100TB photos</div></div>
+      <div class="comp cp-data"><div class="ci">🔍</div><div class="ct">Azure AI Search<br/>Free / Basic</div><div class="cs">Lost person lookup</div></div>
+    </div>
+  </div>
+
+  <div class="layer-arr"><div class="la-line"></div><div class="la-head"></div></div>
+
+  <!-- OBS + DEVOPS -->
+  <div class="layer">
+    <div class="layer-label">👁 Observability · Security · DevOps</div>
+    <div class="layer-row">
+      <div class="comp cp-obs"><div class="ci">📊</div><div class="ct">App Insights</div><div class="cs">APM · traces</div></div>
+      <div class="comp cp-obs"><div class="ci">📈</div><div class="ct">Azure Monitor<br/>+ Grafana</div><div class="cs">Ops dashboards</div></div>
+      <div class="comp cp-sec"><div class="ci">🔒</div><div class="ct">Key Vault<br/>Standard</div><div class="cs">All secrets</div></div>
+      <div class="comp cp-devops"><div class="ci">🚀</div><div class="ct">Azure DevOps<br/>CI/CD</div><div class="cs">Blue-green deploy</div></div>
+      <div class="comp cp-devops"><div class="ci">📋</div><div class="ct">Bicep IaC</div><div class="cs">Reproducible envs</div></div>
+    </div>
+  </div>
+
+</div>
+
+
+<!-- ═══════════ 4. COMPUTE DECISION ═══════════ -->
+<div class="sec-header">
+  <span class="icon">🤔</span>
+  <h2>4. App Service vs AKS vs Container Apps — Which to Choose?</h2>
+  <span class="badge b-purple">Key Decision for Your Team</span>
+</div>
+<div class="divider"></div>
+
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;margin-bottom:16px;">
+
+  <div style="background:#0a2b0a;border:2px solid #3fb950;border-radius:12px;padding:18px 20px;">
+    <div style="font-size:.88rem;font-weight:700;color:#3fb950;margin-bottom:10px;display:flex;align-items:center;gap:8px;">
+      🚀 Azure App Service P2v3 <span style="background:#3fb950;color:#0d1117;font-size:.6rem;padding:2px 8px;border-radius:20px;margin-left:4px;">RECOMMENDED</span>
+    </div>
+    <div style="font-size:.75rem;color:#8b949e;line-height:1.7;">
+      <div style="color:#3fb950;font-weight:600;margin-bottom:6px;">Why best for this scale:</div>
+      <ul style="padding-left:16px;">
+        <li>No Kubernetes expertise needed</li>
+        <li>Auto-scale 2 → 10 instances in minutes</li>
+        <li>Built-in CI/CD from Azure DevOps</li>
+        <li>500 req/sec? 2 instances handle it easily</li>
+        <li>Blue-green deployment built-in (slots)</li>
+        <li>Much cheaper at this traffic level</li>
+        <li><b>Your .NET + Angular team can deploy today</b></li>
+      </ul>
+      <div style="margin-top:10px;background:rgba(63,185,80,.1);border-radius:6px;padding:8px 10px;font-size:.72rem;">
+        💰 Cost: ~₹8–12L/month for P2v3 × 3 instances
+      </div>
+    </div>
+  </div>
+
+  <div style="background:#161b22;border:1px solid #388bfd;border-radius:12px;padding:18px 20px;">
+    <div style="font-size:.88rem;font-weight:700;color:#58a6ff;margin-bottom:10px;display:flex;align-items:center;gap:8px;">
+      🐳 AKS Standard <span style="background:#1f3a5f;color:#58a6ff;font-size:.6rem;padding:2px 8px;border-radius:20px;margin-left:4px;">IF TEAM KNOWS K8s</span>
+    </div>
+    <div style="font-size:.75rem;color:#8b949e;line-height:1.7;">
+      <div style="color:#58a6ff;font-weight:600;margin-bottom:6px;">Use AKS only if:</div>
+      <ul style="padding-left:16px;">
+        <li>Team has Kubernetes experience</li>
+        <li>Need fine-grained pod-level control</li>
+        <li>Want KEDA event-driven scaling</li>
+        <li>Multiple microservices with different scale needs</li>
+        <li>Future-proofing for larger events</li>
+      </ul>
+      <div style="margin-top:10px;background:#1f3a5f;border-radius:6px;padding:8px 10px;font-size:.72rem;">
+        💰 Cost: ~₹10–15L/month for 3-node cluster
+      </div>
+    </div>
+  </div>
+
+  <div style="background:#161b22;border:1px solid #8b5cf6;border-radius:12px;padding:18px 20px;">
+    <div style="font-size:.88rem;font-weight:700;color:#d2a8ff;margin-bottom:10px;display:flex;align-items:center;gap:8px;">
+      🔄 Azure Container Apps <span style="background:#2d1a4a;color:#d2a8ff;font-size:.6rem;padding:2px 8px;border-radius:20px;margin-left:4px;">MIDDLE GROUND</span>
+    </div>
+    <div style="font-size:.75rem;color:#8b949e;line-height:1.7;">
+      <div style="color:#d2a8ff;font-weight:600;margin-bottom:6px;">Best of both worlds:</div>
+      <ul style="padding-left:16px;">
+        <li>Serverless containers — no K8s management</li>
+        <li>Scale to zero on idle (save cost)</li>
+        <li>KEDA built-in for event-driven scale</li>
+        <li>Simpler than AKS, more flexible than App Service</li>
+        <li>Good choice if budget is very tight</li>
+      </ul>
+      <div style="margin-top:10px;background:#2d1a4a;border-radius:6px;padding:8px 10px;font-size:.72rem;">
+        💰 Cost: Pay-per-use — can be cheaper than App Service
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div style="background:#161b22;border:1px solid #3fb950;border-radius:10px;padding:14px 18px;font-size:.78rem;color:#8b949e;display:flex;gap:10px;align-items:flex-start;">
+  <span style="font-size:1.1rem;flex-shrink:0;">💡</span>
+  <div><strong style="color:#3fb950;">Our Recommendation for Your Team:</strong> Use <b>Azure App Service P2v3</b> for all 7 microservices (one App Service per service).
+  Your .NET team already knows how to deploy to App Service. No Kubernetes learning curve.
+  At 500 req/sec peak, this is the pragmatic, low-risk choice.
+  <b>Switch to AKS only if you outgrow App Service</b> — which at 200M over 45 days, you won't.</div>
+</div>
+
+
+<!-- ═══════════ 5. LOAD TABLE ═══════════ -->
+<div class="sec-header">
+  <span class="icon">📊</span>
+  <h2>5. Updated Load Estimates — Avg vs Shahi Snan Peak</h2>
+  <span class="badge b-orange">All Numbers Corrected</span>
+</div>
+<div class="divider"></div>
+
+<table class="est-table">
+  <thead>
+    <tr>
+      <th>Metric</th>
+      <th>v2 (600M) — Old</th>
+      <th>v3 (200M) — Avg Day</th>
+      <th>v3 Peak (Shahi Snan ~18M)</th>
+      <th>Azure Sizing Decision</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><b>Registrations/sec</b></td>
+      <td><span class="num-r">~370/sec</span></td>
+      <td><span class="num-g">~123/sec</span></td>
+      <td><span class="num-o">~500/sec</span></td>
+      <td>App Service 2 instances handles 123/sec with 97% headroom. Scale to 5 on peak day.</td>
+    </tr>
+    <tr>
+      <td><b>Concurrent App Users</b></td>
+      <td><span class="num-r">~1.3M avg</span></td>
+      <td><span class="num-g">~440K avg</span></td>
+      <td><span class="num-o">~1.5M peak</span></td>
+      <td>App Service P2v3 × 3 instances handles 1.5M concurrent. Standard for mid-size apps.</td>
+    </tr>
+    <tr>
+      <td><b>Redis Operations/sec</b></td>
+      <td><span class="num-r">~1,400/sec</span></td>
+      <td><span class="num-g">~370/sec</span></td>
+      <td><span class="num-o">~1,500/sec</span></td>
+      <td>Redis C2 (4GB) handles 20,000 ops/sec. At 1,500/sec = 7.5% utilization. C1 even works.</td>
+    </tr>
+    <tr>
+      <td><b>Cosmos DB RU/s needed</b></td>
+      <td><span class="num-r">4K–40K</span></td>
+      <td><span class="num-g">1,000–3,000 RU/s</span></td>
+      <td><span class="num-o">~10,000–15,000 RU/s</span></td>
+      <td>Autoscale min 1,000 → max 15,000. Off-peak cost drops 70%. No manual tuning needed.</td>
+    </tr>
+    <tr>
+      <td><b>Lost/Found Tickets</b></td>
+      <td><span class="num-r">~13,300/day</span></td>
+      <td><span class="num-g">~4,444/day<br/><span class="note">~3/min average</span></span></td>
+      <td><span class="num-o">~18,000/day<br/><span class="note">~13/min peak</span></span></td>
+      <td>Service Bus Standard. Even Azure Functions could handle this. Zero scaling concern.</td>
+    </tr>
+    <tr>
+      <td><b>HELP Requests</b></td>
+      <td><span class="num-r">~1,333/day</span></td>
+      <td><span class="num-g">~444/day<br/><span class="note">~0.3/min average</span></span></td>
+      <td><span class="num-o">~1,800/day<br/><span class="note">~1.25/min peak</span></span></td>
+      <td>Trivial volume. Single Azure Function handles all HELP tickets. Focus = reliability only.</td>
+    </tr>
+    <tr>
+      <td><b>OTP / SMS sends</b></td>
+      <td><span class="num-r">~200/min peak</span></td>
+      <td><span class="num-g">~10/min avg</span></td>
+      <td><span class="num-o">~60/min peak</span></td>
+      <td>Azure Communication Services free tier handles 100/min. Paid tier needed only on peak days.</td>
+    </tr>
+    <tr>
+      <td><b>Control Room connections</b></td>
+      <td><span class="num-r">~500 concurrent</span></td>
+      <td><span class="num-g">~100 concurrent</span></td>
+      <td><span class="num-o">~200 concurrent</span></td>
+      <td>Azure SignalR Service Free tier (20 conn) → Standard 1 unit (1,000 conn). Costs ~₹700/month.</td>
+    </tr>
+    <tr>
+      <td><b>App Service instances</b></td>
+      <td><span class="num-r">—</span></td>
+      <td><span class="num-g">2–3 instances per service</span></td>
+      <td><span class="num-o">5–8 instances per service</span></td>
+      <td>Auto-scale rules: CPU > 70% → add instance. Scale in 5 min after load drops. No manual ops.</td>
+    </tr>
+    <tr>
+      <td><b>Photo Storage</b></td>
+      <td><span class="num-r">~300 TB</span></td>
+      <td><span class="num-g">~100 TB total</span></td>
+      <td><span class="num-o">~2.2 TB/day on peak</span></td>
+      <td>Azure Blob LRS. 100TB = ~₹1.5L/month. Cool tier after 7 days saves 50% more.</td>
+    </tr>
+  </tbody>
+</table>
+
+
+<!-- ═══════════ 6. 3 OPERATING MODES ═══════════ -->
+<div class="sec-header">
+  <span class="icon">📈</span>
+  <h2>6. Three Operating Modes</h2>
+  <span class="badge b-green">Auto-managed by Azure Scale Rules</span>
+</div>
+<div class="divider"></div>
+
+<div class="tier-grid">
+  <div class="tier-card">
+    <div class="tier-head th-g">🟢 Normal Day (~4.4M)</div>
+    <div class="tier-body">
+      <ul>
+        <li><b>App Service:</b> 2 instances P2v3 <span class="mc">auto</span></li>
+        <li><b>Cosmos DB:</b> ~1,000–3,000 RU/s</li>
+        <li><b>Redis:</b> C2 standard (4GB)</li>
+        <li><b>Service Bus:</b> Standard tier</li>
+        <li><b>Region:</b> Central India only</li>
+        <li><b>Event Hubs:</b> 2 Throughput Units</li>
+        <li><b>Cost/day:</b> ~₹60–80K</li>
+      </ul>
+    </div>
+  </div>
+  <div class="tier-card">
+    <div class="tier-head th-o">🟡 High Traffic (~8–10M)</div>
+    <div class="tier-body">
+      <ul>
+        <li><b>App Service:</b> 4–6 instances <span class="mc">auto</span></li>
+        <li><b>Cosmos DB:</b> ~5,000–8,000 RU/s</li>
+        <li><b>Redis:</b> C2 (same — plenty)</li>
+        <li><b>Service Bus:</b> Standard (fine)</li>
+        <li><b>Region:</b> Single + standby warm</li>
+        <li><b>Event Hubs:</b> 4 TUs</li>
+        <li><b>Cost/day:</b> ~��1.2–1.5L</li>
+      </ul>
+    </div>
+  </div>
+  <div class="tier-card">
+    <div class="tier-head th-r">🔴 Shahi Snan (~15–18M)</div>
+    <div class="tier-body">
+      <ul>
+        <li><b>App Service:</b> 8–10 instances <span class="mc">pre-scaled</span></li>
+        <li><b>Cosmos DB:</b> ~12,000–15,000 RU/s</li>
+        <li><b>Redis:</b> C3 (6GB) pre-scaled day before</li>
+        <li><b>Service Bus:</b> Standard (still fine)</li>
+        <li><b>Region:</b> Active + warm secondary</li>
+        <li><b>Event Hubs:</b> 6 TUs (auto-inflate ON)</li>
+        <li><b>Cost/day:</b> ~₹2.5–3L</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div style="background:#161b22;border:1px solid #30363d;border-radius:10px;padding:14px 18px;margin-top:14px;font-size:.77rem;color:#8b949e;">
+  <strong style="color:#f0f6ff;">📅 Known Peak Dates — Pre-scale 48 hrs before each:</strong>
+  <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;">
+    <span style="background:#21262d;color:#f0883e;border-radius:6px;padding:4px 12px;font-size:.72rem;font-weight:600;">Makar Sankranti</span>
+    <span style="background:#21262d;color:#f0883e;border-radius:6px;padding:4px 12px;font-size:.72rem;font-weight:600;">Mauni Amavasya</span>
+    <span style="background:#21262d;color:#f0883e;border-radius:6px;padding:4px 12px;font-size:.72rem;font-weight:600;">Basant Panchami</span>
+    <span style="background:#21262d;color:#f0883e;border-radius:6px;padding:4px 12px;font-size:.72rem;font-weight:600;">Maghi Purnima</span>
+    <span style="background:#21262d;color:#f0883e;border-radius:6px;padding:4px 12px;font-size:.72rem;font-weight:600;">Maha Shivratri</span>
+    <span style="background:#21262d;color:#f0883e;border-radius:6px;padding:4px 12px;font-size:.72rem;font-weight:600;">Ram Navami</span>
+    <span style="background:#0d3320;color:#3fb950;border-radius:6px;padding:4px 12px;font-size:.72rem;font-weight:600;">⚙️ Azure Automation Runbook triggers 48 hrs before each date</span>
+  </div>
+</div>
+
+
+<!-- ═══════════ 7. REGISTRATION CHANNEL TABLE ═══════════ -->
+<div class="sec-header">
+  <span class="icon">📱</span>
+  <h2>7. Registration Channels — 200M Visitors Coverage</h2>
+  <span class="badge b-blue">No Pre-printed QR Needed</span>
+</div>
+<div class="divider"></div>
+
+<table class="reg-table">
+  <thead>
+    <tr>
+      <th>Channel</th>
+      <th>Visitors Covered</th>
+      <th>Volume (200M)</th>
+      <th>Tech</th>
+      <th>Cost</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><b>📱 Web App / PWA</b><br/><small style="color:#8b949e;">Smartphone + internet</small></td>
+      <td><span class="num-g">~60%</span></td>
+      <td>~120M registrations</td>
+      <td>Angular 18 PWA → .NET API → OTP via SMS</td>
+      <td>SMS: ₹0.12/OTP = ₹1.44 Cr</td>
+    </tr>
+    <tr>
+      <td><b>🖥️ Kiosk at Gate</b><br/><small style="color:#8b949e;">No smartphone / elderly</small></td>
+      <td><span class="num-g">~30%</span></td>
+      <td>~60M registrations</td>
+      <td>Angular kiosk + webcam + edge cache + thermal slip for 5%</td>
+      <td>200 kiosks × ₹75K = ₹1.5 Cr (one-time)</td>
+    </tr>
+    <tr>
+      <td><b>📟 USSD *139#</b><br/><small style="color:#8b949e;">Feature phone / 2G / rural</small></td>
+      <td><span class="num-g">~8%</span></td>
+      <td>~16M registrations</td>
+      <td>USSD gateway → .NET webhook → Cosmos DB. SMS confirmation.</td>
+      <td>Near zero. MoU with Jio/Airtel/BSNL</td>
+    </tr>
+    <tr>
+      <td><b>🏛️ Bulk / Group Pre-reg</b><br/><small style="color:#8b949e;">Tour operators / Trains / Buses</small></td>
+      <td><span class="num-g">~2%</span></td>
+      <td>~4M registrations</td>
+      <td>Admin CSV upload portal → .NET background job → batch SMS</td>
+      <td>Included in infra cost. No extra cost.</td>
+    </tr>
+  </tbody>
+</table>
+
+
+<!-- ═══════════ 8. TECH STACK ═══════════ -->
+<div class="sec-header">
+  <span class="icon">🛠️</span>
+  <h2>8. Final Tech Stack — Simplified for 200M</h2>
+  <span class="badge b-green">Your Team Can Build This</span>
+</div>
+<div class="divider"></div>
+
+<div class="stack-grid">
+  <div class="stack-card">
+    <div class="stack-head sh-blue"><span>🌐</span> Frontend — Angular 18</div>
+    <div class="stack-body">
+      <div class="ti"><div class="ti-n">Angular 18 PWA <span class="tb tb-core">Core</span></div><div class="ti-d">Offline-first via Service Worker. At 123 reg/sec avg, no performance concern at all.</div></div>
+      <div class="ti"><div class="ti-n">Capacitor <span class="tb tb-core">Core</span></div><div class="ti-d">Single Angular codebase → Android APK + iOS IPA. QR camera + push notifications.</div></div>
+      <div class="ti"><div class="ti-n">ngx-translate</div><div class="ti-d">Hindi / English / Marathi / Bengali at runtime.</div></div>
+      <div class="ti"><div class="ti-n">ZXing QR Scanner</div><div class="ti-d">Browser-based QR scan for kiosks. No app install needed.</div></div>
+      <div class="ti"><div class="ti-n">SignalR Client</div><div class="ti-d">Real-time ticket updates on Control Room. ~200 connections — trivial.</div></div>
+    </div>
+  </div>
+
+  <div class="stack-card">
+    <div class="stack-head sh-green"><span>⚙️</span> Backend — .NET 9</div>
+    <div class="stack-body">
+      <div class="ti"><div class="ti-n">.NET 9 Minimal API <span class="tb tb-core">Core</span></div><div class="ti-d">Fastest throughput. 2 App Service instances handle 500/sec peak with headroom to spare.</div></div>
+      <div class="ti"><div class="ti-n">CQRS + MediatR</div><div class="ti-d">Read from Redis/cache, write to queue. At 200M scale this is best practice but not critical.</div></div>
+      <div class="ti"><div class="ti-n">Polly v8 Resilience</div><div class="ti-d">Retry + circuit breaker on SMS gateway, Cosmos DB, Redis calls. Non-negotiable for HELP tickets.</div></div>
+      <div class="ti"><div class="ti-n">FluentValidation</div><div class="ti-d">All mandatory fields validated before DB hit.</div></div>
+      <div class="ti"><div class="ti-n">ASP.NET SignalR</div><div class="ti-d">Real-time push for Control Room. 200 connections = Azure SignalR Standard 1 unit.</div></div>
+    </div>
+  </div>
+
+  <div class="stack-card">
+    <div class="stack-head sh-teal"><span>🗄️</span> Data — Right-Sized v3</div>
+    <div class="stack-body">
+      <div class="ti"><div class="ti-n">Cosmos DB Autoscale <span class="tb tb-core">Core</span></div><div class="ti-d">1,000 RU/s minimum (pay ₹~600/month off-peak). Auto scales to 15,000 on Shahi Snan. Zero manual work.</div></div>
+      <div class="ti"><div class="ti-n">Redis C2 (4GB) <span class="tb tb-down">Smaller SKU</span></div><div class="ti-d">Mobile number dedup, OTP TTL, rate limiting, sessions. C2 = ₹~4,000/month. 20K ops/sec capacity vs our 1,500/sec need.</div></div>
+      <div class="ti"><div class="ti-n">Azure SQL S2</div><div class="ti-d">Reports + audit queries. S2 (50 DTU) is sufficient. ~₹3,000/month.</div></div>
+      <div class="ti"><div class="ti-n">Blob Storage LRS</div><div class="ti-d">100TB photos. LRS = cheapest. Cool tier after 7 days. Total ~₹1.5L/month.</div></div>
+    </div>
+  </div>
+
+  <div class="stack-card">
+    <div class="stack-head sh-orange"><span>☁️</span> Azure Infrastructure</div>
+    <div class="stack-body">
+      <div class="ti"><div class="ti-n">App Service P2v3 <span class="tb tb-core">Core</span></div><div class="ti-d">Recommended over AKS for your team. Auto-scale 2→10 instances. Built-in deployment slots for blue-green.</div></div>
+      <div class="ti"><div class="ti-n">Front Door Standard</div><div class="ti-d">Global entry + WAF + CDN for static assets. Standard tier handles millions of requests/day at low cost.</div></div>
+      <div class="ti"><div class="ti-n">API Mgmt Consumption</div><div class="ti-d">Pay per 1M calls. At 200M registrations total, consumption tier is cheapest option.</div></div>
+      <div class="ti"><div class="ti-n">Service Bus Standard</div><div class="ti-d">10M messages free per month. Our 200M registrations generates ~200M messages total — upgrade to mid-tier only.</div></div>
+      <div class="ti"><div class="ti-n">Azure Functions</div><div class="ti-d">OTP expiry cleanup, batch SMS processing, scheduled reports. Consumption tier = near zero cost.</div></div>
+    </div>
+  </div>
+
+  <div class="stack-card">
+    <div class="stack-head sh-red"><span>🔒</span> Security</div>
+    <div class="stack-body">
+      <div class="ti"><div class="ti-n">Azure AD B2C <span class="tb tb-core">Core</span></div><div class="ti-d">First 50K MAU free. 200M registrations over 45 days = ~4.4M MAU. Cost: ~₹15L for entire event.</div></div>
+      <div class="ti"><div class="ti-n">Key Vault Standard</div><div class="ti-d">All secrets, connection strings, SMS gateway keys. ~₹500/month at this scale.</div></div>
+      <div class="ti"><div class="ti-n">WAF (Front Door)</div><div class="ti-d">OWASP Top 10 rules. Blocks SQL injection, XSS, bot attacks. Built into Front Door Standard.</div></div>
+      <div class="ti"><div class="ti-n">DPDP Act 2023</div><div class="ti-d">India's Digital Personal Data Protection Act. All PII encrypted. Aadhaar optional. 90-day post-event deletion policy.</div></div>
+    </div>
+  </div>
+
+  <div class="stack-card">
+    <div class="stack-head sh-purple"><span>🚀</span> DevOps</div>
+    <div class="stack-body">
+      <div class="ti"><div class="ti-n">Azure DevOps <span class="tb tb-core">Core</span></div><div class="ti-d">CI/CD pipelines for .NET + Angular. Your team already uses this. Deploy to App Service in minutes.</div></div>
+      <div class="ti"><div class="ti-n">Deployment Slots</div><div class="ti-d">App Service blue-green deployment built-in. Zero-downtime releases. Swap + rollback in 30 seconds.</div></div>
+      <div class="ti"><div class="ti-n">App Insights</div><div class="ti-d">APM + distributed tracing. 100% sampling for HELP tickets. 10% for registration traffic.</div></div>
+      <div class="ti"><div class="ti-n">Azure Load Testing <span class="tb tb-new">Pre-event</span></div><div class="ti-d">Simulate 18M/day (Mode 3) 3 weeks before event. Validate auto-scale rules work correctly.</div></div>
+      <div class="ti"><div class="ti-n">Bicep IaC</div><div class="ti-d">All infra as code. Spin up Dev/UAT/Prod environments in 20 minutes.</div></div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══════════ 9. COST ESTIMATE ═══════════ -->
+<div class="sec-header">
+  <span class="icon">💰</span>
+  <h2>9. Revised Azure Cost Estimate — 45 Days</h2>
+  <span class="badge b-orange">Much Lower Than v2</span>
+</div>
+<div class="divider"></div>
+
+<div class="cost-grid">
+  <div class="cost-card">
+    <h4>🚀 App Service P2v3</h4>
+    <div class="cv">~₹10–14L</div>
+    <div class="cn">3 instances avg × 45 days. Scale to 8 on ~6 peak days. Reserved pricing saves 30%.</div>
+  </div>
+  <div class="cost-card">
+    <h4>🌍 Cosmos DB</h4>
+    <div class="cv">~₹6–9L</div>
+    <div class="cn">Autoscale billing. 1K RU/s on 37 off-peak days = very cheap. Spikes only on 6–8 days.</div>
+  </div>
+  <div class="cost-card">
+    <h4>⚡ Redis C2</h4>
+    <div class="cv">~₹1.5–2L</div>
+    <div class="cn">₹~4K/month base. Scale to C3 on peak days only. 75% cheaper than v2's P-tier Redis.</div>
+  </div>
+  <div class="cost-card">
+    <h4>📁 Blob Storage</h4>
+    <div class="cv">~₹4–6L</div>
+    <div class="cn">100TB at LRS rates. Cool tier after 7 days cuts cost by half. Archive post-event.</div>
+  </div>
+  <div class="cost-card">
+    <h4>📨 Service Bus + Event Hubs</h4>
+    <div class="cv">~₹2–3L</div>
+    <div class="cn">Standard tier throughout. No Premium upgrade needed at 200M scale.</div>
+  </div>
+  <div class="cost-card">
+    <h4>📱 SMS / OTP (Azure Comms)</h4>
+    <div class="cv">~₹2.5–3L</div>
+    <div class="cn">200M OTPs × ₹0.12 = ₹2.4 Cr if everyone does OTP. In practice ~30–40% use USSD/kiosk = less.</div>
+  </div>
+  <div class="cost-card">
+    <h4>🌐 Front Door + CDN + WAF</h4>
+    <div class="cv">~₹2–3L</div>
+    <div class="cn">Standard tier. Data transfer + WAF rules. CDN offloads ~90% of static traffic.</div>
+  </div>
+  <div class="cost-card">
+    <h4>📊 Monitoring + Misc</h4>
+    <div class="cv">~₹1.5–2L</div>
+    <div class="cn">App Insights, Log Analytics, Key Vault, Load Testing. Small fraction of total.</div>
+  </div>
+  <div class="cost-card" style="border-color:#3fb950;">
+    <h4 style="color:#3fb950;">💎 Total 45-Day Azure Cost</h4>
+    <div class="cv" style="font-size:1.15rem;color:#3fb950;">~₹30–42L</div>
+    <div class="cn" style="color:#3fb950;">vs ₹88L–1.3Cr in v2 (600M). <b>60–70% cheaper</b> than v2. Infrastructure is now proportionate to actual load.</div>
+  </div>
+</div>
+
+
+<!-- ═══════════ 10. CHECKLIST ═══════════ -->
+<div class="sec-header">
+  <span class="icon">✅</span>
+  <h2>10. Go-Live Checklist</h2>
+  <span class="badge b-red">Non-Negotiable Gates</span>
+</div>
+<div class="divider"></div>
+
+<div class="check-grid">
+  <div class="check-card">
+    <h4>🏗 Infrastructure</h4>
+    <div class="ci-item"><span class="ck">✔</span><span>App Service P2v3 deployed with auto-scale rules (CPU > 70% → add instance)</span></div>
+    <div class="ci-item"><span class="ck">✔</span><span>Cosmos DB Autoscale: 1K min → 15K max confirmed by load test</span></div>
+    <div class="ci-item"><span class="ck">✔</span><span>Redis C2 provisioned, mobile-number SETNX dedup logic verified</span></div>
+    <div class="ci-item"><span class="ck">✔</span><span>Azure Automation Runbook created for 48-hr pre-scale before each Shahi Snan</span></div>
+    <div class="ci-item"><span class="ck">✔</span><span>All secrets in Key Vault — zero plaintext credentials in repos or configs</span></div>
+  </div>
+  <div class="check-card">
+    <h4>⚙️ Application</h4>
+    <div class="ci-item"><span class="ck">✔</span><span>Load tested at 500 reg/sec — no errors, P99 latency under 300ms</span></div>
+    <div class="ci-item"><span class="ck">✔</span><span>Mobile number dedup tested: 1000 concurrent requests with same number → only 1 succeeds</span></div>
+    <div class="ci-item"><span class="ck">✔</span><span>PWA offline mode: form saved locally, synced on reconnect — tested on 2G</span></div>
+    <div class="ci-item"><span class="ck">✔</span><span>HELP OTP logic: either User or Relative OTP closes ticket — verified</span></div>
+    <div class="ci-item"><span class="ck">✔</span><span>All 5 languages tested end-to-end on Android + iOS + kiosk</span></div>
+  </div>
+  <div class="check-card">
+    <h4>🔒 Security</h4>
+    <div class="ci-item"><span class="ck">✔</span><span>Pen test completed — all critical findings resolved before go-live</span></div>
+    <div class="ci-item"><span class="ck">✔</span><span>DPDP Act 2023 compliance sign-off obtained</span></div>
+    <div class="ci-item"><span class="ck">✔</span><span>PII encrypted at rest (AES-256) and in transit (TLS 1.3)</span></div>
+    <div class="ci-item"><span class="ck">✔</span><span>Rate limiting verified: same mobile cannot register more than once per 10 minutes</span></div>
+    <div class="ci-item"><span class="ck">✔</span><span>RBAC roles tested: Operator, Police, Zone Manager, Super Admin</span></div>
+  </div>
+  <div class="check-card">
+    <h4>📅 Peak Day Readiness</h4>
+    <div class="ci-item"><span class="ck">✔</span><span>Full 18M/day simulation run — App Service scaled correctly, no errors</span></div>
+    <div class="ci-item"><span class="ck">✔</span><span>Deployment slot swap tested — rollback in under 60 seconds confirmed</span></div>
+    <div class="ci-item"><span class="ck">✔</span><span>200 kiosks deployed at gates — offline mode tested at field in each zone</span></div>
+    <div class="ci-item"><span class="ck">✔</span><span>SMS gateway: 60 OTPs/minute burst tested without drops</span></div>
+    <div class="ci-item"><span class="ck">✔</span><span>On-call rota active — 24×7 coverage from T-7 days through T+45</span></div>
+  </div>
+</div>
+
+
+<!-- ═══════════ FOOTER ═══════════ -->
+<div class="footer">
+  <strong>📌 Why v3 is the Right Architecture</strong>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:5px 26px;margin-top:12px;line-height:1.85;">
+    <div>• <strong style="color:#e6edf3;">200M over 45 days = 123 reg/sec average.</strong> This is a well-understood, standard enterprise load. No exotic infra needed.</div>
+    <div>• <strong style="color:#e6edf3;">App Service over AKS:</strong> Your team knows .NET + App Service. No Kubernetes ops overhead. Same auto-scale result, simpler management.</div>
+    <div>• <strong style="color:#e6edf3;">Redis C2 is plenty:</strong> 20,000 ops/sec capacity vs our 1,500/sec peak = 13× headroom. C6-cluster was pure over-engineering.</div>
+    <div>• <strong style="color:#e6edf3;">Cosmos Autoscale saves money:</strong> Idle at 1K RU/s for 37 normal days. Only spends peak RU on 6–8 Shahi Snan days.</div>
+    <div>• <strong style="color:#e6edf3;">No pre-printed QR:</strong> Mobile OTP + Kiosk covers 100% of visitors. Saves ₹15–20 Cr vs paper QR approach at 200M scale.</div>
+    <div>• <strong style="color:#e6edf3;">Single region is enough:</strong> 200M/45 days doesn't need Active-Active. Warm standby activates only for 6 peak dates.</div>
+  </div>
+</div>
+
+</div><!-- /max-w -->
+</body>
+</html>

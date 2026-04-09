@@ -1,0 +1,1175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Ujjain Kumbh QR System — End-to-End Flowchart</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: #f1f5f9;
+    color: #1e293b;
+    padding: 20px;
+  }
+
+  /* ── Print button ── */
+  #printBtn {
+    position: fixed; top: 18px; right: 24px; z-index: 999;
+    background: #1e293b; color: #fff; border: none;
+    padding: 10px 22px; border-radius: 8px; font-size: 14px;
+    cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,.3);
+    transition: background .2s;
+  }
+  #printBtn:hover { background: #3b82f6; }
+
+  /* ── Page wrapper ── */
+  .page {
+    max-width: 1400px;
+    margin: 0 auto;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 4px 32px rgba(0,0,0,.12);
+    overflow: hidden;
+  }
+
+  /* ── Title banner ── */
+  .title-banner {
+    background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+    color: #fff;
+    text-align: center;
+    padding: 28px 20px 20px;
+  }
+  .title-banner h1 {
+    font-size: 26px; font-weight: 800; letter-spacing: .5px;
+    text-shadow: 0 2px 4px rgba(0,0,0,.4);
+  }
+  .title-banner p {
+    font-size: 14px; margin-top: 6px; color: #94a3b8; letter-spacing: 1px;
+  }
+  .phase-badge {
+    display: inline-block;
+    background: #3b82f6; color: #fff;
+    border-radius: 20px; padding: 3px 14px;
+    font-size: 12px; font-weight: 700; margin-top: 10px;
+    letter-spacing: .5px;
+  }
+
+  /* ── Main content ── */
+  .content { padding: 30px 24px; }
+
+  /* ── 200M scale panel ── */
+  .scale-panel {
+    margin: 2px auto 20px;
+    width: 100%;
+    border: 1.5px solid #bfdbfe;
+    background: linear-gradient(180deg, #eff6ff 0%, #f8fafc 100%);
+    border-radius: 12px;
+    padding: 14px;
+  }
+  .scale-title {
+    text-align: center;
+    font-size: 13px;
+    font-weight: 800;
+    color: #1e3a8a;
+    letter-spacing: .5px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .scale-grid {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(140px, 1fr));
+    gap: 8px;
+  }
+  .scale-item {
+    background: #fff;
+    border: 1.5px solid #cbd5e1;
+    border-radius: 8px;
+    padding: 8px 10px;
+    text-align: center;
+  }
+  .scale-item .k {
+    font-size: 10px;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: .4px;
+    font-weight: 700;
+  }
+  .scale-item .v {
+    font-size: 14px;
+    color: #0f172a;
+    font-weight: 800;
+    margin-top: 2px;
+  }
+  .scale-note {
+    font-size: 11px;
+    color: #475569;
+    margin-top: 8px;
+    text-align: center;
+  }
+
+  /* ── Ground operations panel ── */
+  .ops-panel {
+    margin: 0 auto 16px;
+    width: 100%;
+    border: 1.5px solid #bbf7d0;
+    background: linear-gradient(180deg, #f0fdf4 0%, #f8fafc 100%);
+    border-radius: 12px;
+    padding: 14px;
+  }
+  .ops-title {
+    text-align: center;
+    font-size: 13px;
+    font-weight: 800;
+    color: #14532d;
+    letter-spacing: .5px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .ops-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(150px, 1fr));
+    gap: 8px;
+  }
+  .ops-item {
+    background: #fff;
+    border: 1.5px solid #d1fae5;
+    border-radius: 8px;
+    padding: 8px 10px;
+  }
+  .ops-item .h {
+    font-size: 11px;
+    font-weight: 800;
+    color: #065f46;
+    margin-bottom: 4px;
+    text-transform: uppercase;
+  }
+  .ops-item .d {
+    font-size: 11px;
+    color: #334155;
+    line-height: 1.45;
+  }
+
+  /* ── Zero downtime panel ── */
+  .ha-panel {
+    margin: 0 auto 20px;
+    width: 100%;
+    border: 1.5px solid #e9d5ff;
+    background: linear-gradient(180deg, #faf5ff 0%, #f8fafc 100%);
+    border-radius: 12px;
+    padding: 14px;
+  }
+  .ha-title {
+    text-align: center;
+    font-size: 13px;
+    font-weight: 800;
+    color: #6b21a8;
+    letter-spacing: .5px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .ha-grid {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(130px, 1fr));
+    gap: 8px;
+  }
+  .ha-item {
+    background: #fff;
+    border: 1.5px solid #ddd6fe;
+    border-radius: 8px;
+    padding: 8px 10px;
+    text-align: center;
+  }
+  .ha-item .h {
+    font-size: 10px;
+    color: #6b21a8;
+    text-transform: uppercase;
+    letter-spacing: .35px;
+    font-weight: 800;
+  }
+  .ha-item .d {
+    font-size: 11px;
+    color: #334155;
+    line-height: 1.4;
+    margin-top: 3px;
+  }
+  .ha-note {
+    font-size: 11px;
+    color: #475569;
+    margin-top: 8px;
+    text-align: center;
+  }
+
+  /* ── 90-day BOQ panel ── */
+  .boq-panel {
+    margin: 0 auto 20px;
+    width: 100%;
+    border: 1.5px solid #fecaca;
+    background: linear-gradient(180deg, #fff7ed 0%, #fff 100%);
+    border-radius: 12px;
+    padding: 14px;
+  }
+  .boq-title {
+    text-align: center;
+    font-size: 13px;
+    font-weight: 800;
+    color: #9a3412;
+    letter-spacing: .5px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .boq-table-wrap {
+    overflow-x: auto;
+  }
+  .boq-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 900px;
+    background: #fff;
+    border: 1.5px solid #fed7aa;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .boq-table th,
+  .boq-table td {
+    border: 1px solid #fdba74;
+    padding: 8px 10px;
+    text-align: left;
+    font-size: 11.5px;
+    color: #334155;
+    vertical-align: top;
+  }
+  .boq-table th {
+    background: #ffedd5;
+    color: #7c2d12;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: .35px;
+  }
+  .boq-total-row td {
+    background: #fff7ed;
+    font-weight: 800;
+    color: #9a3412;
+  }
+  .boq-note {
+    font-size: 11px;
+    color: #475569;
+    margin-top: 8px;
+    line-height: 1.45;
+    text-align: center;
+  }
+
+  /* ── Tender annexure panel ── */
+  .annex-panel {
+    margin: 0 auto 20px;
+    width: 100%;
+    border: 1.5px solid #cbd5e1;
+    background: linear-gradient(180deg, #f8fafc 0%, #fff 100%);
+    border-radius: 12px;
+    padding: 14px;
+  }
+  .annex-title {
+    text-align: center;
+    font-size: 13px;
+    font-weight: 800;
+    color: #0f172a;
+    letter-spacing: .45px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .annex-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(200px, 1fr));
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+  .annex-card {
+    background: #fff;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 8px 10px;
+  }
+  .annex-card .h {
+    font-size: 11px;
+    font-weight: 800;
+    color: #1e293b;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .annex-card .d {
+    font-size: 11px;
+    color: #475569;
+    line-height: 1.45;
+  }
+  .annex-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    border: 1.5px solid #e2e8f0;
+  }
+  .annex-table th,
+  .annex-table td {
+    border: 1px solid #e2e8f0;
+    padding: 8px 10px;
+    text-align: left;
+    font-size: 11.5px;
+    color: #334155;
+    vertical-align: top;
+  }
+  .annex-table th {
+    background: #f1f5f9;
+    color: #0f172a;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: .3px;
+  }
+  .annex-note {
+    font-size: 11px;
+    color: #64748b;
+    margin-top: 8px;
+    text-align: center;
+    line-height: 1.45;
+  }
+
+  /* ── PHASE LABELS ── */
+  .phase-header {
+    text-align: center;
+    font-size: 15px; font-weight: 700;
+    letter-spacing: 1px; text-transform: uppercase;
+    padding: 8px 24px; border-radius: 30px;
+    display: inline-block; margin: 0 auto 6px;
+  }
+  .phase1-header { background: #dbeafe; color: #1d4ed8; }
+  .phase2-header { background: #f1f5f9; color: #475569; border: 2px solid #cbd5e1; }
+
+  .phase-section { display: flex; flex-direction: column; align-items: center; }
+
+  /* ── Generic box ── */
+  .box {
+    border-radius: 10px;
+    padding: 10px 18px;
+    font-size: 13px; font-weight: 600;
+    text-align: center;
+    min-width: 220px; max-width: 280px;
+    position: relative;
+    line-height: 1.5;
+    border: 2.5px solid transparent;
+  }
+  .box.optional {
+    border-style: dashed !important;
+    opacity: .88;
+  }
+  .box .icon { font-size: 18px; display: block; margin-bottom: 2px; }
+  .box .sub  { font-size: 11px; font-weight: 400; margin-top: 3px; color: inherit; opacity: .8; }
+
+  /* Terminal (start/end) */
+  .terminal {
+    background: #1e293b; color: #fff;
+    border-color: #1e293b;
+    border-radius: 30px;
+    padding: 10px 30px;
+  }
+
+  /* Phase 1 boxes */
+  .b-blue   { background: #eff6ff; color: #1d4ed8; border-color: #3b82f6; }
+  .b-blue-s { background: #dbeafe; color: #1e40af; border-color: #2563eb; }
+  .b-green  { background: #f0fdf4; color: #15803d; border-color: #22c55e; }
+  .b-purple { background: #f5f3ff; color: #6d28d9; border-color: #8b5cf6; }
+
+  /* Phase 2 branch boxes */
+  .b-orange { background: #fff7ed; color: #c2410c; border-color: #f97316; }
+  .b-red    { background: #fef2f2; color: #b91c1c; border-color: #ef4444; }
+  .b-yellow { background: #fefce8; color: #854d0e; border-color: #eab308; }
+  .b-indigo { background: #eef2ff; color: #4338ca; border-color: #6366f1; }
+
+  /* ── Diamond ── */
+  .diamond-wrap { display: flex; flex-direction: column; align-items: center; }
+  .diamond {
+    width: 130px; height: 70px;
+    background: #f5f3ff;
+    border: 2.5px solid #8b5cf6;
+    transform: rotate(45deg);
+    border-radius: 6px;
+    position: relative;
+  }
+  .diamond-text {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%) rotate(-45deg);
+    font-size: 12px; font-weight: 700; color: #6d28d9;
+    white-space: nowrap; text-align: center;
+    width: 130px;
+  }
+  .diamond-outer {
+    width: 140px; height: 80px;
+    display: flex; align-items: center; justify-content: center;
+    position: relative;
+  }
+
+  /* ── Arrows ── */
+  .arrow {
+    display: flex; flex-direction: column; align-items: center;
+    font-size: 22px; color: #94a3b8; line-height: 1;
+    margin: 2px 0;
+  }
+  .arrow-line {
+    width: 2px; background: #94a3b8;
+    height: 22px; margin: 0 auto;
+  }
+  .arrow-label {
+    font-size: 11px; font-weight: 700;
+    background: #fff; border: 1.5px solid #c4b5fd;
+    color: #7c3aed; border-radius: 4px;
+    padding: 1px 6px; margin: 2px 0;
+  }
+
+  /* ── YES/NO branch row ── */
+  .branch-row {
+    display: flex; align-items: flex-start;
+    justify-content: center; gap: 0; width: 100%;
+    position: relative;
+  }
+  .branch-col {
+    display: flex; flex-direction: column; align-items: center;
+    flex: 1; max-width: 260px;
+  }
+  .branch-connector {
+    display: flex; flex-direction: column; align-items: center;
+  }
+
+  /* ── Horizontal arrow line for branches ── */
+  .h-line {
+    height: 2px; background: #94a3b8;
+    flex: 1; min-width: 20px;
+  }
+  .h-arrow-row {
+    display: flex; align-items: center;
+    width: 100%; justify-content: center;
+  }
+
+  /* ── Phase 2 grid ── */
+  .phase2-grid {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    align-items: flex-start;
+    flex-wrap: nowrap;
+    width: 100%;
+    margin-top: 4px;
+  }
+  .p2-col {
+    display: flex; flex-direction: column;
+    align-items: center;
+    flex: 1; min-width: 190px; max-width: 240px;
+  }
+  .p2-col-header {
+    border-radius: 10px 10px 0 0;
+    padding: 8px 10px;
+    font-size: 12px; font-weight: 800;
+    text-align: center; width: 100%;
+    letter-spacing: .3px;
+  }
+  .h-orange { background: #fed7aa; color: #9a3412; }
+  .h-green  { background: #bbf7d0; color: #14532d; }
+  .h-red    { background: #fecaca; color: #7f1d1d; }
+  .h-yellow { background: #fef08a; color: #713f12; }
+  .h-indigo { background: #c7d2fe; color: #312e81; }
+
+  .p2-step {
+    width: 100%;
+    border-radius: 7px;
+    padding: 7px 10px;
+    font-size: 11.5px; font-weight: 600;
+    text-align: center;
+    margin: 3px 0;
+    line-height: 1.4;
+    border: 2px solid transparent;
+  }
+  .p2-step.optional { border-style: dashed !important; opacity: .85; }
+  .p2-arrow { font-size: 16px; color: #94a3b8; margin: 1px 0; }
+
+  .p2-diamond {
+    width: 110px; height: 60px;
+    background: #f5f3ff; border: 2px solid #8b5cf6;
+    transform: rotate(45deg); border-radius: 5px;
+    position: relative; margin: 6px 0;
+  }
+  .p2-diamond-text {
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%) rotate(-45deg);
+    font-size: 10px; font-weight: 700; color: #6d28d9;
+    white-space: nowrap; text-align: center; width: 120px;
+  }
+
+  /* ── Legend ── */
+  .legend {
+    margin: 30px 24px 24px;
+    background: #f8fafc;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 18px 24px;
+  }
+  .legend h3 {
+    font-size: 13px; font-weight: 800; color: #475569;
+    text-transform: uppercase; letter-spacing: 1px;
+    margin-bottom: 12px;
+  }
+  .legend-grid {
+    display: flex; flex-wrap: wrap; gap: 10px 24px;
+  }
+  .legend-item {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 12px; color: #334155;
+  }
+  .legend-dot {
+    width: 16px; height: 16px; border-radius: 4px;
+    flex-shrink: 0;
+  }
+  .legend-dash {
+    width: 22px; height: 14px; border-radius: 4px;
+    border: 2px dashed #64748b; background: #f8fafc; flex-shrink: 0;
+  }
+  .legend-diamond {
+    width: 16px; height: 16px;
+    background: #f5f3ff; border: 2px solid #8b5cf6;
+    transform: rotate(45deg); flex-shrink: 0;
+    border-radius: 3px;
+  }
+
+  /* ── Footer ── */
+  footer {
+    background: #1e293b; color: #94a3b8;
+    text-align: center; padding: 14px 20px;
+    font-size: 12px; letter-spacing: .5px;
+  }
+
+  /* ── Print styles ── */
+  @media print {
+    body { background: #fff; padding: 0; }
+    #printBtn { display: none; }
+    .page { box-shadow: none; border-radius: 0; max-width: 100%; }
+    .phase2-grid { flex-wrap: wrap; }
+    @page { size: A3 landscape; margin: 10mm; }
+  }
+
+  @media (max-width: 900px) {
+    .phase2-grid { flex-wrap: wrap; }
+    .p2-col { min-width: 160px; }
+    .scale-grid { grid-template-columns: repeat(2, minmax(120px, 1fr)); }
+    .ops-grid { grid-template-columns: repeat(2, minmax(120px, 1fr)); }
+    .ha-grid { grid-template-columns: repeat(2, minmax(120px, 1fr)); }
+    .boq-table { min-width: 760px; }
+    .annex-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<button id="printBtn" onclick="window.print()">🖨️ Print / Save as PDF</button>
+
+<div class="page">
+
+  <!-- ══════════════ TITLE ══════════════ -->
+  <div class="title-banner">
+    <h1>🏛️ Ujjain Kumbh QR System — End-to-End Flowchart</h1>
+    <p>FROM USER ARRIVAL &nbsp;→&nbsp; REGISTRATION &nbsp;→&nbsp; ACTIONS</p>
+    <div class="phase-badge">KUMBH MELA 2028 | UJJAIN | SCALE TARGET: 200M</div>
+  </div>
+
+  <div class="content">
+
+    <!-- ══════════════ 200M SCALE TARGET ══════════════ -->
+    <div class="scale-panel">
+      <div class="scale-title">Capacity Baseline for 200M Population Coverage</div>
+      <div class="scale-grid">
+        <div class="scale-item">
+          <div class="k">Total Coverage</div>
+          <div class="v">200M People</div>
+        </div>
+        <div class="scale-item">
+          <div class="k">Peak Concurrent Users</div>
+          <div class="v">300K</div>
+        </div>
+        <div class="scale-item">
+          <div class="k">Peak QR Scans/Minute</div>
+          <div class="v">1.2M</div>
+        </div>
+        <div class="scale-item">
+          <div class="k">Sustained API Throughput</div>
+          <div class="v">50K req/sec</div>
+        </div>
+        <div class="scale-item">
+          <div class="k">Availability Target</div>
+          <div class="v">99.995%</div>
+        </div>
+      </div>
+      <div class="scale-note">
+        Planning assumption for tender sizing: horizontal auto-scale, queue-based burst handling, and geo-redundant failover.
+      </div>
+    </div>
+
+    <!-- ══════════════ GROUND IMPLEMENTATION ══════════════ -->
+    <div class="ops-panel">
+      <div class="ops-title">Ground Operations Blueprint (Ujjain Kumbh 2028)</div>
+      <div class="ops-grid">
+        <div class="ops-item">
+          <div class="h">Gate Setup</div>
+          <div class="d">Each gate: 1 supervisor, 4 QR volunteers, 2 help staff, 1 reserve device desk.</div>
+        </div>
+        <div class="ops-item">
+          <div class="h">Offline Continuity</div>
+          <div class="d">Scanner app keeps local queue for 15 minutes; auto-sync on network restore without data loss.</div>
+        </div>
+        <div class="ops-item">
+          <div class="h">Control Room</div>
+          <div class="d">24x7 district war room with police, medical, IT, and escalation commander in one console.</div>
+        </div>
+        <div class="ops-item">
+          <div class="h">Daily Drill</div>
+          <div class="d">Shift start: 10-minute failover drill, spare device check, and response-time readiness test.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════ ZERO DOWNTIME ARCHITECTURE ══════════════ -->
+    <div class="ha-panel">
+      <div class="ha-title">Zero Planned Downtime Design (Near-Zero Unplanned Outage)</div>
+      <div class="ha-grid">
+        <div class="ha-item">
+          <div class="h">Dual Active Regions</div>
+          <div class="d">Live traffic split across 2 regions with auto reroute on health failure.</div>
+        </div>
+        <div class="ha-item">
+          <div class="h">Blue-Green Deploy</div>
+          <div class="d">No-stop releases with canary 5% > 25% > 100% and instant rollback.</div>
+        </div>
+        <div class="ha-item">
+          <div class="h">Database Safety</div>
+          <div class="d">Multi-AZ writer + read replicas, partitioned tables, point-in-time recovery.</div>
+        </div>
+        <div class="ha-item">
+          <div class="h">Queue-First Writes</div>
+          <div class="d">Burst traffic buffered through durable queue to protect core APIs.</div>
+        </div>
+        <div class="ha-item">
+          <div class="h">SRE Monitoring</div>
+          <div class="d">24x7 NOC, p95 latency alert, synthetic checks, auto-healing runbooks.</div>
+        </div>
+      </div>
+      <div class="ha-note">
+        Target posture: zero planned downtime and sub-5 minute service recovery for critical incidents.
+      </div>
+    </div>
+
+    <!-- ══════════════ 90-DAY COSTING BOQ ══════════════ -->
+    <div class="boq-panel">
+      <div class="boq-title">90-Day BOQ (Ujjain Kumbh 2028) - Costing Options</div>
+      <div class="boq-table-wrap">
+        <table class="boq-table">
+          <thead>
+            <tr>
+              <th>Cost Head</th>
+              <th>Minimum Plan (INR Cr)</th>
+              <th>Recommended Plan (INR Cr)</th>
+              <th>Premium Plan (INR Cr)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Cloud Infra + DB + CDN + Security</td>
+              <td>2.0 - 3.0</td>
+              <td>4.5 - 6.0</td>
+              <td>6.5 - 8.5</td>
+            </tr>
+            <tr>
+              <td>SRE/NOC + 24x7 Support Operations</td>
+              <td>1.0 - 1.8</td>
+              <td>2.2 - 3.4</td>
+              <td>3.5 - 5.0</td>
+            </tr>
+            <tr>
+              <td>SMS/OTP/Push/Call Notifications</td>
+              <td>0.8 - 1.4</td>
+              <td>1.8 - 2.8</td>
+              <td>2.5 - 4.0</td>
+            </tr>
+            <tr>
+              <td>On-Ground Devices, Network, Help Desks</td>
+              <td>1.2 - 2.0</td>
+              <td>2.8 - 4.2</td>
+              <td>4.0 - 6.0</td>
+            </tr>
+            <tr>
+              <td>Control Room, Drills, Incident Command</td>
+              <td>0.8 - 1.2</td>
+              <td>1.6 - 2.4</td>
+              <td>2.3 - 3.5</td>
+            </tr>
+            <tr>
+              <td>Implementation Team (Fast Changes + Integrations)</td>
+              <td>1.5 - 2.5</td>
+              <td>2.5 - 3.8</td>
+              <td>3.5 - 5.5</td>
+            </tr>
+            <tr>
+              <td>Contingency and Emergency Reserve</td>
+              <td>0.8 - 1.2</td>
+              <td>1.5 - 2.2</td>
+              <td>2.5 - 3.5</td>
+            </tr>
+            <tr class="boq-total-row">
+              <td>Total Estimated Cost (90 Days)</td>
+              <td>8.1 - 13.1</td>
+              <td>16.9 - 24.8</td>
+              <td>24.8 - 36.0</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="boq-note">
+        Suggested tender baseline: Recommended Plan for stable field execution. Premium Plan is preferred for near-zero unplanned outage and active-active regional resilience. All values are indicative and exclude GST.
+      </div>
+    </div>
+
+    <!-- ══════════════ ANNEXURE-A TENDER FORMAT ══════════════ -->
+    <div class="annex-panel">
+      <div class="annex-title">Annexure-A: Tender Commercial and SLA Summary (90 Days)</div>
+
+      <div class="annex-grid">
+        <div class="annex-card">
+          <div class="h">Contract Duration</div>
+          <div class="d">90 calendar days including setup, peak event run, and closure support window.</div>
+        </div>
+        <div class="annex-card">
+          <div class="h">Commercial Model</div>
+          <div class="d">Fixed price with milestone-linked payments and measurable service credits.</div>
+        </div>
+        <div class="annex-card">
+          <div class="h">Recommended Bid Band</div>
+          <div class="d">INR 16.9 Cr to 24.8 Cr (excluding GST) for stable field implementation.</div>
+        </div>
+      </div>
+
+      <table class="annex-table">
+        <thead>
+          <tr>
+            <th>Clause</th>
+            <th>Requirement</th>
+            <th>Acceptance Criteria</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Service Availability</td>
+            <td>Target 99.995% with zero planned downtime posture</td>
+            <td>Monthly uptime report from monitoring stack; approved by control room</td>
+          </tr>
+          <tr>
+            <td>Incident Recovery</td>
+            <td>Critical incident service restore within 5 minutes (RTO)</td>
+            <td>Incident logs and drill evidence for each major event</td>
+          </tr>
+          <tr>
+            <td>Field Operations</td>
+            <td>24x7 war room, gate staffing, spare devices, daily failover drills</td>
+            <td>Shift checklist signed by district operations in-charge</td>
+          </tr>
+          <tr>
+            <td>Data Protection</td>
+            <td>Encryption in transit/at rest, daily backup, point-in-time restore</td>
+            <td>Security audit signoff and successful restore test</td>
+          </tr>
+          <tr>
+            <td>Payment Milestones</td>
+            <td>30% setup, 40% live operations, 20% stability, 10% closure</td>
+            <td>Milestone completion certificates issued by authority</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="annex-note">
+        Suggested compliance attachments: architecture diagram, load test report, DR drill report, security audit, and daily operations register.
+      </div>
+    </div>
+
+    <!-- ══════════════ PHASE 1 ══════════════ -->
+    <div class="phase-section">
+      <div class="phase-header phase1-header">📋 Phase 1 — Registration Flow</div>
+
+      <div class="arrow"><div class="arrow-line"></div>▼</div>
+
+      <!-- START -->
+      <div class="box terminal">
+        <span class="icon">🚀</span>
+        START: User Arrival
+        <div class="sub">Parking / Kumbh Entry Gate</div>
+      </div>
+
+      <div class="arrow"><div class="arrow-line"></div>▼</div>
+
+      <!-- QR SCAN -->
+      <div class="box b-blue">
+        <span class="icon">📷</span>
+        QR Code Scan
+        <div class="sub">One QR = One Registration<br/>Single use + offline queue sync enabled</div>
+      </div>
+
+      <div class="arrow"><div class="arrow-line"></div>▼</div>
+
+      <!-- LANGUAGE -->
+      <div class="box b-blue-s">
+        <span class="icon">🌐</span>
+        Language Selection
+        <div class="sub">Hindi / English / Marathi / Bengali / Other</div>
+      </div>
+
+      <div class="arrow"><div class="arrow-line"></div>▼</div>
+
+      <!-- REGISTRATION PAGE -->
+      <div style="display:flex;flex-direction:column;align-items:center;gap:4px;">
+        <div class="box b-blue" style="max-width:320px;">
+          <span class="icon">📝</span>
+          Registration Page
+          <div class="sub">✅ Photo + Phone + Relative Number (Mandatory)</div>
+        </div>
+        <div style="display:flex;gap:8px;margin-top:4px;">
+          <div class="box b-blue optional" style="min-width:140px;max-width:160px;font-size:11.5px;">
+            <span class="icon">🪪</span>
+            Aadhaar Number
+            <div class="sub">Optional</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="arrow"><div class="arrow-line"></div>▼</div>
+
+      <!-- QR MARKED -->
+      <div class="box b-green">
+        <span class="icon">✅</span>
+        QR Marked as USED
+        <div class="sub">Prevents duplicate registration</div>
+      </div>
+
+      <div class="arrow"><div class="arrow-line"></div>▼</div>
+
+      <!-- DECISION: Family -->
+      <div class="diamond-wrap">
+        <div class="diamond-outer">
+          <div class="diamond">
+            <div class="diamond-text">Add Family<br/>Member?</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- YES / NO branches -->
+      <div style="width:480px;display:flex;align-items:flex-start;justify-content:center;position:relative;">
+
+        <!-- YES branch (left) -->
+        <div style="display:flex;flex-direction:column;align-items:center;flex:1;">
+          <div style="width:2px;height:20px;background:#94a3b8;"></div>
+          <div style="width:100%;height:2px;background:#94a3b8;"></div>
+          <div style="width:2px;height:20px;background:#94a3b8;"></div>
+          <span class="arrow-label">YES</span>
+          <div style="width:2px;height:10px;background:#94a3b8;"></div>
+          <div class="box b-blue" style="font-size:12px;">
+            <span class="icon">👨‍👩‍👧</span>
+            Scan Next Family<br/>Member QR
+            <div class="sub">↩ Repeat Registration Loop</div>
+          </div>
+        </div>
+
+        <!-- NO branch (right) -->
+        <div style="display:flex;flex-direction:column;align-items:center;flex:1;">
+          <div style="width:2px;height:20px;background:#94a3b8;"></div>
+          <div style="width:100%;height:2px;background:#94a3b8;"></div>
+          <div style="width:2px;height:20px;background:#94a3b8;"></div>
+          <span class="arrow-label">NO</span>
+          <div style="width:2px;height:10px;background:#94a3b8;"></div>
+          <div class="box b-green" style="font-size:12px;">
+            <span class="icon">✅</span>
+            All Family<br/>Registered
+          </div>
+        </div>
+      </div>
+
+      <div class="arrow" style="margin-top:6px;"><div class="arrow-line"></div>▼</div>
+
+      <!-- DECISION: App -->
+      <div class="diamond-wrap">
+        <div class="diamond-outer">
+          <div class="diamond">
+            <div class="diamond-text">Download/<br/>Open App?</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="width:480px;display:flex;align-items:flex-start;justify-content:center;">
+        <!-- YES -->
+        <div style="display:flex;flex-direction:column;align-items:center;flex:1;">
+          <div style="width:2px;height:20px;background:#94a3b8;"></div>
+          <div style="width:100%;height:2px;background:#94a3b8;"></div>
+          <div style="width:2px;height:20px;background:#94a3b8;"></div>
+          <span class="arrow-label">YES</span>
+          <div style="width:2px;height:10px;background:#94a3b8;"></div>
+          <div class="box b-indigo optional" style="font-size:12px;border-color:#6366f1;background:#eef2ff;color:#4338ca;">
+            <span class="icon">📱</span>
+            App Installed Successfully
+            <div class="sub">Optional</div>
+          </div>
+        </div>
+        <!-- NO -->
+        <div style="display:flex;flex-direction:column;align-items:center;flex:1;">
+          <div style="width:2px;height:20px;background:#94a3b8;"></div>
+          <div style="width:100%;height:2px;background:#94a3b8;"></div>
+          <div style="width:2px;height:20px;background:#94a3b8;"></div>
+          <span class="arrow-label">NO</span>
+          <div style="width:2px;height:10px;background:#94a3b8;"></div>
+          <div class="box b-green" style="font-size:12px;">
+            <span class="icon">➡️</span>
+            Proceed
+          </div>
+        </div>
+      </div>
+
+      <div class="arrow" style="margin-top:8px;"><div class="arrow-line"></div>▼</div>
+
+      <!-- CLOSE REGISTRATION -->
+      <div class="box terminal">
+        <span class="icon">🔒</span>
+        Registration Phase Complete
+        <div class="sub">System ready for post-registration actions</div>
+      </div>
+
+    </div><!-- /phase-section -->
+
+    <!-- Spacer + Phase 2 header -->
+    <div style="display:flex;flex-direction:column;align-items:center;margin-top:14px;">
+      <div class="arrow"><div class="arrow-line" style="height:30px;"></div>▼</div>
+      <div class="phase-header phase2-header">⚡ Phase 2 — Choose Action (5 Options)</div>
+      <div class="arrow"><div class="arrow-line"></div>▼</div>
+
+      <!-- ACTION HUB -->
+      <div class="box" style="background:#f1f5f9;border-color:#64748b;color:#1e293b;max-width:360px;font-size:14px;font-weight:800;">
+        <span class="icon">🎯</span>
+        System Ready — Choose Action
+        <div class="sub">1 LOST &nbsp;|&nbsp; 2 FOUND &nbsp;|&nbsp; 3 HELP &nbsp;|&nbsp; 4 COMPLAINT &nbsp;|&nbsp; 5 APP</div>
+      </div>
+
+      <div class="arrow"><div class="arrow-line"></div>▼</div>
+    </div>
+
+    <!-- ══════════════ PHASE 2 GRID ══════════════ -->
+    <div class="phase2-grid">
+
+      <!-- ── 1 LOST ── -->
+      <div class="p2-col">
+        <div class="p2-col-header h-orange">🚨 1. REPORT LOST</div>
+
+        <div class="p2-step b-orange">
+          <span>📋</span> Short Description
+          <div style="font-size:10px;opacity:.8">(Optional)</div>
+        </div>
+        <div class="p2-arrow">▼</div>
+
+        <div class="p2-step b-orange optional" style="border-color:#f97316;">
+          <span>📸</span> Photo / Video Upload
+          <div style="font-size:10px;opacity:.8">Optional</div>
+        </div>
+        <div class="p2-arrow">▼</div>
+
+        <div class="p2-step b-orange" style="background:#fed7aa;font-weight:800;">
+          🎫 Ticket Generated
+        </div>
+        <div class="p2-arrow">▼</div>
+
+        <div class="p2-step b-orange">
+          🔔 Alert: Parents +<br/>Control Room
+        </div>
+        <div class="p2-arrow">▼</div>
+
+        <div class="p2-step b-orange">
+          🗺️ Map: Nearest<br/>Help Center
+        </div>
+        <div class="p2-arrow">▼</div>
+
+        <div class="p2-step" style="background:#7f1d1d;color:#fff;border-color:#991b1b;font-weight:800;">
+          🚔 Police Action<br/>within 30 min
+        </div>
+      </div>
+
+      <!-- ── 2 FOUND ── -->
+      <div class="p2-col">
+        <div class="p2-col-header h-green">✅ 2. MARK FOUND</div>
+
+        <div class="p2-step b-green optional" style="border-color:#22c55e;">
+          🔑 OTP Verification
+          <div style="font-size:10px;opacity:.8">Optional for closure</div>
+        </div>
+        <div class="p2-arrow">▼</div>
+
+        <div class="p2-step b-green" style="background:#bbf7d0;font-weight:800;">
+          🎫 Ticket Closed
+        </div>
+        <div class="p2-arrow">▼</div>
+
+        <div class="p2-step b-green">
+          🔔 Notification:<br/>Parents + Control Room
+        </div>
+        <div class="p2-arrow">▼</div>
+
+        <div class="p2-step" style="background:#14532d;color:#fff;border-color:#15803d;font-weight:800;">
+          ✅ Case Resolved
+        </div>
+      </div>
+
+      <!-- ── 3 HELP ── -->
+      <div class="p2-col">
+        <div class="p2-col-header h-red">🆘 3. HELP (High Priority)</div>
+
+        <div class="p2-step b-red" style="background:#fecaca;font-weight:800;">
+          📂 Category (Mandatory)<br/>
+          <div style="font-size:10px;margin-top:3px;">Medical / Security / Fire / Other</div>
+        </div>
+        <div class="p2-arrow">▼</div>
+
+        <div class="p2-step b-red">
+          📝 Short Description
+          <div style="font-size:10px;opacity:.8">Mandatory</div>
+        </div>
+        <div class="p2-arrow">▼</div>
+
+        <div class="p2-step b-red optional" style="border-color:#ef4444;">
+          📸 Photo / Video
+          <div style="font-size:10px;opacity:.8">Optional</div>
+        </div>
+        <div class="p2-arrow">▼</div>
+
+        <div class="p2-step b-red" style="background:#fecaca;font-weight:800;">
+          📲 OTP Sent to<br/>User + Relative
+          <div style="font-size:10px;margin-top:2px;">Any 1 OTP sufficient</div>
+        </div>
+        <div class="p2-arrow">▼</div>
+
+        <!-- Diamond -->
+        <div style="position:relative;width:100%;display:flex;justify-content:center;margin:6px 0;">
+          <div class="p2-diamond">
+            <div class="p2-diamond-text">OTP<br/>Verified?</div>
+          </div>
+        </div>
+
+        <div style="display:flex;gap:4px;width:100%;justify-content:center;margin-top:4px;">
+          <div style="display:flex;flex-direction:column;align-items:center;flex:1;">
+            <span class="arrow-label">YES</span>
+            <div class="p2-step" style="background:#14532d;color:#fff;border-color:#15803d;font-weight:800;margin-top:4px;">
+              ✅ Incident<br/>Closed
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;flex:1;">
+            <span class="arrow-label">NO</span>
+            <div class="p2-step b-red" style="margin-top:4px;border-style:dashed;font-size:10.5px;">
+              🔒 Remains Open<br/>(Cannot close<br/>without OTP)
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── 4 COMPLAINT ── -->
+      <div class="p2-col">
+        <div class="p2-col-header h-yellow">📝 4. COMPLAINT</div>
+        <div style="font-size:10px;color:#854d0e;font-weight:700;margin-bottom:3px;">Medium Priority</div>
+
+        <div class="p2-step b-yellow" style="background:#fef08a;font-weight:800;">
+          📂 Category (Mandatory)<br/>
+          <div style="font-size:10px;margin-top:3px;">Garbage / Toilets / Lost Items / Other</div>
+        </div>
+        <div class="p2-arrow">▼</div>
+
+        <div class="p2-step b-yellow">
+          📝 Short Description
+          <div style="font-size:10px;opacity:.8">Mandatory</div>
+        </div>
+        <div class="p2-arrow">▼</div>
+
+        <div class="p2-step b-yellow optional" style="border-color:#eab308;">
+          📸 Photo / Video
+          <div style="font-size:10px;opacity:.8">Optional</div>
+        </div>
+        <div class="p2-arrow">▼</div>
+
+        <div class="p2-step b-yellow" style="background:#fef08a;font-weight:800;">
+          🎫 Ticket Generated
+        </div>
+        <div class="p2-arrow">▼</div>
+
+        <div class="p2-step" style="background:#713f12;color:#fff;border-color:#92400e;font-weight:800;">
+          🔔 Alert to<br/>Control Room
+        </div>
+      </div>
+
+      <!-- ── 5 APP ── -->
+      <div class="p2-col">
+        <div class="p2-col-header h-indigo">📱 5. OPEN APP</div>
+        <div style="font-size:10px;color:#4338ca;font-weight:700;margin-bottom:3px;">Optional</div>
+
+        <div class="p2-step b-indigo optional" style="border-color:#6366f1;">
+          🔗 Direct Download<br/>/ Open Link
+          <div style="font-size:10px;opacity:.8">Optional</div>
+        </div>
+        <div class="p2-arrow">▼</div>
+
+        <div class="p2-step b-indigo">
+          🌐 Language Applied
+          <div style="font-size:10px;opacity:.8">= Selected Language</div>
+        </div>
+        <div class="p2-arrow">▼</div>
+
+        <div class="p2-step" style="background:#312e81;color:#fff;border-color:#4338ca;font-weight:800;">
+          📱 App Launched
+          <div style="font-size:10px;margin-top:3px;opacity:.85;">Full access to all actions</div>
+        </div>
+      </div>
+
+    </div><!-- /phase2-grid -->
+
+    <!-- END terminal -->
+    <div style="display:flex;flex-direction:column;align-items:center;margin-top:20px;">
+      <div class="arrow"><div class="arrow-line" style="height:24px;"></div>▼</div>
+      <div class="box terminal" style="max-width:360px;">
+        <span class="icon">🏁</span>
+        END: Action Complete
+        <div class="sub">Ticket closed / resolved / app active</div>
+      </div>
+    </div>
+
+  </div><!-- /content -->
+
+  <!-- ══════════════ LEGEND ══════════════ -->
+  <div class="legend">
+    <h3>📌 Legend / Key</h3>
+    <div class="legend-grid">
+      <div class="legend-item"><div class="legend-dot" style="background:#3b82f6;"></div> Registration / Phase 1</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#f97316;"></div> Report Lost 🚨</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#22c55e;"></div> Mark Found ✅</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#ef4444;"></div> Help — High Priority 🆘</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#eab308;"></div> Complaint — Medium Priority 📝</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#6366f1;"></div> Open Mobile App 📱</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#8b5cf6;"></div> Decision Point</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#1e293b;"></div> Start / End Terminal</div>
+      <div class="legend-item"><div class="legend-dash"></div> Optional Step (dashed border)</div>
+      <div class="legend-item"><div class="legend-diamond"></div> Decision Diamond (YES / NO)</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#bbf7d0;border:1.5px solid #22c55e;"></div> Solid border = Mandatory step</div>
+      <div class="legend-item" style="font-size:12px;color:#64748b;">🔑 OTP: Any 1 of User/Relative OTP sufficient (HELP only)</div>
+      <div class="legend-item" style="font-size:12px;color:#64748b;">📷 QR: Each QR valid for single-use registration only</div>
+    </div>
+  </div>
+
+  <!-- ══════════════ FOOTER ══════════════ -->
+  <footer>
+    Prepared for Government Tender Submission &nbsp;|&nbsp; Ujjain Kumbh Mela 2028 &nbsp;|&nbsp;
+    QR-Based Registration & Incident Management System (200M Baseline | Ground-Ready | Zero Planned Downtime)
+  </footer>
+
+</div><!-- /page -->
+</body>
+</html>

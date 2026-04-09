@@ -1,0 +1,21 @@
+# Node dependencies
+**/node_modules/
+
+# Runtime files
+*.log
+*.pid
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS/editor
+.DS_Store
+Thumbs.db
+.vscode/*.code-workspace
+
+# Local tunnel artifacts
+kumbh_system/public_tunnel_url.txt
+
+# Python cache (if any)
+__pycache__/
+*.pyc

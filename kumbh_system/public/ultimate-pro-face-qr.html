@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ujjain Kumbh 2028 | Ultimate Pro Face+QR</title>
+  <style>
+    :root {
+      --saffron-700: #cc5500;
+      --saffron-600: #e67e22;
+      --saffron-200: #ffd9ad;
+      --cream: #fff8ef;
+      --ink: #3a1e0f;
+      --line: #f0cda6;
+      --ok: #2e7d32;
+      --error: #b71c1c;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Trebuchet MS', 'Noto Sans Devanagari', 'Segoe UI', sans-serif;
+      background:
+        radial-gradient(circle at 85% 15%, rgba(230,126,34,0.22), transparent 25%),
+        linear-gradient(145deg, #fff6e8, #fff);
+      color: var(--ink);
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      box-shadow: 0 18px 45px rgba(204,85,0,0.14);
+      overflow: hidden;
+    }
+
+    .hero {
+      padding: 20px;
+      background: linear-gradient(110deg, #fff5e3, #ffe3bf);
+      border-bottom: 1px solid var(--line);
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 16px;
+      align-items: center;
+    }
+
+    .hero h1 { color: var(--saffron-700); margin-bottom: 6px; }
+    .hero p { color: #5c2f14; line-height: 1.5; }
+
+    .hero img {
+      width: 100%;
+      border-radius: 10px;
+      border: 1px solid var(--line);
+      max-height: 180px;
+      object-fit: cover;
+    }
+
+    .content {
+      padding: 18px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .card {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: linear-gradient(180deg, #fff, var(--cream));
+      padding: 16px;
+    }
+
+    .card h2 {
+      color: var(--saffron-700);
+      margin-bottom: 12px;
+      font-size: 18px;
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    label { display: block; font-size: 13px; font-weight: bold; margin-bottom: 5px; }
+
+    input, select, textarea, button {
+      width: 100%;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid var(--line);
+      font-size: 14px;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: var(--saffron-600);
+      box-shadow: 0 0 0 3px rgba(230,126,34,0.17);
+    }
+
+    button {
+      background: linear-gradient(90deg, var(--saffron-700), var(--saffron-600));
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+      margin-top: 8px;
+    }
+
+    .sub-btn {
+      background: #fff;
+      color: var(--ink);
+      border: 1px solid var(--line);
+    }
+
+    .message {
+      margin-top: 10px;
+      padding: 10px;
+      border-radius: 8px;
+      font-size: 13px;
+      white-space: pre-wrap;
+    }
+
+    .ok { background: #e8f5e9; color: var(--ok); border: 1px solid #a5d6a7; }
+    .err { background: #ffebee; color: var(--error); border: 1px solid #ef9a9a; }
+
+    .insight-item {
+      border-left: 3px solid var(--saffron-600);
+      background: #fff;
+      padding: 10px;
+      margin-bottom: 8px;
+      border-radius: 8px;
+    }
+
+    .qr-box {
+      text-align: center;
+      margin-top: 10px;
+    }
+
+    .qr-box img {
+      width: 220px;
+      height: 220px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #fff;
+      padding: 8px;
+    }
+
+    @media (max-width: 980px) {
+      .hero, .content, .row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="hero">
+      <div>
+        <h1>हर हर महादेव | Ultimate Pro Face+QR Suite</h1>
+        <p>Kumbh 2025 learnings ke base par 2028 ke liye advanced registration, face-aware identity, QR pass, rapid help reporting aur citizen-first workflow.</p>
+      </div>
+      <img src="/mahakal-visual.svg" alt="Mahakal inspired visual" />
+    </div>
+
+    <div class="content">
+      <div class="card">
+        <h2>2025 Analysis to 2028 Features</h2>
+        <button id="loadInsightsBtn" class="sub-btn">Load Analysis</button>
+        <div id="insights" style="margin-top: 10px;"></div>
+      </div>
+
+      <div class="card">
+        <h2>Pro Registration + OTP</h2>
+        <div class="row">
+          <div>
+            <label>Head Name</label>
+            <input id="headName" placeholder="नाम" />
+          </div>
+          <div>
+            <label>Phone</label>
+            <input id="phone" placeholder="10-digit" />
+          </div>
+        </div>
+        <div class="row">
+          <div>
+            <label>Relative Phone</label>
+            <input id="relativePhone" placeholder="Relative contact" />
+          </div>
+          <div>
+            <label>Language</label>
+            <select id="language">
+              <option>Hindi</option>
+              <option>English</option>
+              <option>Marathi</option>
+              <option>Gujarati</option>
+            </select>
+          </div>
+        </div>
+        <label>Face Photo (for demo use any image)</label>
+        <input id="facePhoto" type="file" accept="image/*" />
+        <button id="startRegBtn">Start Registration</button>
+        <div class="row" style="margin-top: 10px;">
+          <div>
+            <label>Registration ID</label>
+            <input id="registrationId" placeholder="auto-filled" />
+          </div>
+          <div>
+            <label>OTP</label>
+            <input id="otp" placeholder="enter OTP" />
+          </div>
+        </div>
+        <button id="verifyOtpBtn">Verify OTP + Generate QR</button>
+        <div id="regMsg"></div>
+        <div class="qr-box" id="qrWrap" style="display:none;">
+          <img id="qrImg" alt="QR Pass" />
+          <p style="margin-top:8px; font-size:12px;">Pilgrim QR Pass</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Citizen Quick Help Report</h2>
+        <div class="row">
+          <div>
+            <label>Action Type</label>
+            <select id="actionType">
+              <option>HELP</option>
+              <option>COMPLAINT</option>
+              <option>LOST</option>
+              <option>FOUND</option>
+            </select>
+          </div>
+          <div>
+            <label>Category</label>
+            <input id="actionCategory" placeholder="e.g. Medical Emergency" />
+          </div>
+        </div>
+        <label>Description</label>
+        <textarea id="description" rows="3" placeholder="Issue details"></textarea>
+        <div class="row">
+          <button id="voiceStartBtn" class="sub-btn" type="button">🎙️ Voice Input (Hindi/Marathi)</button>
+          <button id="voiceStopBtn" class="sub-btn" type="button">⏹️ Stop Voice</button>
+        </div>
+        <button id="reportBtn">Create Ticket</button>
+        <div id="ticketMsg"></div>
+      </div>
+
+      <div class="card">
+        <h2>QR Lookup by Phone</h2>
+        <label>Phone</label>
+        <input id="lookupPhone" placeholder="registered phone" />
+        <button id="lookupBtn" class="sub-btn">Find Registration + QR</button>
+        <div id="lookupMsg" class="message" style="display:none;"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const API_BASE = `${window.location.origin}/api`;
+    let speechRecognition = null;
+
+    function setMessage(id, text, ok = true) {
+      const el = document.getElementById(id);
+      el.className = `message ${ok ? 'ok' : 'err'}`;
+      el.textContent = text;
+      el.style.display = 'block';
+    }
+
+    async function fileToDataURL(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+    }
+
+    document.getElementById('loadInsightsBtn').addEventListener('click', async () => {
+      const res = await fetch(`${API_BASE}/insights/kumbh-2025-analysis`);
+      const data = await res.json();
+      const insights = document.getElementById('insights');
+      if (!data.ok) {
+        insights.innerHTML = '<div class="message err">Insights unavailable</div>';
+        return;
+      }
+
+      insights.innerHTML = data.lessons.map((l) => `
+        <div class="insight-item">
+          <strong>${l.area}</strong><br/>
+          <small>2025 finding: ${l.finding}</small><br/>
+          <small>2028 feature: ${l.featureFor2028}</small>
+        </div>
+      `).join('');
+    });
+
+    document.getElementById('startRegBtn').addEventListener('click', async () => {
+      try {
+        const file = document.getElementById('facePhoto').files[0];
+        if (!file) {
+          setMessage('regMsg', 'Face photo required', false);
+          return;
+        }
+
+        const facePhoto = await fileToDataURL(file);
+        const payload = {
+          headName: document.getElementById('headName').value.trim(),
+          phone: document.getElementById('phone').value.trim(),
+          relativePhone: document.getElementById('relativePhone').value.trim(),
+          language: document.getElementById('language').value,
+          facePhoto
+        };
+
+        const res = await fetch(`${API_BASE}/register/start`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+        if (!data.ok) {
+          setMessage('regMsg', data.message || 'Registration start failed', false);
+          return;
+        }
+
+        document.getElementById('registrationId').value = data.registrationId;
+        if (data.otpForTesting) {
+          document.getElementById('otp').value = data.otpForTesting;
+        }
+        setMessage('regMsg', `Registration started. ID: ${data.registrationId}`);
+      } catch (err) {
+        setMessage('regMsg', err.message, false);
+      }
+    });
+
+    document.getElementById('verifyOtpBtn').addEventListener('click', async () => {
+      const registrationId = document.getElementById('registrationId').value.trim();
+      const otp = document.getElementById('otp').value.trim();
+
+      try {
+        const verify = await fetch(`${API_BASE}/register/verify-otp`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ registrationId, otp })
+        });
+        const v = await verify.json();
+        if (!v.ok) {
+          setMessage('regMsg', v.message || 'OTP verify failed', false);
+          return;
+        }
+
+        const qr = await fetch(`${API_BASE}/pro/registration/${encodeURIComponent(registrationId)}/qr`);
+        const q = await qr.json();
+        if (!q.ok) {
+          setMessage('regMsg', q.message || 'QR generation failed', false);
+          return;
+        }
+
+        document.getElementById('qrImg').src = q.qrDataUrl;
+        document.getElementById('qrWrap').style.display = 'block';
+        setMessage('regMsg', 'OTP verified. QR Pass generated successfully.');
+      } catch (err) {
+        setMessage('regMsg', err.message, false);
+      }
+    });
+
+    document.getElementById('reportBtn').addEventListener('click', async () => {
+      try {
+        const payload = {
+          actionType: document.getElementById('actionType').value,
+          actionCategory: document.getElementById('actionCategory').value.trim(),
+          phone: document.getElementById('phone').value.trim(),
+          description: document.getElementById('description').value.trim(),
+          language: document.getElementById('language').value
+        };
+        const res = await fetch(`${API_BASE}/action/report`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+        if (!data.ok) {
+          setMessage('ticketMsg', data.message || 'Ticket create failed', false);
+          return;
+        }
+
+        setMessage('ticketMsg', `Ticket created: ${data.ticket.id} (${data.ticket.status})`);
+      } catch (err) {
+        setMessage('ticketMsg', err.message, false);
+      }
+    });
+
+    function initSpeechCapture() {
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (!SpeechRecognition) {
+        return;
+      }
+
+      speechRecognition = new SpeechRecognition();
+      speechRecognition.lang = 'hi-IN';
+      speechRecognition.interimResults = true;
+      speechRecognition.continuous = true;
+
+      speechRecognition.onresult = (event) => {
+        let transcript = '';
+        for (let i = event.resultIndex; i < event.results.length; i++) {
+          transcript += event.results[i][0].transcript;
+        }
+        const desc = document.getElementById('description');
+        desc.value = `${desc.value} ${transcript}`.trim();
+      };
+    }
+
+    document.getElementById('voiceStartBtn').addEventListener('click', () => {
+      if (!speechRecognition) {
+        initSpeechCapture();
+      }
+      if (!speechRecognition) {
+        setMessage('ticketMsg', 'Voice capture not supported in this browser', false);
+        return;
+      }
+      speechRecognition.start();
+      setMessage('ticketMsg', 'Voice capture started. बोलना शुरू करें।');
+    });
+
+    document.getElementById('voiceStopBtn').addEventListener('click', () => {
+      if (speechRecognition) {
+        speechRecognition.stop();
+        setMessage('ticketMsg', 'Voice capture stopped.');
+      }
+    });
+
+    document.getElementById('lookupBtn').addEventListener('click', async () => {
+      const phone = document.getElementById('lookupPhone').value.trim();
+      try {
+        const regRes = await fetch(`${API_BASE}/pro/registration/by-phone/${encodeURIComponent(phone)}`);
+        const reg = await regRes.json();
+        if (!reg.ok) {
+          setMessage('lookupMsg', reg.message || 'Registration not found', false);
+          return;
+        }
+
+        const qrRes = await fetch(`${API_BASE}/pro/registration/${encodeURIComponent(reg.registration.id)}/qr`);
+        const qr = await qrRes.json();
+        if (!qr.ok) {
+          setMessage('lookupMsg', qr.message || 'QR lookup failed', false);
+          return;
+        }
+
+        const msg = `Found: ${reg.registration.head_name}\nRegistration ID: ${reg.registration.id}\nLanguage: ${reg.registration.language}\nStatus: ${reg.registration.status}`;
+        setMessage('lookupMsg', msg, true);
+        document.getElementById('qrImg').src = qr.qrDataUrl;
+        document.getElementById('qrWrap').style.display = 'block';
+      } catch (err) {
+        setMessage('lookupMsg', err.message, false);
+      }
+    });
+  </script>
+</body>
+</html>

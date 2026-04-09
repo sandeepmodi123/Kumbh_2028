@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Ujjain Kumbh QR System - Plan v4 (45-Day Event, Phased 90-Day Program)</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: #0b1220;
+    color: #dbe4f0;
+    padding: 24px 12px 72px;
+  }
+  .wrap { max-width: 1180px; margin: 0 auto; }
+
+  .hero {
+    background: linear-gradient(135deg, #0f172a, #1e293b);
+    border: 1px solid #334155;
+    border-radius: 14px;
+    padding: 22px;
+  }
+  .hero h1 { font-size: 28px; color: #f8fafc; }
+  .hero p { margin-top: 8px; color: #93a4ba; font-size: 14px; }
+  .pill-row { margin-top: 14px; display: flex; flex-wrap: wrap; gap: 8px; }
+  .pill {
+    border: 1px solid #334155;
+    border-radius: 999px;
+    padding: 6px 12px;
+    font-size: 12px;
+    font-weight: 700;
+    color: #8cc8ff;
+    background: #0f1b2f;
+  }
+  .pill.green { color: #86efac; background: #10261a; border-color: #1f5b34; }
+  .pill.orange { color: #fdba74; background: #2c1d10; border-color: #7c4b1f; }
+
+  .section { margin-top: 24px; }
+  .section-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  .section-head h2 { font-size: 18px; color: #f8fafc; }
+  .tag {
+    margin-left: auto;
+    border-radius: 999px;
+    border: 1px solid #334155;
+    padding: 4px 10px;
+    font-size: 11px;
+    color: #93a4ba;
+  }
+  .card {
+    background: #111b2e;
+    border: 1px solid #334155;
+    border-radius: 12px;
+    padding: 14px;
+  }
+
+  .grid-3 { display: grid; grid-template-columns: repeat(3, minmax(220px, 1fr)); gap: 10px; }
+  .grid-4 { display: grid; grid-template-columns: repeat(4, minmax(180px, 1fr)); gap: 10px; }
+  .grid-2 { display: grid; grid-template-columns: repeat(2, minmax(260px, 1fr)); gap: 10px; }
+
+  .mini {
+    background: #0f172a;
+    border: 1px solid #253449;
+    border-radius: 10px;
+    padding: 10px;
+  }
+  .mini h4 { font-size: 13px; color: #bfdbfe; margin-bottom: 4px; }
+  .mini .big { color: #f8fafc; font-size: 20px; font-weight: 800; margin-top: 2px; }
+  .mini p { color: #94a3b8; font-size: 12px; line-height: 1.45; margin-top: 4px; }
+
+  .cost-grid { display: grid; grid-template-columns: repeat(3, minmax(220px, 1fr)); gap: 10px; }
+  .cost-card {
+    background: #0f172a;
+    border: 1px solid #2a3b51;
+    border-radius: 10px;
+    padding: 12px;
+  }
+  .cost-card h4 { color: #bfdbfe; font-size: 13px; margin-bottom: 6px; }
+  .cost-card .val { color: #f8fafc; font-size: 22px; font-weight: 800; }
+  .cost-card .note { color: #94a3b8; font-size: 12px; margin-top: 4px; line-height: 1.45; }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #0f172a;
+    border: 1px solid #334155;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  th, td {
+    border: 1px solid #243549;
+    padding: 9px 10px;
+    text-align: left;
+    font-size: 12.5px;
+    vertical-align: top;
+    line-height: 1.45;
+  }
+  th {
+    background: #18253b;
+    color: #bfdbfe;
+    font-weight: 800;
+    text-transform: uppercase;
+    font-size: 11px;
+    letter-spacing: .3px;
+  }
+  .total-row td {
+    background: #10261a;
+    color: #86efac;
+    font-weight: 800;
+  }
+
+  .list { display: grid; grid-template-columns: repeat(2, minmax(260px, 1fr)); gap: 10px; }
+  .list ul { padding-left: 18px; color: #c7d4e6; font-size: 13px; line-height: 1.6; }
+  .list li { margin: 4px 0; }
+
+  .footer {
+    margin-top: 24px;
+    background: #111b2e;
+    border: 1px solid #334155;
+    border-radius: 12px;
+    padding: 14px;
+    color: #9fb2c9;
+    font-size: 13px;
+    line-height: 1.6;
+  }
+
+  @media (max-width: 900px) {
+    .grid-4 { grid-template-columns: repeat(2, minmax(140px, 1fr)); }
+    .grid-3 { grid-template-columns: 1fr; }
+    .grid-2 { grid-template-columns: 1fr; }
+    .cost-grid { grid-template-columns: 1fr; }
+    .list { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="hero">
+    <h1>Ujjain Kumbh QR System - Plan v4</h1>
+    <p>Budget-optimized phased plan: 20 days testing, 45 days main event, 25 days safe-side support. Keeps v3 feature set, lowers run cost through phased scaling and strict autoscale controls.</p>
+    <div class="pill-row">
+      <div class="pill green">Duration: 20 + 45 + 25 Days</div>
+      <div class="pill green">Target Population: 200M</div>
+      <div class="pill">SLA: 99.95% (zero planned downtime)</div>
+      <div class="pill">Peak Ready: 8-10M/day</div>
+      <div class="pill orange">Cost Target: 24L-34L (infra + ops)</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-head">
+      <h2>1) v4 Strategy (Cheap but Effective)</h2>
+      <span class="tag">v3 Features Preserved</span>
+    </div>
+    <div class="card list">
+      <ul>
+        <li>Same feature coverage as v3: registration, lost, found, help, complaint, app channel, multilingual, control room, OTP and offline sync.</li>
+        <li>Single active region with warm standby for peak windows and disaster recovery.</li>
+        <li>App Service primary compute, not always-on heavy AKS cluster.</li>
+        <li>Autoscale with hard upper caps to stop cost spikes.</li>
+      </ul>
+      <ul>
+        <li>Pre-scale only for known peak bathing dates (not full 90-day overprovisioning).</li>
+        <li>Testing 20 days runs in low-load mode; only baseline services stay active.</li>
+        <li>Blob lifecycle policy: hot 7 days, cool next 30 days, archive after closure.</li>
+        <li>Last 25 days run in taper mode as crowd decreases and autoscale scales down aggressively.</li>
+        <li>16x7 core support + 24x7 only on high-risk windows.</li>
+        <li>No feature cuts; only infra and ops right-sizing.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-head">
+      <h2>2) Corrected Load Math (Phased Program)</h2>
+      <span class="tag">200M / 90</span>
+    </div>
+    <div class="grid-4">
+      <div class="mini">
+        <h4>Daily Average</h4>
+        <div class="big">2.22M/day</div>
+        <p>200,000,000 divided by full 90-day program window.</p>
+      </div>
+      <div class="mini">
+        <h4>Peak Day</h4>
+        <div class="big">8-10M/day</div>
+        <p>Planned surge on major snan dates.</p>
+      </div>
+      <div class="mini">
+        <h4>Average Registration Rate</h4>
+        <div class="big">~62/sec</div>
+        <p>2.22M divided by 10 hours and 3600 sec.</p>
+      </div>
+      <div class="mini">
+        <h4>Peak Registration Rate</h4>
+        <div class="big">~278/sec</div>
+        <p>10M divided by 10 hours and 3600 sec.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-head">
+      <h2>3) Architecture (v3 Features, v4 Cost)</h2>
+      <span class="tag">Lean Azure Blueprint</span>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>Layer</th>
+          <th>v4 Choice</th>
+          <th>Reason</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Client Channels</td>
+          <td>PWA + Kiosk + Mobile + USSD fallback</td>
+          <td>Maintains full accessibility from v3.</td>
+        </tr>
+        <tr>
+          <td>Edge and Security</td>
+          <td>Front Door Standard + WAF + CDN</td>
+          <td>Stable and lower cost than premium edge stack.</td>
+        </tr>
+        <tr>
+          <td>API and Auth</td>
+          <td>API Management Consumption + OTP auth</td>
+          <td>Pay-per-use fits variable traffic.</td>
+        </tr>
+        <tr>
+          <td>Compute</td>
+          <td>App Service P2v3 autoscale 2 to 8</td>
+          <td>Sufficient for peak ~278/sec with strong headroom.</td>
+        </tr>
+        <tr>
+          <td>Data</td>
+          <td>Cosmos autoscale 1K to 12K RU, Redis C2, SQL S2</td>
+          <td>All v3 capabilities with lower steady-state spend.</td>
+        </tr>
+        <tr>
+          <td>Messaging</td>
+          <td>Service Bus Standard + Event Hubs 2 to 4 TU</td>
+          <td>Enough for lost/found/help/complaint workflows.</td>
+        </tr>
+        <tr>
+          <td>Observability</td>
+          <td>App Insights + Azure Monitor + cost alerts</td>
+          <td>Reliability retained; cost leakage controlled.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="section">
+    <div class="section-head">
+      <h2>4) Operating Modes (20 + 45 + 25)</h2>
+      <span class="tag">Phased Autoscale</span>
+    </div>
+    <div class="grid-3">
+      <div class="mini">
+        <h4>Testing Phase (20 Days)</h4>
+        <p>App Service 2-3 instances, Cosmos 1K-3K RU, Event Hubs 2 TU, Redis C2.</p>
+        <p class="big" style="font-size:16px;">Approx 8K-15K/day</p>
+      </div>
+      <div class="mini">
+        <h4>Main Event (45 Days)</h4>
+        <p>App Service 4-8 instances, Cosmos 5K-12K RU, Event Hubs 4 TU, warm standby enabled.</p>
+        <p class="big" style="font-size:16px;">Approx 1.0L-1.8L/day</p>
+      </div>
+      <div class="mini">
+        <h4>Safe-Side Support (25 Days)</h4>
+        <p>App Service 2-4 instances, Cosmos 2K-5K RU, Event Hubs 2 TU, controlled NOC shifts.</p>
+        <p class="big" style="font-size:16px;">Approx 15K-30K/day</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-head">
+      <h2>5) Registration Channel Mix (Same as v3)</h2>
+      <span class="tag">No Feature Drop</span>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>Channel</th>
+          <th>Coverage</th>
+          <th>Volume</th>
+          <th>Implementation Note</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>PWA/Web</td>
+          <td>~58-62%</td>
+          <td>~116M-124M</td>
+          <td>Primary channel with OTP and language support.</td>
+        </tr>
+        <tr>
+          <td>Kiosk</td>
+          <td>~28-32%</td>
+          <td>~56M-64M</td>
+          <td>Offline-first queue sync for low-network gates.</td>
+        </tr>
+        <tr>
+          <td>USSD/Feature Phone</td>
+          <td>~6-9%</td>
+          <td>~12M-18M</td>
+          <td>Fallback for non-smartphone pilgrims.</td>
+        </tr>
+        <tr>
+          <td>Bulk Group Registration</td>
+          <td>~2-4%</td>
+          <td>~4M-8M</td>
+          <td>Bus/train/tour operator pre-registration upload.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="section">
+    <div class="section-head">
+      <h2>6) Tech Stack (v3 Feature Parity)</h2>
+      <span class="tag">Practical Build Stack</span>
+    </div>
+    <div class="grid-2">
+      <div class="mini">
+        <h4>Frontend and Channels</h4>
+        <p>Angular PWA, kiosk web mode, multilingual runtime, QR scanner, control room live updates.</p>
+      </div>
+      <div class="mini">
+        <h4>Backend and Workflow</h4>
+        <p>.NET APIs, queue-based events, OTP verification, lost/found/help/complaint lifecycle, role-based dashboard.</p>
+      </div>
+      <div class="mini">
+        <h4>Data and Cache</h4>
+        <p>Cosmos autoscale, Redis dedup and rate limits, SQL audit and reports, blob media retention policy.</p>
+      </div>
+      <div class="mini">
+        <h4>DevOps and Reliability</h4>
+        <p>Blue-green deploy, rollback under 60 sec, synthetic monitoring, alerting, runbooks, weekly drill.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-head">
+      <h2>7) Detailed Phased Costing (20 + 45 + 25)</h2>
+      <span class="tag">Near-Zero Downtime Budget</span>
+    </div>
+
+    <div class="cost-grid" style="margin-bottom:10px;">
+      <div class="cost-card">
+        <h4>Compute + API Layer</h4>
+        <div class="val">5.5-8L</div>
+        <div class="note">App Service autoscale with deployment slots; full pre-scale only during 45-day main event.</div>
+      </div>
+      <div class="cost-card">
+        <h4>Data Layer</h4>
+        <div class="val">4.5-6.5L</div>
+        <div class="note">Cosmos autoscale + Redis + SQL audit. Includes peak RU burst margins.</div>
+      </div>
+      <div class="cost-card">
+        <h4>Storage + Edge Security</h4>
+        <div class="val">3.5-5L</div>
+        <div class="note">Blob lifecycle policy, CDN, WAF and traffic management overhead.</div>
+      </div>
+      <div class="cost-card">
+        <h4>Messaging + OTP</h4>
+        <div class="val">3.2-4.6L</div>
+        <div class="note">Service Bus, Event Hubs, OTP provider primary + failover route.</div>
+      </div>
+      <div class="cost-card">
+        <h4>Observability + DevSecOps</h4>
+        <div class="val">2.8-4L</div>
+        <div class="note">App Insights, monitoring dashboards, alerts, security scanning and release pipelines.</div>
+      </div>
+      <div class="cost-card">
+        <h4>Operations + Contingency</h4>
+        <div class="val">4.5-6.2L</div>
+        <div class="note">Phase-based staffing: 16x7 core, 24x7 only on critical windows, plus incident reserve.</div>
+      </div>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Cost Block</th>
+          <th>Phased Program Estimate (INR Lakh)</th>
+          <th>Downtime Impact</th>
+          <th>Control Lever</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>App Service and APIs</td>
+          <td>5.5 - 8</td>
+          <td>Blue-green deploy and fast rollback reduce release downtime risk.</td>
+          <td>Reserved baseline capacity + autoscale cap and scheduled scale-out on peak days only.</td>
+        </tr>
+        <tr>
+          <td>Cosmos DB + Redis + SQL</td>
+          <td>4.5 - 6.5</td>
+          <td>Data tier bottlenecks are primary outage driver; reserve burst headroom.</td>
+          <td>Autoscale floor tuning and query/index optimization.</td>
+        </tr>
+        <tr>
+          <td>Blob + CDN + WAF + Traffic Routing</td>
+          <td>3.5 - 5</td>
+          <td>Static offload and edge protection prevent overload and attack downtime.</td>
+          <td>Lifecycle and CDN cache hit ratio targets.</td>
+        </tr>
+        <tr>
+          <td>Messaging + OTP Failover</td>
+          <td>3.2 - 4.6</td>
+          <td>Queue buffering and dual SMS route prevent incident workflow stalls.</td>
+          <td>Blended OTP pricing + retry policy and failover trigger thresholds.</td>
+        </tr>
+        <tr>
+          <td>Monitoring + Security + DevOps</td>
+          <td>2.8 - 4</td>
+          <td>Early detection and automated rollback reduce MTTR.</td>
+          <td>Alert severity tuning and log retention caps.</td>
+        </tr>
+        <tr>
+          <td>Ops Staffing + Contingency</td>
+          <td>4.5 - 6.2</td>
+          <td>Human response and war-room readiness directly improve recovery speed.</td>
+          <td>Peak-window shifts instead of full 24x7 for the entire program.</td>
+        </tr>
+        <tr class="total-row">
+          <td>Total Program Cost (20 + 45 + 25)</td>
+          <td>24 - 34</td>
+          <td>Near-zero unplanned downtime posture with zero planned downtime releases.</td>
+          <td>Balanced low-cost and reliability-focused model.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="section">
+    <div class="section-head">
+      <h2>7A) Cost Formula Box (Tender Justification)</h2>
+      <span class="tag">Day-wise Commercial Logic</span>
+    </div>
+    <div class="card" style="margin-bottom:10px;">
+      <p style="color:#c7d4e6; font-size:13px; line-height:1.6;">
+        Master formula used for negotiation and rate validation:
+      </p>
+      <p style="color:#86efac; font-size:15px; font-weight:800; margin-top:6px;">
+        Total Cost = (Testing Days x Testing Daily Burn) + (Event Days x Event Daily Burn) + (Taper Days x Taper Daily Burn) + One-time Setup + Contingency
+      </p>
+      <p style="color:#9fb2c9; font-size:12px; line-height:1.6; margin-top:6px;">
+        Here Testing Days = 20, Event Days = 45, Taper Days = 25. Autoscale ensures testing and taper windows run at significantly lower burn than main event days.
+      </p>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Parameter</th>
+          <th>Aggressive Case (INR Lakh)</th>
+          <th>Lean Case (INR Lakh)</th>
+          <th>Balanced Case (INR Lakh)</th>
+          <th>Comment</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Testing Daily Burn (20 days)</td>
+          <td>0.08/day</td>
+          <td>0.10/day</td>
+          <td>0.12/day</td>
+          <td>Low crowd, baseline infra only.</td>
+        </tr>
+        <tr>
+          <td>Event Daily Burn (45 days)</td>
+          <td>0.32/day</td>
+          <td>0.36/day</td>
+          <td>0.40/day</td>
+          <td>Peak demand, pre-scale active.</td>
+        </tr>
+        <tr>
+          <td>Taper Daily Burn (25 days)</td>
+          <td>0.15/day</td>
+          <td>0.18/day</td>
+          <td>0.22/day</td>
+          <td>Traffic declines, autoscale taper mode.</td>
+        </tr>
+        <tr>
+          <td>One-time Setup</td>
+          <td>3.40</td>
+          <td>3.80</td>
+          <td>4.20</td>
+          <td>QA, go-live, DR readiness, security baseline.</td>
+        </tr>
+        <tr>
+          <td>Contingency</td>
+          <td>1.40</td>
+          <td>1.80</td>
+          <td>2.20</td>
+          <td>Incident reserve and uncertain surge buffer.</td>
+        </tr>
+        <tr class="total-row">
+          <td>Computed Total</td>
+          <td>24.55</td>
+          <td>28.50</td>
+          <td>33.90</td>
+          <td>Aggressive case requires committed cloud discounts and strict peak-window controls.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="section">
+    <div class="section-head">
+      <h2>8) Downtime Almost Zero Plan</h2>
+      <span class="tag">SRE Targets</span>
+    </div>
+    <div class="grid-4">
+      <div class="mini">
+        <h4>Availability Target</h4>
+        <div class="big">99.95%</div>
+        <p>Zero planned downtime through blue-green releases and slot swap.</p>
+      </div>
+      <div class="mini">
+        <h4>Recovery Time (RTO)</h4>
+        <div class="big">&lt; 5 min</div>
+        <p>Automated reroute + rollback runbook for critical incidents.</p>
+      </div>
+      <div class="mini">
+        <h4>Recovery Point (RPO)</h4>
+        <div class="big">&lt; 1 min</div>
+        <p>Queue-first writes and continuous replication for key datasets.</p>
+      </div>
+      <div class="mini">
+        <h4>Operations Model</h4>
+        <div class="big">16x7 + Peak 24x7</div>
+        <p>24x7 command mode only in major snan windows for cost efficiency.</p>
+      </div>
+    </div>
+
+    <div class="card list" style="margin-top:10px;">
+      <ul>
+        <li>Dual route at edge: primary active region + warm standby failover.</li>
+        <li>Canary 5% to 25% to 100% rollout with automatic rollback on SLO breach.</li>
+        <li>Synthetic probes every minute for registration, OTP, lost/found, help closure.</li>
+        <li>Weekly disaster drill and monthly zone-level field simulation.</li>
+      </ul>
+      <ul>
+        <li>Cost guardrails: daily burn alert, monthly cap alert, service-level spend limits.</li>
+        <li>Control room dashboard: p95 latency, queue lag, OTP success, API error ratio.</li>
+        <li>Known peak dates: mandatory pre-scale T-48 hours and rollback validation T-12 hours.</li>
+        <li>Critical incidents: auto-page on-call, war-room bridge, and 30-minute postmortem draft.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-head">
+      <h2>9) Go-Live and Control Checklist</h2>
+      <span class="tag">Must Pass</span>
+    </div>
+    <div class="card list">
+      <ul>
+        <li>Load test at 300 req/sec sustained and 500 req/sec burst.</li>
+        <li>Offline kiosk sync test under poor network in field zones.</li>
+        <li>OTP failover between two SMS vendors tested.</li>
+        <li>Lost/found/help closure and escalation flow verified.</li>
+        <li>Blue-green deployment and rollback drill completed.</li>
+      </ul>
+      <ul>
+        <li>Security audit and role-based access validation completed.</li>
+        <li>Cost alerts configured with hard monthly budgets.</li>
+        <li>Peak-day runbook and staffing rota signed off.</li>
+        <li>Daily dashboard for uptime, latency, queue lag and OTP delivery.</li>
+        <li>Data retention and deletion policy activated post-event.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-head">
+      <h2>10) Tender BOQ (3 Slabs: 10L / 25L / 50L Users)</h2>
+      <span class="tag">Commercial Ready</span>
+    </div>
+    <div class="card" style="margin-bottom:10px;">
+      <p style="color:#c7d4e6; font-size:13px; line-height:1.6;">
+        Assumptions: phased operation (20 days testing + 45 days event + 25 days safe-side support), near-zero downtime posture (99.9% to 99.95%), dual AZ HA setup, one active + warm standby model,
+        and average OTP mix of 0.6 OTP per user at blended INR 0.14 per OTP using primary + negotiated backup route.
+      </p>
+      <p style="color:#c7d4e6; font-size:13px; line-height:1.6; margin-top:6px;">
+        Cost behavior: testing and final safe-side windows run at low traffic profiles, so autoscale keeps non-peak infra spend minimal while reliability controls remain enabled.
+      </p>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>BOQ Line Item</th>
+          <th>Unit</th>
+          <th>10 Lakh Users (INR Lakh)</th>
+          <th>25 Lakh Users (INR Lakh)</th>
+          <th>50 Lakh Users (INR Lakh)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Cloud Compute (API + Web + Worker Autoscale)</td>
+          <td>20+45+25 days</td>
+          <td>2.35</td>
+          <td>3.45</td>
+          <td>5.05</td>
+        </tr>
+        <tr>
+          <td>Managed Database HA (Primary + Replica + Backup)</td>
+          <td>20+45+25 days</td>
+          <td>1.75</td>
+          <td>2.60</td>
+          <td>3.85</td>
+        </tr>
+        <tr>
+          <td>Redis Cache + Queue Layer</td>
+          <td>20+45+25 days</td>
+          <td>0.65</td>
+          <td>0.95</td>
+          <td>1.35</td>
+        </tr>
+        <tr>
+          <td>Storage + CDN + Bandwidth</td>
+          <td>20+45+25 days</td>
+          <td>1.05</td>
+          <td>1.65</td>
+          <td>2.55</td>
+        </tr>
+        <tr>
+          <td>WAF + Security Hardening + Certs</td>
+          <td>20+45+25 days</td>
+          <td>0.70</td>
+          <td>0.95</td>
+          <td>1.35</td>
+        </tr>
+        <tr>
+          <td>Monitoring, Logs, Alerting, APM</td>
+          <td>20+45+25 days</td>
+          <td>0.80</td>
+          <td>1.10</td>
+          <td>1.60</td>
+        </tr>
+        <tr>
+          <td>OTP SMS Cost (0.6 OTP/user at INR 0.14)</td>
+          <td>Usage based</td>
+          <td>0.70</td>
+          <td>1.75</td>
+          <td>3.50</td>
+        </tr>
+        <tr>
+          <td>24x7 NOC + Incident Response + Peak War-Room</td>
+          <td>20+45+25 days</td>
+          <td>1.50</td>
+          <td>2.20</td>
+          <td>3.10</td>
+        </tr>
+        <tr>
+          <td>Implementation + QA + Go-live + DR Drills (one-time)</td>
+          <td>One-time</td>
+          <td>3.90</td>
+          <td>4.80</td>
+          <td>6.10</td>
+        </tr>
+        <tr>
+          <td>Contingency Reserve</td>
+          <td>10%</td>
+          <td>1.15</td>
+          <td>1.65</td>
+          <td>2.45</td>
+        </tr>
+        <tr class="total-row">
+          <td>Subtotal (Excl. GST)</td>
+          <td>-</td>
+          <td>14.55</td>
+          <td>21.10</td>
+          <td>30.90</td>
+        </tr>
+        <tr>
+          <td>GST @ 18%</td>
+          <td>-</td>
+          <td>2.62</td>
+          <td>3.80</td>
+          <td>5.56</td>
+        </tr>
+        <tr class="total-row">
+          <td>Grand Total (Incl. GST)</td>
+          <td>-</td>
+          <td>17.17</td>
+          <td>24.90</td>
+          <td>36.46</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="section">
+    <div class="section-head">
+      <h2>11) Tools, Tech, Language and Configuration Matrix</h2>
+      <span class="tag">Technical Annexure</span>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>Area</th>
+          <th>Selected Stack</th>
+          <th>Configuration Standard</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Frontend</td>
+          <td>Angular PWA + TypeScript</td>
+          <td>Lazy loading, client cache, multilingual runtime pack (Hindi/English/Marathi/Bengali).</td>
+        </tr>
+        <tr>
+          <td>Mobile/Kiosk</td>
+          <td>PWA kiosk mode + Android wrapper</td>
+          <td>Offline queue buffer, sync retry backoff, low-bandwidth asset profile.</td>
+        </tr>
+        <tr>
+          <td>Backend</td>
+          <td>.NET 8 Web API</td>
+          <td>Stateless services, JWT auth, API timeout 8s, retry max 2 for non-critical calls.</td>
+        </tr>
+        <tr>
+          <td>Database</td>
+          <td>Cosmos DB + SQL audit DB</td>
+          <td>Autoscale RU, partition by event zone and ticket type, PITR backup policy.</td>
+        </tr>
+        <tr>
+          <td>Cache and Queue</td>
+          <td>Redis + Service Bus</td>
+          <td>Dedup keys, OTP/session TTL, dead-letter queue and 3 retry policy.</td>
+        </tr>
+        <tr>
+          <td>Files and Media</td>
+          <td>Blob Storage + CDN</td>
+          <td>Lifecycle: hot 7 days, cool 30 days, archive post-closure.</td>
+        </tr>
+        <tr>
+          <td>Security</td>
+          <td>WAF + IAM + KMS + Secrets Vault</td>
+          <td>TLS 1.2+, IP throttling, RBAC, encryption at rest and in transit.</td>
+        </tr>
+        <tr>
+          <td>DevOps</td>
+          <td>GitHub Actions + IaC</td>
+          <td>Blue-green release, canary gates, rollback under 60 sec, env-specific secrets.</td>
+        </tr>
+        <tr>
+          <td>Observability</td>
+          <td>App Insights + Monitor + Alerts</td>
+          <td>P95 latency, OTP success %, queue lag, API error ratio dashboards.</td>
+        </tr>
+        <tr>
+          <td>Reliability SLO</td>
+          <td>99.9% to 99.95%</td>
+          <td>RTO under 5 min, RPO under 1 min, weekly failover drill.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="footer">
+    Plan v4 summary: This is a phased 20+45+25 day program model with v3-level feature coverage, detailed tender-ready costing visibility, and a near-zero downtime operating posture. Cost is optimized by phase-based scaling, controlled peak pre-scaling, and strict budget guardrails.
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: ujjain-kumbh-2028
+    runtime: node
+    rootDir: kumbh_system
+    plan: free
+    autoDeploy: true
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: JWT_SECRET
+        generateValue: true
